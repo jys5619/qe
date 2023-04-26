@@ -12,10 +12,10 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          PPDM
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>Jung Young Shin</div>
       </q-toolbar>
     </q-header>
 
