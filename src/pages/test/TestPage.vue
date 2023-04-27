@@ -1,5 +1,6 @@
 <template>
   <q-page class="row items-center justify-evenly">
+    Test Page
     <q-card>
       <q-card-section>
         <q-input v-model="text" label="text" type="textarea" />
