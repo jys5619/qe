@@ -31,6 +31,10 @@ const routes: RouteRecordRaw[] = [
         path: 'icon',
         component: () => import('pages/test/IconPage.vue'),
       },
+      {
+        path: 'single-search-form',
+        component: () => import('pages/test/SingleSearchFormPage.vue'),
+      },
     ],
   },
 

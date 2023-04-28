@@ -1,15 +1,9 @@
 <template>
   <q-layout view="hhh lpR fFf">
-    <q-header elevated class="bg-primary text-white" height-hint="98">
+    <q-header elevated class="bg-grey-3 text-black" height-hint="98">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-          </q-avatar>
-          PPDM
-        </q-toolbar-title>
+        <q-toolbar-title> PPDM </q-toolbar-title>
       </q-toolbar>
 
       <q-tabs align="left">
@@ -25,7 +19,7 @@
 
     <q-drawer
       v-model="leftDrawerOpen"
-      :width="200"
+      :width="300"
       :breakpoint="500"
       bordered
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"

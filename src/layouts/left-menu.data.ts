@@ -55,8 +55,9 @@ const LeftMenuList: ILeftMenuGroup = {
       path: '/test/icon',
     },
     {
-      icon: 'settings',
-      label: 'Settings',
+      icon: 'search',
+      label: 'Single Search Form',
+      path: '/test/single-search-form',
     },
     {
       icon: 'feedback',
