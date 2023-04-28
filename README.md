@@ -42,3 +42,11 @@ See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-webpack/quas
 
 ### Electron 추가
 quasar mode add electron
+
+### sqlLite3
+npm install sqlite3
+npm install --save-dev @types/sqlite3
+
+## oracle
+npm install oracledb
+npm install --save-dev @types/oracledb
