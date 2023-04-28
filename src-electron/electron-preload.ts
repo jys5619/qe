@@ -37,5 +37,9 @@ contextBridge.exposeInMainWorld('api', {
 
     loadTextFile () {
         return ir.invoke('loadTextFile');
+    },
+
+    testConnect () {
+        return ir.invoke('testConnect');
     }
 })

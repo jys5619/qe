@@ -1,11 +1,13 @@
-export const DATA_COLUMNS = [
+import { QTableColumn } from 'quasar';
+
+export const DATA_COLUMNS: QTableColumn[] = [
   {
     name: 'name',
     required: true,
     label: 'Dessert (100g serving)',
     align: 'left',
-    field: (row: any) => row.name,
-    format: (val: any) => `${val}`,
+    field: (row: IDataRows) => row.name,
+    format: (val: IDataRows) => `${val}`,
     sortable: true,
   },
   {
@@ -35,7 +37,18 @@ export const DATA_COLUMNS = [
   },
 ];
 
-export const DATA_ROWS = [
+export interface IDataRows {
+  name: string;
+  calories: number;
+  fat: number;
+  carbs: number;
+  protein: number;
+  sodium: number;
+  calcium: string;
+  iron: string;
+}
+
+export const DATA_ROWS: IDataRows[] = [
   {
     name: 'Frozen Yogurt',
     calories: 159,

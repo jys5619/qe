@@ -5,6 +5,7 @@ declare global {
     api: {
       saveTextFile (text:string): Promise<string>;
       loadTextFile (): Promise<string>;
+      testConnect (): Promise<string>;
     }
   }
 }
