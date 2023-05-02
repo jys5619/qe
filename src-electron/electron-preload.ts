@@ -28,18 +28,27 @@
  * }
  */
 
-import { contextBridge, ipcRenderer as ir } from "electron";
+import { contextBridge, ipcRenderer as ir } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
-    saveTextFile (text: string) {
-        return ir.invoke('saveTextFile', text);
-    },
+  saveTextFile (text: string) {
+      return ir.invoke('saveTextFile', text);
+  },
 
-    loadTextFile () {
-        return ir.invoke('loadTextFile');
-    },
+  loadTextFile () {
+      return ir.invoke('loadTextFile');
+  },
 
-    testConnect () {
-        return ir.invoke('testConnect');
-    }
+});
+
+contextBridge.exposeInMainWorld('eqDb', {
+
+  selectMenuList () {
+      return ir.invoke('selectMenuList');
+  },
+
+  testConnect () {
+    return ir.invoke('testConnect');
+},
 })
+

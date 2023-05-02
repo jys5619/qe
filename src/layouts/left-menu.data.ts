@@ -60,8 +60,9 @@ const LeftMenuList: ILeftMenuGroup = {
       path: '/test/single-search-form',
     },
     {
-      icon: 'feedback',
-      label: 'Send Feedback',
+      icon: 'search',
+      label: 'Single Search Form & Side',
+      path: '/test/single-search-form-side',
     },
     {
       icon: 'help',

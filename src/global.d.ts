@@ -1,3 +1,5 @@
+import { IMenu } from './stores/menu.interface';
+
 export {}
 
 declare global {
@@ -5,7 +7,10 @@ declare global {
     api: {
       saveTextFile (text:string): Promise<string>;
       loadTextFile (): Promise<string>;
+    };
+    qeDb: {
       testConnect (): Promise<string>;
-    }
+      selectMenuList (): Promise<IMenu[]>;
+    };
   }
 }

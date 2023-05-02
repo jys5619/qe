@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-sm">
+  <div class="bg-green-3" style=" display: table;">
     <q-table
       class="head-blue"
       flat
@@ -13,7 +13,9 @@
       no-data-label="no data"
       :rows-per-page-options="[0]"
       hide-bottom
+      style="display: table-row;"
     />
+    <div style="display: table-row;">333</div>
   </div>
 </template>
 
@@ -40,13 +42,14 @@ console.log(rows);
 </script>
 
 <style lang="scss">
-$bgHeaderColor: #b9c7ee;
+$bgHeaderColor: #4287f5;
 
 .head-blue {
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th {
     background-color: $bgHeaderColor;
+    color: white;
     height: 30px;
   }
 }

@@ -1,6 +1,6 @@
 import { ipcMain as im } from 'electron';
 import { Database } from 'sqlite3';
-import fs from 'fs';
+import { IMenu } from './entity/eqDb/menu.interface'
 
 im.handle('testConnect', async () => {
     try {
@@ -33,10 +33,10 @@ im.handle('testConnect', async () => {
           );
 
         const statement = db.prepare(
-        `UPDATE articles SET title='Third article' WHERE id=?`
+        'UPDATE articles SET title=\'Third article\' WHERE id=?'
         )
         statement.run([3]);
-        
+
         db.get(
             'SELECT title FROM articles WHERE id=3',
             (_, res) => console.log(res)
@@ -50,4 +50,42 @@ im.handle('testConnect', async () => {
     }
     console.log(__dirname);
     return 'success connected!!!';
+});
+
+
+im.handle('selectMenuList', async () => {
+  const db = new Database(__dirname + '/db/db.sqlite');
+
+  try {
+    db.all(
+      'SELECT * FROM TB_MENU MENU_TYPE, P_MENU_ID, ORDER BY ORD',
+      (_, res) => console.log(res)
+    );
+
+  } catch (e) {
+      console.log(e);
+  } finally {
+    db.close();
+  }
+});
+
+
+im.handle('saveMenuList', async () => {
+  const db = new Database(__dirname + '/db/db.sqlite');
+
+  try {
+    // NULL, INTEGER, REAL, TEXT, BLOB.
+    // Open a SQLite database, stored in the file db.sqlite
+    const db = new Database(__dirname + '/db/db.sqlite');
+
+    db.all(
+        'SELECT * FROM TB_MENU MENU_TYPE, P_MENU_ID, ORDER BY ORD',
+        (_, res) => console.log(res)
+    );
+
+  } catch (e) {
+      console.log(e);
+  } finally {
+    db.close();
+  }
 });
