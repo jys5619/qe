@@ -8,6 +8,6 @@ export interface IMenu {
   pMenuId?: string;
   icon?: string;
   iconColor?: string;
-  separator?: boolean;
-  ord?: number
+  separator?: string;
+  ord?: number;
 }

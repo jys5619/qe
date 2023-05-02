@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-green-3" style=" display: table;">
+  <div>
     <q-table
       class="head-blue"
       flat
@@ -13,9 +13,7 @@
       no-data-label="no data"
       :rows-per-page-options="[0]"
       hide-bottom
-      style="display: table-row;"
     />
-    <div style="display: table-row;">333</div>
   </div>
 </template>
 

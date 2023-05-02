@@ -7,15 +7,21 @@ export const useStoreMenu = defineStore('menu', {
   }),
   getters: {
     getMenuList: (state) => {
-      return state.menuList.filter(m => m.menuType === 'MAIN');
+      return state.menuList.filter((m) => m.menuType === 'MAIN');
     },
     getSubMenuList(state) {
-      return (pMenuId:string) => state.menuList.filter(m => m.menuType === 'SUB' && m.pMenuId == pMenuId);
+      return (pMenuId: string) =>
+        state.menuList.filter(
+          (m) => m.menuType === 'SUB' && m.pMenuId == pMenuId
+        );
     },
   },
   actions: {
-    init() {
-      window.qeDb.selectMenuList();
-    }
+    async initData() {
+      this.menuList.splice(0);
+      const data = await window.api.selectMenuList();
+      console.log('data', data);
+      this.menuList.push(...data);
+    },
   },
 });

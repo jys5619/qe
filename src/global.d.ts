@@ -1,16 +1,14 @@
 import { IMenu } from './stores/menu.interface';
 
-export {}
+export {};
 
 declare global {
   interface Window {
     api: {
-      saveTextFile (text:string): Promise<string>;
-      loadTextFile (): Promise<string>;
-    };
-    qeDb: {
-      testConnect (): Promise<string>;
-      selectMenuList (): Promise<IMenu[]>;
+      saveTextFile(text: string): Promise<string>;
+      loadTextFile(): Promise<string>;
+      testConnect(): Promise<string>;
+      selectMenuList(): Promise<IMenu[]>;
     };
   }
 }

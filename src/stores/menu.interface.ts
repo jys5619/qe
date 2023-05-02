@@ -9,5 +9,5 @@ export interface IMenu {
   icon?: string;
   iconColor?: string;
   separator?: boolean;
-  ord?: number
+  ord?: number;
 }

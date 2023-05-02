@@ -31,24 +31,19 @@
 import { contextBridge, ipcRenderer as ir } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
-  saveTextFile (text: string) {
-      return ir.invoke('saveTextFile', text);
+  saveTextFile(text: string) {
+    return ir.invoke('saveTextFile', text);
   },
 
-  loadTextFile () {
-      return ir.invoke('loadTextFile');
+  loadTextFile() {
+    return ir.invoke('loadTextFile');
   },
 
-});
-
-contextBridge.exposeInMainWorld('eqDb', {
-
-  selectMenuList () {
-      return ir.invoke('selectMenuList');
+  selectMenuList() {
+    return ir.invoke('selectMenuList');
   },
 
-  testConnect () {
+  testConnect() {
     return ir.invoke('testConnect');
-},
-})
-
+  },
+});
