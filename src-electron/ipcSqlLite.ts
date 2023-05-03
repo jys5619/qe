@@ -57,7 +57,7 @@ im.handle('selectMenuList', async () => {
       db.all(
         'SELECT * FROM TB_MENU ORDER BY MENU_TYPE, P_MENU_ID, ORD',
         (err: Error, res) => {
-          if (!err) {
+          if (!!err) {
             fail(err);
           } else {
             const menuList = res.map((row) => {

@@ -22,13 +22,13 @@ import { QTableColumn } from 'quasar';
 import { IDataRows } from 'src/data';
 import { ref } from 'vue';
 
-export interface Props {
+export interface IQeTableProps {
   columns: QTableColumn[];
   rows: IDataRows[];
   loading: boolean;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IQeTableProps>();
 
 const columns = ref(props.columns);
 const rows = ref(props.rows);

@@ -9,7 +9,7 @@ export const useStoreMenu = defineStore('menu', {
     getMenuList: (state) => {
       return state.menuList.filter((m) => m.menuType === 'MAIN');
     },
-    getSubMenuList(state) {
+    getSubMenuList: (state) => {
       return (pMenuId: string) =>
         state.menuList.filter(
           (m) => m.menuType === 'SUB' && m.pMenuId == pMenuId

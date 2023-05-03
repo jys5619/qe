@@ -24,7 +24,7 @@ const text = ref('');
 
 const search = (evt: Event) => {
   evt.preventDefault();
-  const conntext = window.qeDb.testConnect();
+  const conntext = window.api.testConnect();
   conntext.then(result => console.log('result', result));
   emit('search', text.value);
 }

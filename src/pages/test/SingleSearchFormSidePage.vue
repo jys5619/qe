@@ -167,9 +167,3 @@ const loadMenuList = async () => {
   console.log(menuStore.menuList);
 };
 </script>
-
-<style>
-.vwrapper {
-  display: flex;
-}
-</style>
