@@ -6,14 +6,13 @@
         <q-toolbar-title> PPDM </q-toolbar-title>
       </q-toolbar>
 
-      <q-tabs align="left">
-        <q-route-tab to="/" label="Home" @click="setLeftMenu('home')" />
-        <q-route-tab
-          to="/setting"
-          label="Setting"
-          @click="setLeftMenu('setting')"
+      <q-tabs :align="`left`">
+        <q-tab
+          v-for="(menuItem, index) in mainMenuList"
+          :key="index"
+          :label="menuItem.label"
+          @click="setLeftMenu(menuItem.leftMenuKey)"
         />
-        <q-route-tab to="/test" label="Test" @click="setLeftMenu('test')" />
       </q-tabs>
     </q-header>
 
@@ -26,7 +25,7 @@
     >
       <q-scroll-area class="fit">
         <q-list>
-          <template v-for="(menuItem, index) in menuList" :key="index">
+          <template v-for="(menuItem, index) in leftMenuList" :key="index">
             <q-item
               clickable
               :active="menuItem.label === 'Outbox'"
@@ -62,10 +61,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import LeftMenu, { LeftMenuNames, ILeftMenuItem } from './left-menu.data';
+import LeftMenu, { ILeftMenuItem, menuList } from './menu.data';
 import { useRouter } from 'vue-router';
 
-const menuList = ref<ILeftMenuItem[]>(LeftMenu.getMenuList('home'));
+const mainMenuList = ref(menuList);
+const leftMenuList = ref<ILeftMenuItem[]>(LeftMenu.getMenuList('myDesk'));
 const leftDrawerOpen = ref(true);
 const router = useRouter();
 
@@ -73,8 +73,8 @@ const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
 
-const setLeftMenu = (menu: LeftMenuNames) => {
-  menuList.value = LeftMenu.getMenuList(menu);
+const setLeftMenu = (menu: string) => {
+  leftMenuList.value = LeftMenu.getMenuList(menu);
 };
 
 const goPage = (path: string) => {

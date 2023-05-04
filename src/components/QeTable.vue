@@ -33,10 +33,6 @@ const props = defineProps<IQeTableProps>();
 const columns = ref(props.columns);
 const rows = ref(props.rows);
 const isLoad = ref<boolean>(props.loading);
-
-console.log(props);
-console.log(columns);
-console.log(rows);
 </script>
 
 <style lang="scss">

@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
   },
 
   {
-    path: '/setting',
+    path: '/myDesk',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
@@ -18,26 +18,49 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
-  // Test Menu
+  // Admin Menu
   {
-    path: '/test',
+    path: '/admin',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
         path: '',
-        component: () => import('pages/test/TestPage.vue'),
+        component: () => import('pages/admin/AdminSettingManagementPage.vue'),
+      },
+      {
+        path: 'setting-management',
+        component: () => import('pages/admin/AdminSettingManagementPage.vue'),
+      },
+      {
+        path: 'user-management',
+        component: () => import('pages/admin/AdminUserManagementPage.vue'),
+      },
+      {
+        path: 'menu-management',
+        component: () => import('pages/admin/AdminMenuManagementPage.vue'),
+      },
+    ],
+  },
+  // Sample Menu
+  {
+    path: '/sample',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/sample/TestPage.vue'),
       },
       {
         path: 'icon',
-        component: () => import('pages/test/IconPage.vue'),
+        component: () => import('pages/sample/IconPage.vue'),
       },
       {
         path: 'single-search-form',
-        component: () => import('pages/test/SingleSearchFormPage.vue'),
+        component: () => import('pages/sample/SingleSearchFormPage.vue'),
       },
       {
         path: 'single-search-form-side',
-        component: () => import('pages/test/SingleSearchFormSidePage.vue'),
+        component: () => import('pages/sample/SingleSearchFormSidePage.vue'),
       },
     ],
   },

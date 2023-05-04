@@ -5,7 +5,7 @@
       :limits="[30, 70]"
       style="flex: 1"
       separator-class="bg-gray-8"
-      separator-style="width: 0"
+      separator-style="width: 3px"
     >
       <template v-slot:before>
         <div class="q-pa-sm">
@@ -19,6 +19,7 @@
             class="glossy"
             color="primary"
             label="NEW"
+            size="sm"
             @click="loadMenuList"
           />
         </div>
@@ -34,14 +35,14 @@
             indicator-color="indigo-10"
             align="justify"
           >
-            <q-tab name="mails" label="Mails" />
+            <q-tab name="user" label="User" />
             <q-tab name="alarms" label="Alarms" />
             <q-tab name="movies" label="Movies" />
           </q-tabs>
           <q-tab-panels v-model="tab" animated class="shadow-2 rounded-borders">
-            <q-tab-panel name="mails">
+            <q-tab-panel name="user">
               <div class="text-h6">User</div>
-              <UserEdit />
+              <UserEditPage />
             </q-tab-panel>
 
             <q-tab-panel name="alarms">
@@ -60,12 +61,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import QeTable from 'src/components/QeTable.vue';
 import QeSearchInput from 'src/components/input/QeSearchInput.vue';
 import { DATA_COLUMNS, DATA_ROWS } from 'src/data';
-import { ref } from 'vue';
 import { useStoreMenu } from 'src/stores/menu';
-import UserEdit from '../user/UserEdit.vue';
+import { UserEditPage } from '../forms/user';
 
 const isLoad = ref<boolean>(false);
 const columns = ref(DATA_COLUMNS);

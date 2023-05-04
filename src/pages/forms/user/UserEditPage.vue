@@ -22,14 +22,14 @@
       <q-btn
         type="submit"
         class="glossy"
-        size="md"
+        size="sm"
         color="primary"
         label="Submit"
       />
       <q-btn
         type="reset"
         class="glossy"
-        size="md"
+        size="sm"
         color="blue-grey-7"
         label="Reset"
       />
@@ -45,9 +45,9 @@
 </template>
 
 <script setup lang="ts">
-import QeInput from 'src/components/input/QeInput.vue';
 import { IUser } from 'src/stores/user.interface';
 import { ref } from 'vue';
+import QeInput from 'src/components/input/QeInput.vue';
 
 interface IUserEditProps {
   user?: Partial<IUser> | null;
