@@ -1,92 +1,40 @@
 <template>
   <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-sm">
-    <q-input
-      v-model="user.userId"
-      label="ID *"
-      color="blue-12"
-      dense
-      :rules="[
-        (val) => (val && val.length > 0) || 'Please input id',
-      ]"
-    />
-
-    <q-input
-      type="password"
+    <qe-input v-model="user.userId" label="ID" :required="true" />
+    <qe-input
       v-model="user.pwd"
-      label="Password *"
-      color="blue-12"
-      dense
-      :rules="[
-        (val) => (val && val.length > 0) || 'Please input password',
-      ]"
+      type="password"
+      label="Password"
+      :required="true"
     />
-
-    <q-input
-      v-model="user.name"
-      label="Name *"
-      color="blue-12"
-      dense
-      :rules="[
-        (val) => (val && val.length > 0) || 'Please type Name',
-      ]"
-    />
-
-    <q-input
-      v-model="user.ename"
-      label="English Name *"
-      color="blue-12"
-      dense
-      :rules="[
-        (val) => (val && val.length > 0) || 'Please type English Name',
-      ]"
-    />
-
-    <q-input
-      type="email"
+    <qe-input v-model="user.name" label="Name" :required="true" />
+    <qe-input v-model="user.ename" label="English Name" :required="true" />
+    <qe-input
       v-model="user.email"
-      label="Email *"
-      color="blue-12"
-      dense
-      :rules="[
-        (val) => (val && val.length > 0) || 'Please type email',
-      ]"
+      type="email"
+      label="Email"
+      :required="true"
     />
+    <qe-input v-model="user.auth" label="Auth" :required="true" />
+    <qe-input v-model="user.emno" label="EMNO" />
 
-    <q-input
-      v-model="user.auth"
-      label="Auth *"
-      color="blue-12"
-      dense
-      :rules="[
-        (val) => (val && val.length > 0) || 'Please select auth',
-      ]"
-    />
-
-    <q-input
-      v-model="user.emno"
-      label="EMNO *"
-      color="blue-12"
-      dense
-    />
+    <div class="q-mt-sm q-gutter-sm" style="text-align: right">
+      <q-btn
+        type="submit"
+        class="glossy"
+        size="md"
+        color="primary"
+        label="Submit"
+      />
+      <q-btn
+        type="reset"
+        class="glossy"
+        size="md"
+        color="blue-grey-7"
+        label="Reset"
+      />
+    </div>
   </q-form>
-
-  <div class="q-gutter-sm" style="text-align: right">
-    <q-btn
-      type="submit"
-      class="glossy"
-      size="md"
-      color="primary"
-      label="Submit"
-      @click="onSubmit"
-    />
-    <q-btn
-      type="reset"
-      class="glossy"
-      size="md"
-      color="blue-grey-7"
-      label="Reset"
-    />
-  </div>
 
   <q-inner-loading
     :showing="loading"
@@ -97,24 +45,34 @@
 </template>
 
 <script setup lang="ts">
+import QeInput from 'src/components/input/QeInput.vue';
 import { IUser } from 'src/stores/user.interface';
 import { ref } from 'vue';
 
 interface IUserEditProps {
-  user: Partial<IUser> | null | undefined;
+  user?: Partial<IUser> | null;
+  userId?: number;
 }
 
 const props = defineProps<IUserEditProps>();
-
 const loading = ref<boolean>(false);
-const propUser = props.user || {};
-const user = ref<Partial<IUser>>({ ...propUser });
+const user = ref<Partial<IUser>>({});
+
+let propUser = {} as Partial<IUser>;
+
+if (props.user) {
+  user.value = { ...props.user, userId: props.user.userId || '' };
+} else if (props.userId) {
+  // User 정보 조회
+}
 
 const onSubmit = () => {
-  console.log(3);
+  console.log(user, user.value, user.value);
 };
 
 const onReset = () => {
-  console.log(3);
+  console.log('onReset');
+  user.value = { ...propUser };
+  user.value.id = undefined;
 };
 </script>
