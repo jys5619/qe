@@ -1,66 +1,73 @@
 <template>
-  <q-page class="q-pa-md" style="display: flex">
-    <q-splitter
-      v-model="splitterModel"
-      :limits="[30, 70]"
-      style="flex: 1"
-      separator-class="bg-gray-8"
-      separator-style="width: 3px"
-    >
-      <template v-slot:before>
-        <div class="q-pa-sm">
-          <QeSearchInput @search="handleSearch" />
-        </div>
-        <div class="q-pa-sm">
-          <QeTable :columns="columns" :rows="rows" :loading="isLoad" />
-        </div>
-        <div class="q-pa-sm q-gutter-sm" style="text-align: right">
-          <q-btn
-            class="glossy"
-            color="primary"
-            label="NEW"
-            size="sm"
-            @click="loadMenuList"
-          />
-        </div>
-      </template>
+  <q-page class="q-pa-md column">
+    <div class="column q-pa-sm" style="flex: 0">
+      <div class="text-h5" style="border-bottom: 1px solid purple">
+        User Management
+      </div>
+    </div>
+    <div class="flex" style="flex: 1">
+      <q-splitter
+        v-model="splitterModel"
+        :limits="[30, 70]"
+        style="flex: 1"
+        separator-class="bg-gray-8"
+        separator-style="width: 3px"
+      >
+        <template v-slot:before>
+          <div class="q-pa-sm">
+            <QeSearchInput @search="handleSearch" />
+          </div>
+          <div class="q-pa-sm">
+            <QeTable :columns="columns" :rows="rows" :loading="isLoad" />
+          </div>
+          <div class="q-pa-sm q-gutter-sm" style="text-align: right">
+            <q-btn
+              class="glossy"
+              color="primary"
+              label="NEW"
+              size="sm"
+              @click="loadMenuList"
+            />
+          </div>
+        </template>
 
-      <template v-slot:after>
-        <q-card class="q-pa-sm" flat>
-          <q-tabs
-            v-model="tab"
-            dense
-            class="bg-primary text-white"
-            active-color="indigo-10"
-            indicator-color="indigo-10"
-            :align="`left`"
-          >
-            <q-tab name="user" label="User" />
-            <q-tab name="alarms" label="Alarms" />
-            <q-tab name="movies" label="Movies" />
-          </q-tabs>
+        <template v-slot:after>
+          <q-card class="q-pa-sm" flat>
+            <q-tabs
+              v-model="tab"
+              dense
+              class="bg-primary text-white"
+              active-color="indigo-10"
+              indicator-color="indigo-10"
+              :align="`left`"
+            >
+              <q-tab name="user" label="User" />
+              <q-tab name="alarms" label="Alarms" />
+              <q-tab name="movies" label="Movies" />
+            </q-tabs>
 
-          <q-separator />
+            <q-separator />
 
-          <q-tab-panels v-model="tab" animated class="bg-blue-1">
-            <q-tab-panel name="user">
-              <div class="text-h6">User</div>
-              <UserEditPage />
-            </q-tab-panel>
+            <q-tab-panels v-model="tab" animated class="bg-blue-1">
+              <q-tab-panel name="user">
+                <div class="text-h6">User</div>
+                <UserEditPage />
+              </q-tab-panel>
 
-            <q-tab-panel name="alarms">
-              <div class="text-h6">Alarms</div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </q-tab-panel>
+              <q-tab-panel name="alarms">
+                <div class="text-h6">Alarms</div>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </q-tab-panel>
 
-            <q-tab-panel name="movies">
-              <div class="text-h6">Movies</div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </q-tab-panel>
-          </q-tab-panels>
-        </q-card>
-      </template>
-    </q-splitter>
+              <q-tab-panel name="movies">
+                <div class="text-h6">Movies</div>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </q-tab-panel>
+            </q-tab-panels>
+          </q-card>
+        </template>
+      </q-splitter>
+    </div>
   </q-page>
 </template>
 
