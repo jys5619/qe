@@ -45,9 +45,9 @@
 </template>
 
 <script setup lang="ts">
-import { IUser } from 'src/stores/user.interface';
 import { ref } from 'vue';
 import QeInput from 'src/components/input/QeInput.vue';
+import { IUser } from 'src/entity/entity';
 
 interface IUserEditProps {
   user?: Partial<IUser> | null;

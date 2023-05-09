@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { IUser } from './user.interface';
+import { IUser } from 'src/entity/entity';
 
 export const useStoreUser = defineStore('user', {
   state: () => ({

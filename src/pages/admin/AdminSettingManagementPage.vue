@@ -12,7 +12,7 @@
           <QeSearchInput @search="handleSearch" />
         </div>
         <div class="q-pa-sm">
-          <QeTable :columns="columns" :rows="rows" :loading="isLoad" />
+          <QeTable :columns="columns" :rows="rows" />
         </div>
         <div class="q-pa-sm q-gutter-sm" style="text-align: right">
           <q-btn
@@ -42,7 +42,7 @@
           <q-tab-panels v-model="tab" animated class="shadow-2 rounded-borders">
             <q-tab-panel name="user">
               <div class="text-h6">User</div>
-              <UserEditPage />
+              <UserPage />
             </q-tab-panel>
 
             <q-tab-panel name="alarms">
@@ -66,9 +66,8 @@ import QeTable from 'src/components/QeTable.vue';
 import QeSearchInput from 'src/components/input/QeSearchInput.vue';
 import { DATA_COLUMNS, DATA_ROWS } from 'src/data';
 import { useStoreMenu } from 'src/stores/menu';
-import { UserEditPage } from '../forms/user';
+import { UserPage } from '../forms/user';
 
-const isLoad = ref<boolean>(false);
 const columns = ref(DATA_COLUMNS);
 const rows = ref(DATA_ROWS);
 const splitterModel = ref(50);

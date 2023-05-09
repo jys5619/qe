@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { IMenu } from './menu.interface';
+import { IMenu } from 'src/entity/entity';
 
 export const useStoreMenu = defineStore('menu', {
   state: () => ({

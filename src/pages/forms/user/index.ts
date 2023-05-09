@@ -1,3 +1,4 @@
-import UserEditPage from './UserEditPage.vue';
+import UserPage from './UserPage.vue';
+import UserListPage from './UserListPage.vue';
 
-export { UserEditPage };
+export { UserPage, UserListPage };

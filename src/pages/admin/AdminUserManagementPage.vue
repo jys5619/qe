@@ -16,7 +16,7 @@
             <QeSearchInput @search="handleSearch" />
           </div>
           <div class="q-pa-sm">
-            <QeTable :columns="columns" :rows="rows" :loading="isLoad" />
+            <UserListPage :search-keyword="searchKeyword" />
           </div>
           <div class="q-pa-sm q-gutter-sm" style="text-align: right">
             <q-btn
@@ -47,7 +47,7 @@
             <q-tab-panels v-model="tab" animated class="bg-blue-1">
               <q-tab-panel name="user">
                 <div class="text-h6">User</div>
-                <UserEditPage />
+                <UserPage />
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -59,22 +59,20 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import QeTable from 'src/components/QeTable.vue';
-import QeSearchInput from 'src/components/input/QeSearchInput.vue';
-import { DATA_COLUMNS, DATA_ROWS } from 'src/data';
-import { useStoreMenu } from 'src/stores/menu';
-import { UserEditPage } from '../forms/user';
 
-const isLoad = ref<boolean>(false);
-const columns = ref(DATA_COLUMNS);
-const rows = ref(DATA_ROWS);
+import QeSearchInput from 'src/components/input/QeSearchInput.vue';
+import { useStoreMenu } from 'src/stores/menu';
+import { UserPage, UserListPage } from '../forms/user';
+
 const splitterModel = ref(50);
-const tab = ref('mails');
+const tab = ref('user');
+const searchKeyword = ref('');
 
 // const loading = ref(false);
 
 const handleSearch = (text: string) => {
   console.log('text', text);
+  searchKeyword.value = text;
 };
 
 // const onSubmit = () => {

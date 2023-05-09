@@ -1,6 +1,7 @@
 import { ipcMain as im } from 'electron';
 import { Database } from 'sqlite3';
 import { IMenu } from './entity/eqDb/menu.interface';
+import { promises as fsp } from 'fs';
 
 im.handle('testConnect', async () => {
   try {
@@ -50,13 +51,61 @@ im.handle('testConnect', async () => {
   return 'success connected!!!';
 });
 
+/**
+ * DB INIT
+ */
+export const initDb = async() => {
+  try {
+    const db = new Database(__dirname + '/db/db.sqlite');
+
+    db.exec((await fsp.readFile(__dirname + '/sql/user-drop.sql')).toString());
+    db.exec((await fsp.readFile(__dirname + '/sql/user-create.sql')).toString());
+    db.exec((await fsp.readFile(__dirname + '/sql/user-sample.sql')).toString());
+
+    console.log("INIT COMPLETE!!");
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+/**
+ * SELECT MENU
+ */
 im.handle('selectMenuList', async () => {
   return new Promise((succ, fail) => {
     const db = new Database(__dirname + '/db/db.sqlite');
     try {
       db.all(
         'SELECT * FROM TB_MENU ORDER BY MENU_TYPE, P_MENU_ID, ORD',
-        (err: Error, res) => {
+        (err: Error, res: any[]) => {
+          if (!!err) {
+            fail(err);
+          } else {
+            const menuList = res.map((row) => {
+              return objectKeysSnakeToCamel(row) as IMenu;
+            });
+            succ(menuList);
+          }
+        }
+      );
+    } catch (error) {
+      fail(error);
+    } finally {
+      db.close();
+    }
+  });
+});
+
+im.handle('selectUserList', async (event, searchKeyword:string) => {
+  return new Promise((succ, fail) => {
+    console.log(searchKeyword);
+    const db = new Database(__dirname + '/db/db.sqlite');
+    debugger;
+    try {
+      db.all(
+        'SELECT * FROM TB_USER ORDER BY NAME',
+        (err: Error, res: any[]) => {
+          console.log(err, res);
           if (!!err) {
             fail(err);
           } else {
@@ -94,3 +143,6 @@ function objectKeysSnakeToCamel(obj: any) {
     {}
   );
 }
+
+
+initDb();

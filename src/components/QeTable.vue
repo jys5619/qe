@@ -9,7 +9,6 @@
       :columns="columns"
       row-key="name"
       separator="cell"
-      :loading="isLoad"
       no-data-label="no data"
       :rows-per-page-options="[0]"
       hide-bottom
@@ -17,22 +16,19 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { QTableColumn } from 'quasar';
-import { IDataRows } from 'src/data';
 import { ref } from 'vue';
 
-export interface IQeTableProps {
+export interface IQeTableProps<T> {
   columns: QTableColumn[];
-  rows: IDataRows[];
-  loading: boolean;
+  rows: T[];
 }
 
-const props = defineProps<IQeTableProps>();
+const props = defineProps<IQeTableProps<T>>();
 
 const columns = ref(props.columns);
 const rows = ref(props.rows);
-const isLoad = ref<boolean>(props.loading);
 </script>
 
 <style lang="scss">
