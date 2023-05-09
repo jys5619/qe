@@ -1,9 +1,7 @@
 <template>
   <q-page class="q-pa-md column">
     <div class="column q-pa-sm" style="flex: 0">
-      <div class="text-h5" style="border-bottom: 1px solid purple">
-        User Management
-      </div>
+      <div class="text-h5" style="border-bottom: 1px solid burlywood">User</div>
     </div>
     <div class="flex" style="flex: 1">
       <q-splitter
@@ -42,8 +40,6 @@
               :align="`left`"
             >
               <q-tab name="user" label="User" />
-              <q-tab name="alarms" label="Alarms" />
-              <q-tab name="movies" label="Movies" />
             </q-tabs>
 
             <q-separator />
@@ -52,16 +48,6 @@
               <q-tab-panel name="user">
                 <div class="text-h6">User</div>
                 <UserEditPage />
-              </q-tab-panel>
-
-              <q-tab-panel name="alarms">
-                <div class="text-h6">Alarms</div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </q-tab-panel>
-
-              <q-tab-panel name="movies">
-                <div class="text-h6">Movies</div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
               </q-tab-panel>
             </q-tab-panels>
           </q-card>

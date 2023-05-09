@@ -75,6 +75,7 @@ const toggleLeftDrawer = () => {
 
 const setLeftMenu = (menu: string) => {
   leftMenuList.value = LeftMenu.getMenuList(menu);
+  leftDrawerOpen.value = true;
 };
 
 const goPage = (path: string) => {
