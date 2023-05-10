@@ -1,25 +1,49 @@
 <template>
+  [{{ props }}] [{{ readonly }}]
   <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-sm">
-    <qe-input v-model="user.userId" label="ID" :required="true" />
+    <qe-input
+      v-model="user.userId"
+      label="User ID"
+      :required="true"
+      :readonly="readonly"
+    />
+
     <qe-input
       v-model="user.pwd"
       type="password"
       label="Password"
       :required="true"
+      :readonly="readonly"
     />
-    <qe-input v-model="user.name" label="Name" :required="true" />
-    <qe-input v-model="user.ename" label="English Name" :required="true" />
+    <qe-input
+      v-model="user.names"
+      label="Name"
+      :required="true"
+      :readonly="readonly"
+    />
+    <qe-input
+      v-model="user.enames"
+      label="English Name"
+      :required="true"
+      :readonly="readonly"
+    />
     <qe-input
       v-model="user.email"
       type="email"
       label="Email"
       :required="true"
+      :readonly="readonly"
     />
-    <qe-input v-model="user.auth" label="Auth" :required="true" />
-    <qe-input v-model="user.emno" label="EMNO" />
-
+    <qe-input
+      v-model="user.auth"
+      label="Auth"
+      :required="true"
+      :readonly="readonly"
+    />
+    <qe-input v-model="user.emno" label="EMNO" :readonly="readonly" />
     <div class="q-mt-sm q-gutter-sm" style="text-align: right">
       <q-btn
+        v-if="!readonly"
         type="submit"
         class="glossy"
         size="sm"
@@ -27,11 +51,28 @@
         label="Submit"
       />
       <q-btn
+        v-if="!readonly"
         type="reset"
         class="glossy"
         size="sm"
         color="blue-grey-7"
         label="Reset"
+      />
+      <q-btn
+        v-if="readonly"
+        class="glossy"
+        size="sm"
+        color="primary"
+        label="Edit"
+        @click="readonly = false"
+      />
+      <q-btn
+        v-if="readonly"
+        class="glossy"
+        size="sm"
+        color="blue-grey-7"
+        label="Close"
+        @click="handleClose"
       />
     </div>
   </q-form>
@@ -45,20 +86,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import QeInput from 'src/components/input/QeInput.vue';
 import { IUser } from 'src/entity/entity';
 
 interface IUserEditProps {
-  user?: Partial<IUser> | null;
+  user?: Partial<IUser>;
   userId?: number;
+  readonlyValue?: string;
 }
 
 const props = defineProps<IUserEditProps>();
 const loading = ref<boolean>(false);
-const user = ref<Partial<IUser>>({});
+const user = ref<Partial<IUser>>({ ...props.user });
+const readonly = ref<boolean>(props.readonlyValue);
 
-let propUser = {} as Partial<IUser>;
+const emit = defineEmits(['close']);
 
 if (props.user) {
   user.value = { ...props.user, userId: props.user.userId || '' };
@@ -67,12 +110,23 @@ if (props.user) {
 }
 
 const onSubmit = () => {
-  console.log(user, user.value, user.value);
+  console.log(user, user.value);
 };
 
 const onReset = () => {
-  console.log('onReset');
-  user.value = { ...propUser };
-  user.value.id = undefined;
+  resetUser();
+  readonly.value = true;
 };
+
+const handleClose = (event: Event) => {
+  emit('close', event);
+};
+
+const resetUser = () => {
+  user.value = { ...props.user };
+};
+watch(props, () => {
+  console.log('props', props);
+  resetUser();
+});
 </script>

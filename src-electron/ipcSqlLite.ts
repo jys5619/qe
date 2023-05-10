@@ -52,23 +52,6 @@ im.handle('testConnect', async () => {
 });
 
 /**
- * DB INIT
- */
-export const initDb = async() => {
-  try {
-    const db = new Database(__dirname + '/db/db.sqlite');
-
-    db.exec((await fsp.readFile(__dirname + '/sql/user-drop.sql')).toString());
-    db.exec((await fsp.readFile(__dirname + '/sql/user-create.sql')).toString());
-    db.exec((await fsp.readFile(__dirname + '/sql/user-sample.sql')).toString());
-
-    console.log("INIT COMPLETE!!");
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-/**
  * SELECT MENU
  */
 im.handle('selectMenuList', async () => {
@@ -96,14 +79,14 @@ im.handle('selectMenuList', async () => {
   });
 });
 
-im.handle('selectUserList', async (event, searchKeyword:string) => {
+im.handle('selectUserList', async (event, searchKeyword: string) => {
   return new Promise((succ, fail) => {
-    console.log(searchKeyword);
+    console.log('selectUserList', searchKeyword);
     const db = new Database(__dirname + '/db/db.sqlite');
-    debugger;
+
     try {
       db.all(
-        'SELECT * FROM TB_USER ORDER BY NAME',
+        'SELECT * FROM TB_USER ORDER BY NAMES',
         (err: Error, res: any[]) => {
           console.log(err, res);
           if (!!err) {
@@ -144,5 +127,31 @@ function objectKeysSnakeToCamel(obj: any) {
   );
 }
 
+/**
+ * DB INIT
+ */
+export const initDb = async () => {
+  try {
+    const db = new Database(__dirname + '/db/db.sqlite');
+
+    db.exec((await getSql('/sql/user-drop.sql')).toString());
+    db.exec((await getSql('/sql/user-create.sql')).toString());
+    db.exec((await getSql('/sql/user-sample.sql')).toString());
+
+    // db.all(
+    //   'SELECT ID FROM TB_USER ', // ORDER BY LENGTH(description) DESC LIMIT 2',
+    //   (_, res) => console.log(res)
+    // );
+
+    console.log('INIT COMPLETE!!');
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const getSql = async (file: string) => {
+  const buf = await fsp.readFile(__dirname + file);
+  return buf.toString();
+};
 
 initDb();

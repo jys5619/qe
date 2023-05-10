@@ -6,17 +6,23 @@
     <div class="flex" style="flex: 1">
       <q-splitter
         v-model="splitterModel"
-        :limits="[30, 70]"
         style="flex: 1"
+        :limits="limits"
         separator-class="bg-gray-8"
-        separator-style="width: 3px"
+        :separator-style="separatorStyle"
       >
         <template v-slot:before>
           <div class="q-pa-sm">
-            <QeSearchInput @search="handleSearch" />
+            <QeSearchInput
+              label="Search : [User ID, Name, English Name, Auth]"
+              @search="handleSearch"
+            />
           </div>
           <div class="q-pa-sm">
-            <UserListPage :search-keyword="searchKeyword" />
+            <UserListPage
+              :search-keyword="searchKeyword"
+              @row-dblclick="handleRowDblClick"
+            />
           </div>
           <div class="q-pa-sm q-gutter-sm" style="text-align: right">
             <q-btn
@@ -24,9 +30,10 @@
               color="primary"
               label="NEW"
               size="sm"
-              @click="loadMenuList"
+              @click="handleNewUserAdd"
             />
           </div>
+          [{{ userReadonly }}]
         </template>
 
         <template v-slot:after>
@@ -35,8 +42,8 @@
               v-model="tab"
               dense
               class="bg-primary text-white"
-              active-color="indigo-10"
-              indicator-color="indigo-10"
+              active-color="yellow-6"
+              indicator-color="yellow-6"
               :align="`left`"
             >
               <q-tab name="user" label="User" />
@@ -44,10 +51,13 @@
 
             <q-separator />
 
-            <q-tab-panels v-model="tab" animated class="bg-blue-1">
+            <q-tab-panels v-model="tab" animated class="bg-yellow-1">
               <q-tab-panel name="user">
-                <div class="text-h6">User</div>
-                <UserPage />
+                <user-page
+                  :user="user"
+                  :readonlyValue="userReadonly"
+                  @close="handleClose"
+                />
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -61,39 +71,35 @@
 import { ref } from 'vue';
 
 import QeSearchInput from 'src/components/input/QeSearchInput.vue';
-import { useStoreMenu } from 'src/stores/menu';
 import { UserPage, UserListPage } from '../forms/user';
+import { IUser } from 'src/entity/entity';
 
-const splitterModel = ref(50);
+const user = ref<IUser | undefined>(undefined);
+const splitterModel = ref(100);
 const tab = ref('user');
-const searchKeyword = ref('');
-
-// const loading = ref(false);
+const limits = ref([100, 100]);
+const searchKeyword = ref<string | undefined>(undefined);
+const separatorStyle = ref<string>('width: 0');
+const userReadonly = ref<boolean>(false);
 
 const handleSearch = (text: string) => {
-  console.log('text', text);
   searchKeyword.value = text;
 };
 
-// const onSubmit = () => {
-//   console.log(3);
-// };
+const handleNewUserAdd = () => {
+  console.log(3);
+};
 
-// const onReset = () => {
-//   console.log(3);
-// };
+const handleRowDblClick = (event: Event, row: any, index: number) => {
+  limits.value = [30, 70];
+  splitterModel.value = 50;
+  separatorStyle.value = 'width: 3px';
+  user.value = row;
+};
 
-// const simulateProgress = () => {
-//   loading.value = true;
-
-//   setTimeout(() => {
-//     loading.value = false;
-//   }, 3000);
-// };
-
-const loadMenuList = async () => {
-  const menuStore = useStoreMenu();
-  await menuStore.initData();
-  console.log(menuStore.menuList);
+const handleClose = (event: Event) => {
+  limits.value = [100, 100];
+  splitterModel.value = 100;
+  separatorStyle.value = 'width: 0';
 };
 </script>

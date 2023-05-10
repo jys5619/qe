@@ -12,23 +12,37 @@
       no-data-label="no data"
       :rows-per-page-options="[0]"
       hide-bottom
+      @row-dblclick="handleRowDblClick"
     />
   </div>
 </template>
 
 <script setup lang="ts" generic="T">
 import { QTableColumn } from 'quasar';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
-export interface IQeTableProps<T> {
+export interface IQeTableProps {
   columns: QTableColumn[];
-  rows: T[];
+  rows: any[];
 }
 
-const props = defineProps<IQeTableProps<T>>();
-
+const props = defineProps<IQeTableProps>();
 const columns = ref(props.columns);
 const rows = ref(props.rows);
+
+const emit = defineEmits(['qe:row-dblclick']);
+
+const handleRowDblClick = (event: Event, row: any, index: number) => {
+  emit('qe:row-dblclick', event, row, index);
+};
+
+watch(
+  () => props.rows,
+  () => {
+    rows.value = props.rows;
+  }
+);
+props.rows;
 </script>
 
 <style lang="scss">

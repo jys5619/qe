@@ -3,8 +3,8 @@ export interface IUser {
   userId: string;
   pwd: string;
   email: string;
-  name: string;
-  ename: string;
+  names: string;
+  enames: string;
   emno: string;
   auth?: string;
 }
