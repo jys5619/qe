@@ -1,5 +1,8 @@
-export interface IUser {
+export interface IObject {
   id: number;
+}
+
+export interface IUser extends IObject {
   userId: string;
   pwd: string;
   email: string;
@@ -9,8 +12,7 @@ export interface IUser {
   auth: string;
 }
 
-export interface IMenu {
-  id: number;
+export interface IMenu extends IObject {
   menuId: string;
   label: string;
   url: string;

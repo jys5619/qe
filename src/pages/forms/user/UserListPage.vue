@@ -35,7 +35,6 @@ watch(
 );
 
 const searchUserList = async (searchKeyword: string) => {
-  debugger;
   const user = await getUserList(searchKeyword);
   rows.value = user;
 };

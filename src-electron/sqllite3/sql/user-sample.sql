@@ -8,7 +8,8 @@ VALUES (
     'USER01',
     'User Name 01',
     'A0001',
-    'USER'
+    'USER',
+    'Y'
   ),
   (
     2,
@@ -18,7 +19,8 @@ VALUES (
     'USER02',
     'User Name 02',
     'A0002',
-    'USER'
+    'USER',
+    'Y'
   ),
   (
     3,
@@ -28,5 +30,17 @@ VALUES (
     'USER03',
     'User Name 03',
     'A0003',
-    'USER,ADMIN'
+    'USER,ADMIN',
+    'N'
+  ),
+  (
+    4,
+    'jys',
+    '1111',
+    'user04@test.co.kr',
+    '정영신',
+    'Jung Young Shin',
+    'A0003',
+    'USER,ADMIN',
+    'N'
   )

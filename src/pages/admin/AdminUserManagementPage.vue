@@ -15,7 +15,7 @@
           <div class="q-pa-sm">
             <QeSearchInput
               label="Search"
-              hint="Search Data [User ID, Name, English Name, Auth]"
+              hint="User ID, Name, English Name, Auth"
               @search="handleSearch"
             />
           </div>
