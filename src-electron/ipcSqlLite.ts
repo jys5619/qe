@@ -85,7 +85,7 @@ im.handle('selectUserList', async (event, searchKeyword: string) => {
     const db = new Database(__dirname + '/db/db.sqlite');
 
     try {
-      db.all(
+      db.all<IUser>(
         'SELECT * FROM TB_USER ORDER BY NAMES',
         (err: Error, res: any[]) => {
           if (!!err) {

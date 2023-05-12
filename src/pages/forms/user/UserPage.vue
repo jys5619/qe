@@ -141,19 +141,22 @@ const resetUser = () => {
 watch(
   () => props.user,
   (newUser, oldUser) => {
-    debugger;
     if (newUser !== oldUser) {
       if (isIUser(newUser)) {
         originalUser.value = { ...(props.user as IUser) };
+        onReset();
       } else if (typeof newUser === 'number' && newUser > -1) {
         // TODO : 사번으로 user정보를 조회한다.
         originalUser.value = {} as IUser;
+        onReset();
       } else {
         // 신규
+        console.log('신규');
         originalUser.value = getIUserInitValue();
+        resetUser();
+        qeUserForm.value.reset();
+        emit('update:readonly', false);
       }
-      onReset();
-      qeUserForm.value.reset();
     }
   }
 );
