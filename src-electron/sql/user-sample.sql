@@ -28,5 +28,5 @@ VALUES (
     'USER03',
     'User Name 03',
     'A0003',
-    'ADMIN'
+    'USER,ADMIN'
   )

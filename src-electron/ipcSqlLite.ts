@@ -1,6 +1,6 @@
 import { ipcMain as im } from 'electron';
 import { Database } from 'sqlite3';
-import { IMenu } from './entity/eqDb/menu.interface';
+import { IMenu, IUser } from './entity/eqDb/menu.interface';
 import { promises as fsp } from 'fs';
 
 im.handle('testConnect', async () => {
@@ -88,14 +88,14 @@ im.handle('selectUserList', async (event, searchKeyword: string) => {
       db.all(
         'SELECT * FROM TB_USER ORDER BY NAMES',
         (err: Error, res: any[]) => {
-          console.log(err, res);
           if (!!err) {
             fail(err);
           } else {
-            const menuList = res.map((row) => {
-              return objectKeysSnakeToCamel(row) as IMenu;
+            const userList = res.map((row) => {
+              return objectKeysSnakeToCamel(row) as IUser;
             });
-            succ(menuList);
+            console.log('userList >>>>>>>>', userList);
+            succ(userList);
           }
         }
       );

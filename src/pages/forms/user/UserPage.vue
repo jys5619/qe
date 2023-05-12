@@ -1,46 +1,50 @@
 <template>
-  [{{ props }}] [{{ readonly }}]
-  <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-sm">
+  <q-form
+    @submit="onSubmit"
+    @reset="onReset"
+    ref="qeUserForm"
+    class="q-gutter-sm"
+  >
     <qe-input
-      v-model="user.userId"
+      v-model="editUser.userId"
       label="User ID"
       :required="true"
       :readonly="readonly"
     />
 
     <qe-input
-      v-model="user.pwd"
+      v-model="editUser.pwd"
       type="password"
       label="Password"
       :required="true"
       :readonly="readonly"
     />
     <qe-input
-      v-model="user.names"
+      v-model="editUser.names"
       label="Name"
       :required="true"
       :readonly="readonly"
     />
     <qe-input
-      v-model="user.enames"
+      v-model="editUser.enames"
       label="English Name"
       :required="true"
       :readonly="readonly"
     />
     <qe-input
-      v-model="user.email"
+      v-model="editUser.email"
       type="email"
       label="Email"
       :required="true"
       :readonly="readonly"
     />
-    <qe-input
-      v-model="user.auth"
+    <qe-multi-select
+      v-model="editUser.authList"
       label="Auth"
       :required="true"
       :readonly="readonly"
     />
-    <qe-input v-model="user.emno" label="EMNO" :readonly="readonly" />
+    <qe-input v-model="editUser.emno" label="EMNO" :readonly="readonly" />
     <div class="q-mt-sm q-gutter-sm" style="text-align: right">
       <q-btn
         v-if="!readonly"
@@ -64,7 +68,7 @@
         size="sm"
         color="primary"
         label="Edit"
-        @click="readonly = false"
+        @click="handleEdit"
       />
       <q-btn
         v-if="readonly"
@@ -87,35 +91,43 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import QeInput from 'src/components/input/QeInput.vue';
-import { IUser } from 'src/entity/entity';
+import { QeInput } from 'src/components/input';
+import { QeMultiSelect } from 'src/components/select';
+import { isIUser, IUser, getIUserInitValue } from 'src/entity/entity';
 
 interface IUserEditProps {
-  user?: Partial<IUser>;
-  userId?: number;
-  readonlyValue?: string;
+  user?: Partial<IUser> | number;
+  readonly: boolean;
 }
 
 const props = defineProps<IUserEditProps>();
 const loading = ref<boolean>(false);
-const user = ref<Partial<IUser>>({ ...props.user });
-const readonly = ref<boolean>(props.readonlyValue);
+const originalUser = ref<Partial<IUser>>({});
+const editUser = ref<Partial<IUser>>({});
+const qeUserForm = ref(null);
 
-const emit = defineEmits(['close']);
+const emit = defineEmits([
+  'close',
+  'edit',
+  'submit',
+  'update:user',
+  'update:readonly',
+]);
 
-if (props.user) {
-  user.value = { ...props.user, userId: props.user.userId || '' };
-} else if (props.userId) {
-  // User 정보 조회
-}
-
-const onSubmit = () => {
-  console.log(user, user.value);
+const onSubmit = (event: Event) => {
+  emit('update:readonly', true);
+  // TODO : User 정보 저장
+  emit('submit', event);
 };
 
 const onReset = () => {
+  emit('update:readonly', true);
   resetUser();
-  readonly.value = true;
+};
+
+const handleEdit = (event: Event) => {
+  emit('update:readonly', false);
+  emit('edit', event);
 };
 
 const handleClose = (event: Event) => {
@@ -123,10 +135,26 @@ const handleClose = (event: Event) => {
 };
 
 const resetUser = () => {
-  user.value = { ...props.user };
+  editUser.value = { ...originalUser.value };
 };
-watch(props, () => {
-  console.log('props', props);
-  resetUser();
-});
+
+watch(
+  () => props.user,
+  (newUser, oldUser) => {
+    debugger;
+    if (newUser !== oldUser) {
+      if (isIUser(newUser)) {
+        originalUser.value = { ...(props.user as IUser) };
+      } else if (typeof newUser === 'number' && newUser > -1) {
+        // TODO : 사번으로 user정보를 조회한다.
+        originalUser.value = {} as IUser;
+      } else {
+        // 신규
+        originalUser.value = getIUserInitValue();
+      }
+      onReset();
+      qeUserForm.value.reset();
+    }
+  }
+);
 </script>

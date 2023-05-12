@@ -11,6 +11,7 @@ import { ref, watch } from 'vue';
 import QeTable from 'src/components/QeTable.vue';
 import { userListColumn } from './user';
 import { IUser } from 'src/entity/entity';
+import { getUserList } from 'src/endpoints/controller/user/user.endpoint';
 
 const columns = ref(userListColumn);
 const rows = ref([] as IUser[]);
@@ -29,14 +30,17 @@ const handleRowDblClick = (event: Event, row: any, index: number) => {
 watch(
   () => props.searchKeyword,
   () => {
-    console.log('props.searchKeyword', props.searchKeyword);
-    window.api
-      .selectUserList(props.searchKeyword || '')
-      .then<IUser[], never>((res: IUser[]) => {
-        console.log('res', res);
-        rows.value = res;
-        return res;
-      });
+    searchUserList(props.searchKeyword || '');
   }
 );
+
+const searchUserList = async (searchKeyword: string) => {
+  debugger;
+  const user = await getUserList(searchKeyword);
+  rows.value = user;
+};
+
+defineExpose({
+  searchUserList,
+});
 </script>

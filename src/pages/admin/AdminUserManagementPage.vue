@@ -14,7 +14,8 @@
         <template v-slot:before>
           <div class="q-pa-sm">
             <QeSearchInput
-              label="Search : [User ID, Name, English Name, Auth]"
+              label="Search"
+              hint="Search Data [User ID, Name, English Name, Auth]"
               @search="handleSearch"
             />
           </div>
@@ -33,7 +34,6 @@
               @click="handleNewUserAdd"
             />
           </div>
-          [{{ userReadonly }}]
         </template>
 
         <template v-slot:after>
@@ -51,12 +51,18 @@
 
             <q-separator />
 
-            <q-tab-panels v-model="tab" animated class="bg-yellow-1">
-              <q-tab-panel name="user">
+            <q-tab-panels v-model="tab" animated>
+              <q-tab-panel
+                name="user"
+                :class="[userReadonly ? 'bg-yellow-1' : 'bg-blue-1']"
+              >
                 <user-page
                   :user="user"
-                  :readonlyValue="userReadonly"
+                  :readonly="userReadonly"
+                  :ref="userPageRef"
                   @close="handleClose"
+                  @submit="handleSubmit"
+                  @update:readonly="handleReadonly"
                 />
               </q-tab-panel>
             </q-tab-panels>
@@ -69,7 +75,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-
 import QeSearchInput from 'src/components/input/QeSearchInput.vue';
 import { UserPage, UserListPage } from '../forms/user';
 import { IUser } from 'src/entity/entity';
@@ -80,26 +85,45 @@ const tab = ref('user');
 const limits = ref([100, 100]);
 const searchKeyword = ref<string | undefined>(undefined);
 const separatorStyle = ref<string>('width: 0');
-const userReadonly = ref<boolean>(false);
+const userReadonly = ref<boolean>(true);
+const userPageRef = ref();
 
 const handleSearch = (text: string) => {
   searchKeyword.value = text;
 };
 
 const handleNewUserAdd = () => {
-  console.log(3);
+  userReadonly.value = false;
+  user.value = {} as IUser;
+  showSplitter(true);
+};
+
+const showSplitter = (isSplit: boolean) => {
+  if (isSplit) {
+    limits.value = [30, 70];
+    splitterModel.value = 50;
+    separatorStyle.value = 'width: 3px';
+  } else {
+    limits.value = [100, 100];
+    splitterModel.value = 100;
+    separatorStyle.value = 'width: 0';
+  }
 };
 
 const handleRowDblClick = (event: Event, row: any, index: number) => {
-  limits.value = [30, 70];
-  splitterModel.value = 50;
-  separatorStyle.value = 'width: 3px';
   user.value = row;
+  showSplitter(true);
 };
 
 const handleClose = (event: Event) => {
-  limits.value = [100, 100];
-  splitterModel.value = 100;
-  separatorStyle.value = 'width: 0';
+  showSplitter(false);
+};
+
+const handleSubmit = (event: Event) => {
+  userPageRef.value.searchUserList(searchKeyword.value);
+};
+
+const handleReadonly = (isReadonly: boolean) => {
+  userReadonly.value = isReadonly;
 };
 </script>

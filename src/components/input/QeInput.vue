@@ -1,7 +1,7 @@
 <template>
   <q-input
-    :model-value="model"
-    @update:model-value="(value) => emit('update:model', value)"
+    :model-value="modelValue"
+    @update:model-value="(value) => emit('update:modelValue', value)"
     :label="`${label}${required ? ' *' : ''}`"
     :color="color"
     dense
@@ -17,7 +17,7 @@ import { ValidationRule } from 'quasar';
 import { PropType, ref } from 'vue';
 
 const props = defineProps({
-  model: {
+  modelValue: {
     required: false,
     type: [String, Number, null, undefined] as PropType<
       string | number | null | undefined
@@ -91,7 +91,7 @@ if (props.required) {
   }
 }
 
-const emit = defineEmits(['update:model']);
+const emit = defineEmits(['update:modelValue']);
 </script>
 
 <!-- <template>
