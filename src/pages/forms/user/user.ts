@@ -42,6 +42,16 @@ export const userListColumn: QTableColumn[] = [
     field: 'auth',
     label: 'Auth',
     align: 'center',
+    format(val) {
+      return val.join(',');
+    },
+    sortable: true,
+  },
+  {
+    name: 'useYn',
+    field: 'useYn',
+    label: 'Use',
+    align: 'center',
     sortable: true,
   },
 ];

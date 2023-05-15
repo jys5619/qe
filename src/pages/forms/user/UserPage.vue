@@ -9,16 +9,17 @@
       v-model="editUser.userId"
       label="User ID"
       :required="true"
-      :readonly="readonly"
+      :readonly="readonly || editUser.id !== -1"
     />
 
-    <qe-input
+    <!-- <qe-input
       v-model="editUser.pwd"
       type="password"
       label="Password"
       :required="true"
       :readonly="readonly"
-    />
+    /> -->
+
     <qe-input
       v-model="editUser.names"
       label="Name"
@@ -39,12 +40,18 @@
       :readonly="readonly"
     />
     <qe-multi-select
-      v-model="editUser.authList"
+      v-model="editUser.auth"
       label="Auth"
       :required="true"
       :readonly="readonly"
     />
     <qe-input v-model="editUser.emno" label="EMNO" :readonly="readonly" />
+    <qe-input
+      v-model="editUser.useYn"
+      label="Use"
+      :required="true"
+      :readonly="readonly"
+    />
     <div class="q-mt-sm q-gutter-sm" style="text-align: right">
       <q-btn
         v-if="!readonly"
@@ -93,7 +100,8 @@
 import { ref, watch } from 'vue';
 import { QeInput } from 'src/components/input';
 import { QeMultiSelect } from 'src/components/select';
-import { isIUser, IUser, getIUserInitValue } from 'src/entity/entity';
+import { IUser } from 'src/biz/user/user.entity';
+import { userEndpoint, userService } from 'src/biz/user';
 
 interface IUserEditProps {
   user?: Partial<IUser> | number;
@@ -104,7 +112,7 @@ const props = defineProps<IUserEditProps>();
 const loading = ref<boolean>(false);
 const originalUser = ref<Partial<IUser>>({});
 const editUser = ref<Partial<IUser>>({});
-const qeUserForm = ref(null);
+const qeUserForm = ref();
 
 const emit = defineEmits([
   'close',
@@ -115,8 +123,10 @@ const emit = defineEmits([
 ]);
 
 const onSubmit = (event: Event) => {
+  if (!userService.validate(editUser.value).isSuccess()) return;
+  userEndpoint.saveUser(editUser.value);
+
   emit('update:readonly', true);
-  // TODO : User 정보 저장
   emit('submit', event);
 };
 
@@ -142,7 +152,7 @@ watch(
   () => props.user,
   (newUser, oldUser) => {
     if (newUser !== oldUser) {
-      if (isIUser(newUser)) {
+      if (userService.isIUser(newUser)) {
         originalUser.value = { ...(props.user as IUser) };
         onReset();
       } else if (typeof newUser === 'number' && newUser > -1) {
@@ -152,9 +162,11 @@ watch(
       } else {
         // 신규
         console.log('신규');
-        originalUser.value = getIUserInitValue();
+        originalUser.value = userService.getIUserInitValue();
         resetUser();
-        qeUserForm.value.reset();
+        if (qeUserForm.value) {
+          qeUserForm.value.reset();
+        }
         emit('update:readonly', false);
       }
     }

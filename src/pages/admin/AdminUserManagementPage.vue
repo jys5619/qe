@@ -59,7 +59,7 @@
                 <user-page
                   :user="user"
                   :readonly="userReadonly"
-                  :ref="userPageRef"
+                  :ref_key="userPageRef"
                   @close="handleClose"
                   @submit="handleSubmit"
                   @update:readonly="handleReadonly"
@@ -77,7 +77,7 @@
 import { ref } from 'vue';
 import QeSearchInput from 'src/components/input/QeSearchInput.vue';
 import { UserPage, UserListPage } from '../forms/user';
-import { IUser } from 'src/entity/entity';
+import { IUser } from 'src/biz/user';
 
 const user = ref<IUser | undefined>(undefined);
 const splitterModel = ref(100);
@@ -120,6 +120,8 @@ const handleClose = (event: Event) => {
 };
 
 const handleSubmit = (event: Event) => {
+  console.log('handleSubmit');
+  debugger;
   userPageRef.value.searchUserList(searchKeyword.value);
 };
 

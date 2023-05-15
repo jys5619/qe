@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
-import { IUser, getIUserInitValue } from 'src/entity/entity';
+import { IUser, userService } from 'src/biz/user';
 
 export const useStoreUser = defineStore('user', {
   state: () => ({
-    user: getIUserInitValue(),
+    user: userService.getIUserInitValue(),
   }),
 
   getters: {

@@ -80,6 +80,7 @@ im.handle('selectMenuList', async () => {
 });
 
 im.handle('selectUserList', userDao.selectUserList);
+im.handle('saveUser', userDao.saveUser);
 
 /**
  * DB INIT

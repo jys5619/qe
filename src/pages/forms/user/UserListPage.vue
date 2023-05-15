@@ -10,8 +10,8 @@
 import { ref, watch } from 'vue';
 import QeTable from 'src/components/QeTable.vue';
 import { userListColumn } from './user';
-import { IUser } from 'src/entity/entity';
-import { getUserList } from 'src/endpoints/controller/user/user.endpoint';
+import { IUser } from 'src/biz/user/user.entity';
+import { userEndpoint } from 'src/biz/user';
 
 const columns = ref(userListColumn);
 const rows = ref([] as IUser[]);
@@ -35,7 +35,8 @@ watch(
 );
 
 const searchUserList = async (searchKeyword: string) => {
-  const user = await getUserList(searchKeyword);
+  console.log('searchUserList');
+  const user = await userEndpoint.getUserList(searchKeyword);
   rows.value = user;
 };
 

@@ -29,6 +29,7 @@
  */
 
 import { contextBridge, ipcRenderer as ir } from 'electron';
+import { IUser } from './entity/qe.entity';
 
 contextBridge.exposeInMainWorld('api', {
   saveTextFile(text: string) {
@@ -41,6 +42,10 @@ contextBridge.exposeInMainWorld('api', {
 
   selectUserList(searchKeyword: string) {
     return ir.invoke('selectUserList', searchKeyword);
+  },
+
+  saveUser(user: IUser) {
+    return ir.invoke('saveUser', user);
   },
 
   selectMenuList() {
