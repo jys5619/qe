@@ -51,7 +51,7 @@ const exec = async (file: string, params: any): Promise<number> => {
 const selectListBySql = async <T, V>(sql: string, params?: V): Promise<T[]> => {
   const p = new Promise<T[]>((succ, fail) => {
     const db = getDb();
-
+    console.log(sql, params);
     try {
       db.all(sql, params, (err, rows) => {
         if (!!err) {
@@ -122,24 +122,26 @@ interface SqlMeta {
 }
 
 function getSqlParam(sql: string, params: any): SqlMeta {
-  let tmp = sql.replace(/\t/gi, ' ').replace(/\n/gi, ' ');
-  let sno = tmp.indexOf('$');
+  let tmp = sql.split('\t').join(' ').split('\n').join(' ') + ' ';
+
+  let sno = 0;
   let key = '';
   let convertSql = '';
   const convertParams = [];
 
-  sno = tmp.indexOf('$');
+  sno = tmp.indexOf('${');
   convertSql += tmp.substring(0, sno);
   tmp = tmp.substring(sno);
 
   while (sno > -1) {
-    sno = tmp.indexOf(' ');
-    key = tmp.substring(1, sno);
+    sno = tmp.indexOf('}');
+    key = tmp.substring(2, sno).trim();
     convertSql += '?';
-    tmp = tmp.substring(sno);
+
+    tmp = tmp.substring(sno+1);
     convertParams.push(params[key]);
 
-    sno = tmp.indexOf('$');
+    sno = tmp.indexOf('${');
     convertSql += tmp.substring(0, sno);
     tmp = tmp.substring(sno);
   }

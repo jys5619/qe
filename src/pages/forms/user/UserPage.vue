@@ -122,9 +122,9 @@ const emit = defineEmits([
   'update:readonly',
 ]);
 
-const onSubmit = (event: Event) => {
+const onSubmit = async (event: Event) => {
   if (!userService.validate(editUser.value).isSuccess()) return;
-  userEndpoint.saveUser(editUser.value);
+  await userEndpoint.saveUser(editUser.value);
 
   emit('update:readonly', true);
   emit('submit', event);

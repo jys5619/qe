@@ -34,8 +34,7 @@ watch(
   }
 );
 
-const searchUserList = async (searchKeyword: string) => {
-  console.log('searchUserList');
+async function searchUserList (searchKeyword: string) {
   const user = await userEndpoint.getUserList(searchKeyword);
   rows.value = user;
 };

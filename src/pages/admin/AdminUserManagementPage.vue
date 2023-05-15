@@ -21,6 +21,7 @@
           </div>
           <div class="q-pa-sm">
             <UserListPage
+              ref="userListPageRef"
               :search-keyword="searchKeyword"
               @row-dblclick="handleRowDblClick"
             />
@@ -59,7 +60,6 @@
                 <user-page
                   :user="user"
                   :readonly="userReadonly"
-                  :ref_key="userPageRef"
                   @close="handleClose"
                   @submit="handleSubmit"
                   @update:readonly="handleReadonly"
@@ -86,7 +86,7 @@ const limits = ref([100, 100]);
 const searchKeyword = ref<string | undefined>(undefined);
 const separatorStyle = ref<string>('width: 0');
 const userReadonly = ref<boolean>(true);
-const userPageRef = ref();
+const userListPageRef = ref();
 
 const handleSearch = (text: string) => {
   searchKeyword.value = text;
@@ -120,9 +120,7 @@ const handleClose = (event: Event) => {
 };
 
 const handleSubmit = (event: Event) => {
-  console.log('handleSubmit');
-  debugger;
-  userPageRef.value.searchUserList(searchKeyword.value);
+  userListPageRef.value.searchUserList(searchKeyword.value);
 };
 
 const handleReadonly = (isReadonly: boolean) => {
