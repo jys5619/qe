@@ -10,6 +10,7 @@
       label="User ID"
       :required="true"
       :readonly="readonly || editUser.id !== -1"
+      :disable="!readonly && editUser.id !== -1"
     />
 
     <!-- <qe-input
@@ -46,11 +47,20 @@
       :readonly="readonly"
     />
     <qe-input v-model="editUser.emno" label="EMNO" :readonly="readonly" />
-    <qe-input
+    <!-- <qe-input
       v-model="editUser.useYn"
       label="Use"
       :required="true"
       :readonly="readonly"
+    /> -->
+
+    <q-toggle
+      :label="`Use`"
+      false-value="N"
+      true-value="Y"
+      dense
+      :disable="readonly"
+      v-model="editUser.useYn"
     />
     <div class="q-mt-sm q-gutter-sm" style="text-align: right">
       <q-btn
@@ -163,6 +173,7 @@ watch(
         // 신규
         console.log('신규');
         originalUser.value = userService.getIUserInitValue();
+        originalUser.value.useYn = 'Y';
         resetUser();
         if (qeUserForm.value) {
           qeUserForm.value.reset();

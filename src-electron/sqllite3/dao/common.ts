@@ -146,6 +146,8 @@ function getSqlParam(sql: string, params: any): SqlMeta {
     tmp = tmp.substring(sno);
   }
 
+  convertSql += tmp;
+
   return {
     sql: convertSql,
     params: convertParams,
