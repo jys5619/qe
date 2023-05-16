@@ -1,3 +1,4 @@
+import { useQuasar } from 'quasar';
 import { IUserDto } from './dto/user.dto';
 import { IUser } from './user.entity';
 import { userService } from './user.service';
@@ -7,14 +8,26 @@ import { userService } from './user.service';
  * @param searchKeyword
  * @returns
  */
-async function getUserList(searchKeyword: string): Promise<IUser[]> {
+async function getUserList(searchKeyword: string): Promise<IUser[] | void>{
+
   return await window.api
-    .selectUserList(searchKeyword || '')
-    .then<IUser[], never>((res: IUserDto[]) => {
+    .selectUserList(searchKeyword || '').then<IUser[], never>((res: IUserDto[]) => {
       const userList: IUser[] = res.map((row: IUserDto) => {
         return userService.convertIUser(row);
       });
+      const $q = useQuasar();
+      $q.notify({
+        type: 'positive',
+        message: `${userList.length} data was retrieved.`
+      });
+
       return userList;
+    }).catch((reason:any) => {
+      const $q = useQuasar();
+      $q.notify({
+        type: 'negative',
+        message: `${reason}`
+      })
     });
 }
 
@@ -24,9 +37,19 @@ async function getUserList(searchKeyword: string): Promise<IUser[]> {
  * @param userDto
  * @returns
  */
-async function saveUser(user: Partial<IUser>): Promise<number> {
+async function saveUser(user: Partial<IUser>): Promise<void> {
+  const $q = useQuasar();
   const userDto = userService.convertIUserDto(user);
-  return await window.api.saveUser(userDto);
+  const result = await window.api.saveUser(userDto).then((value:number) => {
+    console.log('value :', value);
+  }).catch((reason:any) => {
+    $q.notify({
+    type: 'negative',
+    message: `${reason}`
+  })
+  });
+
+  return result;
 }
 
 const userEndpoint = {

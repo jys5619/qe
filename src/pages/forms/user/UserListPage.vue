@@ -36,7 +36,9 @@ watch(
 
 async function searchUserList (searchKeyword: string) {
   const user = await userEndpoint.getUserList(searchKeyword);
-  rows.value = user;
+  if ( user ) {
+    rows.value = user;
+  }
 };
 
 defineExpose({
