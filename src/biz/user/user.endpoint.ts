@@ -1,3 +1,4 @@
+import endpointUtil from '../common/endpoint.util';
 import { IUserDto } from './dto/user.dto';
 import { IUser } from './user.entity';
 import { userService } from './user.service';
@@ -8,13 +9,12 @@ import { userService } from './user.service';
  * @returns
  */
 async function getUserList(searchKeyword: string): Promise<IUser[]> {
-  return await window.api
-    .selectUserList(searchKeyword || '')
-    .then<IUser[], never>((res: IUserDto[]) => {
-      const userList: IUser[] = res.map((row: IUserDto) => {
-        return userService.convertIUser(row);
+  return endpointUtil
+    .getList<IUserDto>(window.api.selectUserList(searchKeyword || ''))
+    .then((datalist: IUserDto[]) => {
+      return datalist.map((data: IUserDto) => {
+        return userService.convertIUser(data);
       });
-      return userList;
     });
 }
 
@@ -26,7 +26,7 @@ async function getUserList(searchKeyword: string): Promise<IUser[]> {
  */
 async function saveUser(user: Partial<IUser>): Promise<number> {
   const userDto = userService.convertIUserDto(user);
-  return await window.api.saveUser(userDto);
+  return await endpointUtil.post(window.api.saveUser(userDto));
 }
 
 const userEndpoint = {

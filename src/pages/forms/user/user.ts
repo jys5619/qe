@@ -1,7 +1,6 @@
 import { QTableColumn } from 'quasar';
 
 export const userListColumn: QTableColumn[] = [
-  { name: 'id', field: 'id', label: 'ID', align: 'center', sortable: true },
   {
     name: 'userId',
     field: 'userId',

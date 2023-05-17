@@ -40,6 +40,7 @@ contextBridge.exposeInMainWorld('api', {
     return ir.invoke('loadTextFile');
   },
 
+  // User
   selectUserList(searchKeyword: string) {
     return ir.invoke('selectUserList', searchKeyword);
   },
@@ -48,11 +49,8 @@ contextBridge.exposeInMainWorld('api', {
     return ir.invoke('saveUser', user);
   },
 
+  // Menu
   selectMenuList() {
     return ir.invoke('selectMenuList');
-  },
-
-  testConnect() {
-    return ir.invoke('testConnect');
   },
 });

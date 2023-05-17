@@ -16,7 +16,6 @@ const getIUserInitValue = (): IUser => {
   return {
     id: -1,
     userId: '',
-    pwd: '',
     email: '',
     names: '',
     enames: '',

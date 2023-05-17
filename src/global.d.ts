@@ -8,9 +8,10 @@ declare global {
     api: {
       saveTextFile(text: string): Promise<string>;
       loadTextFile(): Promise<string>;
-      testConnect(): Promise<string>;
+      // User
       selectUserList(searchKeyword: string): Promise<IUserDto[]>;
       saveUser(userDto: IUserDto): Promise<number>;
+      // Menu
       selectMenuList(): Promise<IMenuDto[]>;
     };
   }

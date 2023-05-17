@@ -9,12 +9,12 @@ INSERT INTO TB_USER(
   USE_YN
 )
 VALUES (
-  $userId,
-  1111,
-  $email,
-  $names,
-  $enames,
-  $emno,
-  $auth,
-  $userYn,
+  ${userId},
+  '1111',
+  ${email},
+  ${names},
+  ${enames},
+  ${emno},
+  ${auth},
+  ${useYn}
 )

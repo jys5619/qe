@@ -138,13 +138,15 @@ function getSqlParam(sql: string, params: any): SqlMeta {
     key = tmp.substring(2, sno).trim();
     convertSql += '?';
 
-    tmp = tmp.substring(sno+1);
+    tmp = tmp.substring(sno + 1);
     convertParams.push(params[key]);
 
     sno = tmp.indexOf('${');
     convertSql += tmp.substring(0, sno);
     tmp = tmp.substring(sno);
   }
+
+  convertSql += tmp;
 
   return {
     sql: convertSql,

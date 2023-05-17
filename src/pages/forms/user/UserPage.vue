@@ -10,6 +10,7 @@
       label="User ID"
       :required="true"
       :readonly="readonly || editUser.id !== -1"
+      :disable="!readonly && editUser.id !== -1"
     />
 
     <!-- <qe-input
@@ -46,11 +47,14 @@
       :readonly="readonly"
     />
     <qe-input v-model="editUser.emno" label="EMNO" :readonly="readonly" />
-    <qe-input
+
+    <q-toggle
+      :label="`Use`"
+      false-value="N"
+      true-value="Y"
+      dense
+      :disable="readonly"
       v-model="editUser.useYn"
-      label="Use"
-      :required="true"
-      :readonly="readonly"
     />
     <div class="q-mt-sm q-gutter-sm" style="text-align: right">
       <q-btn
@@ -78,7 +82,7 @@
         @click="handleEdit"
       />
       <q-btn
-        v-if="readonly"
+        v-if="readonly || editUser.id === -1"
         class="glossy"
         size="sm"
         color="blue-grey-7"
@@ -94,6 +98,25 @@
     label-class="text-teal"
     label-style="font-size: 1.1em"
   />
+
+  <q-dialog v-model="confirm" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <span class="q-ml-sm">저장하시겠습니까?</span>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn
+          flat
+          label="Ok"
+          color="primary"
+          v-close-popup
+          @click="onSubmitCallback"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup lang="ts">
@@ -113,7 +136,7 @@ const loading = ref<boolean>(false);
 const originalUser = ref<Partial<IUser>>({});
 const editUser = ref<Partial<IUser>>({});
 const qeUserForm = ref();
-
+const confirm = ref(false);
 const emit = defineEmits([
   'close',
   'edit',
@@ -123,11 +146,17 @@ const emit = defineEmits([
 ]);
 
 const onSubmit = async (event: Event) => {
+  confirm.value = true;
+};
+
+const onSubmitCallback = async (event: Event) => {
+  loading.value = true;
   if (!userService.validate(editUser.value).isSuccess()) return;
   await userEndpoint.saveUser(editUser.value);
 
   emit('update:readonly', true);
   emit('submit', event);
+  loading.value = false;
 };
 
 const onReset = () => {
@@ -163,6 +192,7 @@ watch(
         // 신규
         console.log('신규');
         originalUser.value = userService.getIUserInitValue();
+        originalUser.value.useYn = 'Y';
         resetUser();
         if (qeUserForm.value) {
           qeUserForm.value.reset();
