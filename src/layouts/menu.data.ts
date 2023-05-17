@@ -110,4 +110,103 @@ export const menuList = [
   },
 ];
 
+export const menu = [
+  {
+    menuId: 'myDesk',
+    pmenuId: 'MAIN',
+    label: 'My Desk',
+  },
+  {
+    menuId: 'project',
+    pmenuId: 'MAIN',
+    label: 'Project',
+  },
+  {
+    menuId: 'program',
+    pmenuId: 'MAIN',
+    label: 'Program',
+  },
+  {
+    menuId: 'data',
+    pmenuId: 'MAIN',
+    label: 'Data',
+  },
+  {
+    menuId: 'admin',
+    pmenuId: 'MAIN',
+    label: 'Admin',
+  },
+  {
+    menuId: 'sample',
+    pmenuId: 'MAIN',
+    label: 'Sample',
+  },
+  {
+    menuId: 'mySetting',
+    pmenuId: 'myDesk',
+    icon: 'settings',
+    label: 'Setting',
+  },
+  {
+    menuId: 'projectSetting',
+    pmenuId: 'project',
+    icon: 'settings',
+    label: 'Setting',
+  },
+  {
+    menuId: 'programSetting',
+    pmenuId: 'program',
+    icon: 'settings',
+    label: 'Setting',
+  },
+  {
+    menuId: 'dataSetting',
+    pmenuId: 'data',
+    icon: 'settings',
+    label: 'Setting',
+  },
+  {
+    menuId: 'adminSetting',
+    pmenuId: 'admin',
+    icon: 'settings',
+    label: 'Setting',
+    path: '/admin/setting-management',
+  },
+  {
+    menuId: 'adminUser',
+    pmenuId: 'admin',
+    icon: 'perm_identity',
+    label: 'User',
+    path: '/admin/user-management',
+  },
+  {
+    menuId: 'adminUser',
+    pmenuId: 'admin',
+    icon: 'menu',
+    label: 'Menu',
+    path: '/admin/menu-management',
+  },
+  {
+    menuId: 'sampleIcon',
+    pmenuId: 'sample',
+    icon: 'delete',
+    label: 'Icon',
+    path: '/sample/icon',
+  },
+  {
+    menuId: 'sampleSingleSearchForm',
+    pmenuId: 'sample',
+    icon: 'search',
+    label: 'Single Search Form',
+    path: '/sample/single-search-form',
+  },
+  {
+    menuId: 'sampleSingleSearchFormSide',
+    pmenuId: 'sample',
+    icon: 'search',
+    label: 'Single Search Form & Side',
+    path: '/sample/single-search-form-side',
+  },
+];
+
 export default LeftMenu;
