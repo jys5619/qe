@@ -110,7 +110,19 @@ export const menuList = [
   },
 ];
 
-export const menu = [
+export interface IMenu {
+  menuId: string;
+  pmenuId: string;
+  label: string;
+  icon?: string;
+  separator?: boolean;
+  iconColor?: string;
+  path?: string;
+  auth?: string[];
+  sortNo?: number;
+}
+
+export const menuDb = [
   {
     menuId: 'myDesk',
     pmenuId: 'MAIN',
@@ -207,6 +219,13 @@ export const menu = [
     label: 'Single Search Form & Side',
     path: '/sample/single-search-form-side',
   },
-];
+] as IMenu[];
 
+const Menu = {
+  getMenuList: (pmenuId: string): IMenu[] => {
+    return menuDb.filter((menu: IMenu) => menu.pmenuId === pmenuId);
+  },
+};
+
+export { Menu };
 export default LeftMenu;
