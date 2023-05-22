@@ -120,6 +120,7 @@ export interface IMenu {
   path?: string;
   auth?: string[];
   sortNo?: number;
+  useYn: string;
 }
 
 export const menuDb = [
@@ -192,7 +193,7 @@ export const menuDb = [
     path: '/admin/user-management',
   },
   {
-    menuId: 'adminUser',
+    menuId: 'adminMenu',
     pmenuId: 'admin',
     icon: 'menu',
     label: 'Menu',
