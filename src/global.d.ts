@@ -1,5 +1,5 @@
-import { IMenuDto } from './biz/menu/dto/menu.dto';
-import { IUserDto } from './biz/user/dto/user.dto';
+import { IMenuDto } from './biz/menu';
+import { IUserDto } from './biz/user';
 
 export {};
 
@@ -12,7 +12,9 @@ declare global {
       selectUserList(searchKeyword: string): Promise<IUserDto[]>;
       saveUser(userDto: IUserDto): Promise<number>;
       // Menu
-      selectMenuList(): Promise<IMenuDto[]>;
+      selectMenuList(pmenuId: string): Promise<IMenuDto[]>;
+      selectMyMenuList(userId: string): Promise<IMenuDto[]>;
+      saveMenu(menuDto: IMenuDto): Promise<number>;
     };
   }
 }

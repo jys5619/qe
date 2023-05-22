@@ -20,7 +20,6 @@
             color="primary"
             label="NEW"
             size="sm"
-            @click="loadMenuList"
           />
         </div>
       </template>
@@ -42,7 +41,6 @@
           <q-tab-panels v-model="tab" animated class="shadow-2 rounded-borders">
             <q-tab-panel name="user">
               <div class="text-h6">User</div>
-              <UserPage />
             </q-tab-panel>
 
             <q-tab-panel name="alarms">
@@ -65,8 +63,7 @@ import { ref } from 'vue';
 import QeTable from 'src/components/QeTable.vue';
 import QeSearchInput from 'src/components/input/QeSearchInput.vue';
 import { DATA_COLUMNS, DATA_ROWS } from 'src/data';
-import { useStoreMenu } from 'src/stores/menu';
-import { UserPage } from '../forms/user';
+
 
 const columns = ref(DATA_COLUMNS);
 const rows = ref(DATA_ROWS);
@@ -95,9 +92,9 @@ const handleSearch = (text: string) => {
 //   }, 3000);
 // };
 
-const loadMenuList = async () => {
-  const menuStore = useStoreMenu();
-  await menuStore.initData();
-  console.log(menuStore.menuList);
-};
+// const loadMenuList = async () => {
+//   const menuStore = useStoreMenu();
+//   await menuStore.initData();
+//   console.log(menuStore.menuList);
+// };
 </script>

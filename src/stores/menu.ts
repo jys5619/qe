@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { IMenu } from 'src/biz/menu';
+import { IMenu, menuEndpoint } from 'src/biz/menu';
 
 export const useStoreMenu = defineStore('menu', {
   state: () => ({
@@ -7,19 +7,16 @@ export const useStoreMenu = defineStore('menu', {
   }),
   getters: {
     getMenuList: (state) => {
-      return state.menuList.filter((m) => m.menuType === 'MAIN');
-    },
-    getSubMenuList: (state) => {
-      return (pMenuId: string) =>
+      return (pmenuId: string) =>
         state.menuList.filter(
-          (m) => m.menuType === 'SUB' && m.pMenuId == pMenuId
+          (m) => m.pmenuId == pmenuId
         );
     },
   },
   actions: {
-    async initData() {
+    async initData(userId: string) {
       this.menuList.splice(0);
-      const data = await window.api.selectMenuList();
+      const data = await menuEndpoint.getMyMenuList(userId);
       console.log('data', data);
       this.menuList.push(...data);
     },

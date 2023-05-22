@@ -39,17 +39,17 @@ const LeftMenuList: ILeftMenuGroup = {
     {
       icon: 'settings',
       label: 'Setting',
-      path: '/admin/setting-management',
+      path: '/admin/setting',
     },
     {
       icon: 'perm_identity',
       label: 'User',
-      path: '/admin/user-management',
+      path: '/admin/user',
     },
     {
       icon: 'menu',
       label: 'Menu',
-      path: '/admin/menu-management',
+      path: '/admin/menu',
     },
   ],
   sample: [
@@ -183,21 +183,21 @@ export const menuDb = [
     pmenuId: 'admin',
     icon: 'settings',
     label: 'Setting',
-    path: '/admin/setting-management',
+    path: '/admin/setting',
   },
   {
     menuId: 'adminUser',
     pmenuId: 'admin',
     icon: 'perm_identity',
     label: 'User',
-    path: '/admin/user-management',
+    path: '/admin/user',
   },
   {
     menuId: 'adminMenu',
     pmenuId: 'admin',
     icon: 'menu',
     label: 'Menu',
-    path: '/admin/menu-management',
+    path: '/admin/menu',
   },
   {
     menuId: 'sampleIcon',

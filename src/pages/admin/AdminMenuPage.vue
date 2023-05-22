@@ -2,15 +2,16 @@
   <splitter-page ref="splitPageRef" title="Menu">
     <template v-slot:left>
       <div class="q-pa-sm">
-        <QeSearchInput
+        <QeSearchSelect
           label="Search"
-          hint="Menu ID, Name, English Name, Auth"
+          hint="Menu ID"
+          :options="menuList"
           @search="handleSearch"
         />
       </div>
       <div class="q-pa-sm">
-        <UserListPage
-          ref="userListPageRef"
+        <MenuListPage
+          ref="listPageRef"
           :search-keyword="searchKeyword"
           @row-dblclick="handleRowDblClick"
         />
@@ -21,7 +22,7 @@
           color="primary"
           label="NEW"
           size="sm"
-          @click="handleNewUserAdd"
+          @click="handleNewMenuAdd"
         />
       </div>
     </template>
@@ -36,19 +37,19 @@
           indicator-color="yellow-6"
           :align="`left`"
         >
-          <q-tab name="user" label="User" />
+          <q-tab name="menu" label="Menu" />
         </q-tabs>
 
         <q-separator />
 
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel
-            name="user"
-            :class="[userReadonly ? 'bg-yellow-1' : 'bg-blue-1']"
+            name="menu"
+            :class="[readonly ? 'bg-yellow-1' : 'bg-blue-1']"
           >
-            <user-page
-              :user="user"
-              :readonly="userReadonly"
+            <menu-page
+              :menu="menu"
+              :readonly="readonly"
               @close="handleClose"
               @submit="handleSubmit"
               @update:readonly="handleReadonly"
@@ -62,31 +63,60 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import QeSearchInput from 'src/components/input/QeSearchInput.vue';
-import { UserPage, UserListPage } from '../forms/user';
-import { IUser } from 'src/biz/user';
+import { QeSearchSelect } from 'src/components/select';
+import { MenuPage, MenuListPage } from '../forms/menu';
+import { IMenu } from 'src/biz/menu';
 import { SplitterPage } from '../forms/page';
 
-const user = ref<IUser | undefined>(undefined);
-const tab = ref('user');
+
+const menuListData = [
+  {
+    value: 'myDesk',
+    label: 'My Desk',
+  },
+  {
+    value: 'project',
+    label: 'Project',
+  },
+  {
+    value: 'program',
+    label: 'Program',
+  },
+  {
+    value: 'data',
+    label: 'Data',
+  },
+  {
+    value: 'admin',
+    label: 'Admin',
+  },
+  {
+    value: 'sample',
+    label: 'Sample',
+  },
+];
+
+const menu = ref<IMenu | undefined>(undefined);
+const tab = ref('menu');
 const searchKeyword = ref<string | undefined>(undefined);
-const userReadonly = ref<boolean>(true);
+const readonly = ref<boolean>(true);
 const splitPageRef = ref();
-const userListPageRef = ref();
+const listPageRef = ref();
+const menuList = ref(menuListData);
 
 const handleSearch = (text: string) => {
   searchKeyword.value = text;
-  userListPageRef.value.searchUserList(searchKeyword.value);
+  listPageRef.value.searchMenuList(searchKeyword.value);
 };
 
-const handleNewUserAdd = () => {
-  userReadonly.value = false;
-  user.value = {} as IUser;
+const handleNewMenuAdd = () => {
+  readonly.value = false;
+  menu.value = {} as IMenu;
   splitPageRef.value.showSplitter(true);
 };
 
 const handleRowDblClick = (event: Event, row: any, index: number) => {
-  user.value = row;
+  menu.value = row;
   splitPageRef.value.showSplitter(true);
 };
 
@@ -95,10 +125,10 @@ const handleClose = (event: Event) => {
 };
 
 const handleSubmit = (event: Event) => {
-  userListPageRef.value.searchUserList(searchKeyword.value);
+  listPageRef.value.searchMenuList(searchKeyword.value);
 };
 
 const handleReadonly = (isReadonly: boolean) => {
-  userReadonly.value = isReadonly;
+  readonly.value = isReadonly;
 };
 </script>

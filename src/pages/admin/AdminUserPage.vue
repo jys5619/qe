@@ -10,7 +10,7 @@
       </div>
       <div class="q-pa-sm">
         <UserListPage
-          ref="userListPageRef"
+          ref="listPageRef"
           :search-keyword="searchKeyword"
           @row-dblclick="handleRowDblClick"
         />
@@ -44,11 +44,11 @@
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel
             name="user"
-            :class="[userReadonly ? 'bg-yellow-1' : 'bg-blue-1']"
+            :class="[readonly ? 'bg-yellow-1' : 'bg-blue-1']"
           >
             <user-page
               :user="user"
-              :readonly="userReadonly"
+              :readonly="readonly"
               @close="handleClose"
               @submit="handleSubmit"
               @update:readonly="handleReadonly"
@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import QeSearchInput from 'src/components/input/QeSearchInput.vue';
+import { QeSearchInput } from 'src/components/input';
 import { UserPage, UserListPage } from '../forms/user';
 import { IUser } from 'src/biz/user';
 import { SplitterPage } from '../forms/page';
@@ -70,17 +70,18 @@ import { SplitterPage } from '../forms/page';
 const user = ref<IUser | undefined>(undefined);
 const tab = ref('user');
 const searchKeyword = ref<string | undefined>(undefined);
-const userReadonly = ref<boolean>(true);
+const readonly = ref<boolean>(true);
 const splitPageRef = ref();
-const userListPageRef = ref();
+const listPageRef = ref();
+
 
 const handleSearch = (text: string) => {
   searchKeyword.value = text;
-  userListPageRef.value.searchUserList(searchKeyword.value);
+  listPageRef.value.searchUserList(searchKeyword.value);
 };
 
 const handleNewUserAdd = () => {
-  userReadonly.value = false;
+  readonly.value = false;
   user.value = {} as IUser;
   splitPageRef.value.showSplitter(true);
 };
@@ -95,10 +96,10 @@ const handleClose = (event: Event) => {
 };
 
 const handleSubmit = (event: Event) => {
-  userListPageRef.value.searchUserList(searchKeyword.value);
+  listPageRef.value.searchUserList(searchKeyword.value);
 };
 
 const handleReadonly = (isReadonly: boolean) => {
-  userReadonly.value = isReadonly;
+  readonly.value = isReadonly;
 };
 </script>

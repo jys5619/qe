@@ -25,19 +25,19 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        component: () => import('pages/admin/AdminSettingManagementPage.vue'),
+        component: () => import('pages/admin/AdminSettingPage.vue'),
       },
       {
-        path: 'setting-management',
-        component: () => import('pages/admin/AdminSettingManagementPage.vue'),
+        path: 'setting',
+        component: () => import('pages/admin/AdminSettingPage.vue'),
       },
       {
-        path: 'user-management',
-        component: () => import('pages/admin/AdminUserManagementPage.vue'),
+        path: 'user',
+        component: () => import('pages/admin/AdminUserPage.vue'),
       },
       {
-        path: 'menu-management',
-        component: () => import('pages/admin/AdminMenuManagementPage.vue'),
+        path: 'menu',
+        component: () => import('pages/admin/AdminMenuPage.vue'),
       },
     ],
   },

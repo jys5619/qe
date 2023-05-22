@@ -1,13 +1,12 @@
 export interface IMenu {
   id: number;
   menuId: string;
-  label: string;
-  url: string;
-  authGroup: string;
-  menuType: string;
-  pMenuId?: string;
+  pmenuId: string;
+  menuName: string;
+  menuPath?: string;
   icon?: string;
-  iconColor?: string;
-  separator?: boolean;
-  ord?: number;
+  separatorYn?: string;
+  auth: string[];
+  sortNo?: number;
+  useYn?: string;
 }

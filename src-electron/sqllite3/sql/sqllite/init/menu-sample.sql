@@ -137,7 +137,7 @@ VALUES (
     'adminSetting',
     'admin',
     'Setting',
-    '/admin/setting-management',
+    '/admin/setting',
     'settings',
     'N',
     'USER,ADMIN',
@@ -149,7 +149,7 @@ VALUES (
     'adminUser',
     'admin',
     'User',
-    '/admin/user-management',
+    '/admin/user',
     'perm_identity',
     'N',
     'USER,ADMIN',
@@ -161,7 +161,7 @@ VALUES (
     'adminMenu',
     'admin',
     'Menu',
-    '/admin/menu-management',
+    '/admin/menu',
     'menu',
     'N',
     'USER,ADMIN',
@@ -204,4 +204,3 @@ VALUES (
     3,
     'Y'
   )
-

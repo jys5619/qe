@@ -2,60 +2,73 @@
   <q-form
     @submit="onSubmit"
     @reset="onReset"
-    ref="qeUserForm"
+    ref="qeMenuForm"
     class="q-gutter-sm"
   >
     <qe-input
-      v-model="editUser.userId"
-      label="User ID"
+      v-model="editMenu.menuId"
+      label="Menu ID"
       :required="true"
-      :readonly="readonly || editUser.id !== -1"
-      :disable="!readonly && editUser.id !== -1"
+      :readonly="readonly || editMenu.id !== -1"
+      :disable="!readonly && editMenu.id !== -1"
     />
-
-    <!-- <qe-input
-      v-model="editUser.pwd"
-      type="password"
-      label="Password"
-      :required="true"
-      :readonly="readonly"
-    /> -->
-
     <qe-input
-      v-model="editUser.names"
+      v-model="editMenu.pmenuId"
+      label="Parent Menu ID"
+      :required="true"
+      :readonly="readonly || editMenu.id !== -1"
+      :disable="!readonly && editMenu.id !== -1"
+    />
+    <qe-input
+      v-model="editMenu.menuName"
       label="Name"
       :required="true"
       :readonly="readonly"
     />
     <qe-input
-      v-model="editUser.enames"
-      label="English Name"
+      v-if="editMenu.pmenuId !== 'MAIN'"
+      v-model="editMenu.menuPath"
+      label="Path"
       :required="true"
       :readonly="readonly"
     />
     <qe-input
-      v-model="editUser.email"
-      type="email"
-      label="Email"
+      v-if="editMenu.pmenuId !== 'MAIN'"
+      v-model="editMenu.icon"
+      label="Icon"
       :required="true"
       :readonly="readonly"
     />
+
+    <q-toggle
+      v-if="editMenu.pmenuId !== 'MAIN'"
+      :label="`Separator`"
+      false-value="N"
+      true-value="Y"
+      dense
+      :disable="readonly"
+      v-model="editMenu.separatorYn"
+    />
     <qe-multi-select
-      v-model="editUser.auth"
+      v-model="editMenu.auth"
       label="Auth"
       :required="true"
       :readonly="readonly"
-      :options="userAuth"
+      :options="auth"
     />
-    <qe-input v-model="editUser.emno" label="EMNO" :readonly="readonly" />
-
+    <qe-input
+      v-if="editMenu.pmenuId !== 'MAIN'"
+      v-model="editMenu.sortNo"
+      label="Sort No"
+      :readonly="readonly"
+    />
     <q-toggle
       :label="`Use`"
       false-value="N"
       true-value="Y"
       dense
       :disable="readonly"
-      v-model="editUser.useYn"
+      v-model="editMenu.useYn"
     />
     <div class="q-mt-sm q-gutter-sm" style="text-align: right">
       <q-btn
@@ -83,7 +96,7 @@
         @click="handleEdit"
       />
       <q-btn
-        v-if="readonly || editUser.id === -1"
+        v-if="readonly || editMenu.id === -1"
         class="glossy"
         size="sm"
         color="blue-grey-7"
@@ -124,11 +137,10 @@
 import { ref, watch } from 'vue';
 import { QeInput } from 'src/components/input';
 import { QeMultiSelect } from 'src/components/select';
-import { IUser } from 'src/biz/user/user.entity';
-import { userEndpoint, userService } from 'src/biz/user';
+import { IMenu, menuEndpoint, menuService } from 'src/biz/menu';
 
-interface IUserEditProps {
-  user?: Partial<IUser> | number;
+interface IMenuEditProps {
+  menu?: Partial<IMenu> | number;
   readonly: boolean;
 }
 
@@ -142,18 +154,18 @@ const authList = [
     value: 'ADMIN',
   },
 ];
-const userAuth = ref(authList);
-const props = defineProps<IUserEditProps>();
+const auth = ref(authList);
+const props = defineProps<IMenuEditProps>();
 const loading = ref<boolean>(false);
-const originalUser = ref<Partial<IUser>>({});
-const editUser = ref<Partial<IUser>>({});
-const qeUserForm = ref();
+const originalMenu = ref<Partial<IMenu>>({});
+const editMenu = ref<Partial<IMenu>>({});
+const qeMenuForm = ref();
 const confirm = ref(false);
 const emit = defineEmits([
   'close',
   'edit',
   'submit',
-  'update:user',
+  'update:menu',
   'update:readonly',
 ]);
 
@@ -163,8 +175,8 @@ const onSubmit = async (event: Event) => {
 
 const onSubmitCallback = async (event: Event) => {
   loading.value = true;
-  if (!userService.validate(editUser.value).isSuccess()) return;
-  await userEndpoint.saveUser(editUser.value);
+  if (!menuService.validate(editMenu.value).isSuccess()) return;
+  await menuEndpoint.saveMenu(editMenu.value);
 
   emit('update:readonly', true);
   emit('submit', event);
@@ -173,7 +185,7 @@ const onSubmitCallback = async (event: Event) => {
 
 const onReset = () => {
   emit('update:readonly', true);
-  resetUser();
+  resetMenu();
 };
 
 const handleEdit = (event: Event) => {
@@ -185,29 +197,29 @@ const handleClose = (event: Event) => {
   emit('close', event);
 };
 
-const resetUser = () => {
-  editUser.value = { ...originalUser.value };
+const resetMenu = () => {
+  editMenu.value = { ...originalMenu.value };
 };
 
 watch(
-  () => props.user,
-  (newUser, oldUser) => {
-    if (newUser !== oldUser) {
-      if (userService.isIUser(newUser)) {
-        originalUser.value = { ...(props.user as IUser) };
+  () => props.menu,
+  (newMenu, oldMenu) => {
+    if (newMenu !== oldMenu) {
+      if (menuService.isIMenu(newMenu)) {
+        originalMenu.value = { ...(props.menu as IMenu) };
         onReset();
-      } else if (typeof newUser === 'number' && newUser > -1) {
+      } else if (typeof newMenu === 'number' && newMenu > -1) {
         // TODO : 사번으로 user정보를 조회한다.
-        originalUser.value = {} as IUser;
+        originalMenu.value = {} as IMenu;
         onReset();
       } else {
         // 신규
         console.log('신규');
-        originalUser.value = userService.getIUserInitValue();
-        originalUser.value.useYn = 'Y';
-        resetUser();
-        if (qeUserForm.value) {
-          qeUserForm.value.reset();
+        originalMenu.value = menuService.getIMenuInitValue();
+        originalMenu.value.useYn = 'Y';
+        resetMenu();
+        if (qeMenuForm.value) {
+          qeMenuForm.value.reset();
         }
         emit('update:readonly', false);
       }

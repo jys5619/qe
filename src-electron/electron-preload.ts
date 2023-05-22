@@ -29,7 +29,7 @@
  */
 
 import { contextBridge, ipcRenderer as ir } from 'electron';
-import { IUser } from './entity/qe.entity';
+import { IMenu, IUser } from './entity/qe.entity';
 
 contextBridge.exposeInMainWorld('api', {
   saveTextFile(text: string) {
@@ -50,7 +50,15 @@ contextBridge.exposeInMainWorld('api', {
   },
 
   // Menu
-  selectMenuList() {
-    return ir.invoke('selectMenuList');
+  selectMenuList(pmenuId: string) {
+    return ir.invoke('selectMenuList', pmenuId);
   },
+
+  selectMyMenuList(userid: string) {
+    return ir.invoke('selectMyMenuList', userid);
+  },
+
+  saveMenu(menu: IMenu) {
+    return ir.invoke('saveMenu', menu);
+  }
 });

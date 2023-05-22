@@ -32,17 +32,6 @@
 import { ValidationRule } from 'quasar';
 import { PropType, ref } from 'vue';
 
-const authList = [
-  {
-    label: 'USER',
-    value: 'USER',
-  },
-  {
-    label: 'ADMIN',
-    value: 'ADMIN',
-  },
-];
-
 const props = defineProps({
   modelValue: {
     required: false,
@@ -70,10 +59,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  options: {
+    required: true,
+    type: Array<{label: string; value: string;}>
+  }
 });
 
 const emit = defineEmits(['update:modelValue']);
-const options = ref(authList);
+// const options = ref(authList);
 
 const ruleList = [] as ValidationRule<string>[];
 
