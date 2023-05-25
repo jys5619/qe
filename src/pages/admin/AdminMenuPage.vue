@@ -87,9 +87,10 @@ const handleChange = (text: string) => {
 };
 
 const handleNewMenuAdd = () => {
-  readonly.value = false;
   menu.value = menuService.getIMenuInitValue();
   menu.value.pmenuId = searchKeyword.value || '';
+  menu.value.useYn = 'Y';
+  menu.value.separatorYn = searchKeyword.value  === 'MAIN' ? '' : 'N';
   splitPageRef.value.showSplitter();
 };
 

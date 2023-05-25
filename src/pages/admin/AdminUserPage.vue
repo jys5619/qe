@@ -64,7 +64,7 @@
 import { ref } from 'vue';
 import { QeSearchInput } from 'src/components';
 import { UserPage, UserListPage } from '../forms/user';
-import { IUser } from 'src/biz/user';
+import { IUser, userService } from 'src/biz/user';
 import { SplitterPage } from '../forms/page';
 
 const user = ref<IUser | undefined>(undefined);
@@ -81,8 +81,8 @@ const handleSearch = (text: string) => {
 };
 
 const handleNewUserAdd = () => {
-  readonly.value = false;
-  user.value = {} as IUser;
+  user.value = userService.getIUserInitValue();
+  user.value.useYn = 'Y';
   splitPageRef.value.showSplitter();
 };
 

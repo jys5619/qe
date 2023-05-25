@@ -1,6 +1,14 @@
 import { defineStore } from 'pinia';
 import { IMenu, menuEndpoint } from 'src/biz/menu';
 
+// SELECT '{''menuId'':''' || MENU_ID || ''''||
+//        ',''pmenuId'':''' || PMENU_ID || ''''||
+//        ',''menuName'':''' || MENU_NAME || ''''||
+//        ',''menuPath'':''' || IFNULL(MENU_PATH, '') || '''' ||
+//        ',''icon'':''' || IFNULL(ICON, '') || '''' ||
+//        ',''separatorYn'':''' || IFNULL(SEPARATOR_YN, 'N') || '''},' AS JSON
+//   FROM TB_MENU
+
 export const useStoreMenu = defineStore('menu', {
   state: () => ({
     menuList: [

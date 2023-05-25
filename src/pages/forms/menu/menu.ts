@@ -26,7 +26,7 @@ export const menuListColumn: QTableColumn[] = [
     name: 'menuPath',
     field: 'menuPath',
     label: 'Path',
-    align: 'center',
+    align: 'left',
     sortable: true,
   },
   {

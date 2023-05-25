@@ -3,7 +3,7 @@
     :model-value="modelValue"
     @update:model-value="(value) => emit('update:modelValue', value)"
     :options="options"
-    :label="label"
+    :label="`${label}${required ? ' *' : ''}`"
     multiple
     dense
     emit-value

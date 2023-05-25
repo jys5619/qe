@@ -79,16 +79,20 @@ const _type = ref(
 const ruleList = [] as ValidationRule<string>[];
 
 if (props.required) {
-  ruleList.push(
-    (val: string) => (val && val.length > 0) || `Please input ${props.label}`
-  );
+  if ( props.type !== 'number' ) {
+    ruleList.push(
+      (val: string) => (val && val.length > 0) || `Please input ${props.label}`
+    );
+  }
 
   if (props.maxLength > 0) {
-    ruleList.push(
-      (val: string) =>
-        (val && val.length <= props.maxLength) ||
-        `${props.label} length over ${props.maxLength}`
-    );
+    if ( props.type !== 'number' ) {
+      ruleList.push(
+        (val: string) =>
+          (val && val.length <= props.maxLength) ||
+          `${props.label} length over ${props.maxLength}`
+      );
+    }
   }
 }
 

@@ -36,7 +36,6 @@
       v-if="editMenu.pmenuId !== 'MAIN'"
       v-model="editMenu.icon"
       label="Icon"
-      :required="true"
       :readonly="readonly"
     />
 
@@ -57,8 +56,10 @@
       :options="auth"
     />
     <qe-input
+      type="number"
       v-model="editMenu.sortNo"
       label="Sort No"
+      :required="true"
       :readonly="readonly"
     />
     <q-toggle
@@ -184,7 +185,15 @@ const onSubmitCallback = async (event: Event) => {
 
 const onReset = () => {
   emit('update:readonly', true);
-  resetMenu();
+  resetForm();
+};
+
+const onNew = () => {
+  emit('update:readonly', false);
+  resetForm();
+  if (qeMenuForm.value) {
+    qeMenuForm.value.reset();
+  }
 };
 
 const handleEdit = (event: Event) => {
@@ -196,7 +205,7 @@ const handleClose = (event: Event) => {
   emit('close', event);
 };
 
-const resetMenu = () => {
+const resetForm = () => {
   editMenu.value = { ...originalMenu.value };
 };
 
@@ -205,22 +214,17 @@ watch(
   (newMenu, oldMenu) => {
     debugger;
     if (newMenu !== oldMenu) {
-      if (menuService.isIMenu(newMenu)) {
-        originalMenu.value = { ...(props.menu as IMenu) };
-        onReset();
-      } else if (typeof newMenu === 'number' && newMenu > -1) {
+      if (typeof newMenu === 'number' && newMenu > -1) {
         // TODO : ID으로 menu정보를 조회한다.
         originalMenu.value = {} as IMenu;
         onReset();
-      } else {
-        // 신규
-        originalMenu.value = menuService.getIMenuInitValue();
-        originalMenu.value.useYn = 'Y';
-        resetMenu();
-        if (qeMenuForm.value) {
-          qeMenuForm.value.reset();
+      } else if (menuService.isIMenu(newMenu)) {
+        originalMenu.value = { ...(props.menu as IMenu) };
+        if ( originalMenu.value.id === -1 ) {
+          onNew();
+        } else {
+          onReset();
         }
-        emit('update:readonly', false);
       }
     }
   }

@@ -45,7 +45,7 @@ async function post(response: Promise<number>, showNotify = true) {
     .then<number, never>((res: number) => {
       if ( showNotify ) {
         Notify.create({
-          type: 'positive',
+          type: 'primary',
           message: 'completed',
         });
       }

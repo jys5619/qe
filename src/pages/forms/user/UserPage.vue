@@ -172,7 +172,15 @@ const onSubmitCallback = async (event: Event) => {
 
 const onReset = () => {
   emit('update:readonly', true);
-  resetUser();
+  resetForm();
+};
+
+const onNew = () => {
+  emit('update:readonly', false);
+  resetForm();
+  if (qeUserForm.value) {
+    qeUserForm.value.reset();
+  }
 };
 
 const handleEdit = (event: Event) => {
@@ -184,7 +192,7 @@ const handleClose = (event: Event) => {
   emit('close', event);
 };
 
-const resetUser = () => {
+const resetForm = () => {
   editUser.value = { ...originalUser.value };
 };
 
@@ -192,23 +200,17 @@ watch(
   () => props.user,
   (newUser, oldUser) => {
     if (newUser !== oldUser) {
-      if (userService.isIUser(newUser)) {
-        originalUser.value = { ...(props.user as IUser) };
-        onReset();
-      } else if (typeof newUser === 'number' && newUser > -1) {
+      if (typeof newUser === 'number' && newUser > -1) {
         // TODO : 사번으로 user정보를 조회한다.
         originalUser.value = {} as IUser;
         onReset();
-      } else {
-        // 신규
-        console.log('신규');
-        originalUser.value = userService.getIUserInitValue();
-        originalUser.value.useYn = 'Y';
-        resetUser();
-        if (qeUserForm.value) {
-          qeUserForm.value.reset();
+      } else if (userService.isIUser(newUser)) {
+        originalUser.value = { ...(props.user as IUser) };
+        if ( originalUser.value.id === -1 ) {
+          onNew();
+        } else {
+          onReset();
         }
-        emit('update:readonly', false);
       }
     }
   }

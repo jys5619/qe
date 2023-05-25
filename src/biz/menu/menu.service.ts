@@ -21,7 +21,7 @@ const getIMenuInitValue = (): IMenu => {
     menuName: '',
     menuPath: '',
     icon: '',
-    separatorYn: 'Y',
+    separatorYn: '',
     auth: [],
     sortNo: 0,
     useYn: '',
