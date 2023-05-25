@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import QeTable from 'src/components/QeTable.vue';
+import {QeTable} from 'src/components';
 import QeSearchInput from 'src/components/input/QeSearchInput.vue';
 import { DATA_COLUMNS, DATA_ROWS } from 'src/data';
 

@@ -17,6 +17,6 @@ VALUES (
     ${ icon },
     ${ separatorYn },
     ${ auth },
-    ${ soertNo },
+    ${ sortNo },
     ${ useYn }
   )

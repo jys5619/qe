@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { QeSearchInput } from 'src/components/input';
+import { QeSearchInput } from 'src/components';
 import { UserPage, UserListPage } from '../forms/user';
 import { IUser } from 'src/biz/user';
 import { SplitterPage } from '../forms/page';
@@ -83,12 +83,12 @@ const handleSearch = (text: string) => {
 const handleNewUserAdd = () => {
   readonly.value = false;
   user.value = {} as IUser;
-  splitPageRef.value.showSplitter(true);
+  splitPageRef.value.showSplitter();
 };
 
 const handleRowDblClick = (event: Event, row: any, index: number) => {
   user.value = row;
-  splitPageRef.value.showSplitter(true);
+  splitPageRef.value.showSplitter();
 };
 
 const handleClose = (event: Event) => {

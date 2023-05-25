@@ -1,12 +1,14 @@
 import { Notify } from 'quasar';
 
-async function getList<T>(response: Promise<T[]>) {
+async function getList<T>(response: Promise<T[]>, showNotify = true) {
   return response
     .then<T[], never>((res: T[]) => {
-      Notify.create({
-        type: 'positive',
-        message: `${res.length} data was retrieved.`,
-      });
+      if ( showNotify ) {
+        Notify.create({
+          type: 'positive',
+          message: `${res.length} data was retrieved.`,
+        });
+      }
       return res;
     })
     .catch((reason: any) => {
@@ -18,13 +20,15 @@ async function getList<T>(response: Promise<T[]>) {
     });
 }
 
-async function get<T>(response: Promise<T>) {
+async function get<T>(response: Promise<T>, showNotify = true) {
   return response
     .then<T, never>((res: T) => {
-      Notify.create({
-        type: 'positive',
-        message: 'data was retrieved.',
-      });
+      if ( showNotify ) {
+        Notify.create({
+          type: 'positive',
+          message: 'data was retrieved.',
+        });
+      }
       return res;
     })
     .catch((reason: any) => {
@@ -36,13 +40,15 @@ async function get<T>(response: Promise<T>) {
     });
 }
 
-async function post(response: Promise<number>) {
+async function post(response: Promise<number>, showNotify = true) {
   return response
     .then<number, never>((res: number) => {
-      Notify.create({
-        type: 'positive',
-        message: 'completed',
-      });
+      if ( showNotify ) {
+        Notify.create({
+          type: 'positive',
+          message: 'completed',
+        });
+      }
       return res;
     })
     .catch((reason: any) => {

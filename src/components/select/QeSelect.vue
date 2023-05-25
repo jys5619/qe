@@ -4,28 +4,13 @@
     @update:model-value="(value) => emit('update:modelValue', value)"
     :options="options"
     :label="label"
-    multiple
     dense
     emit-value
     map-options
     :rules="ruleList"
     :disable="disable"
     :readonly="readonly"
-  >
-    <template v-slot:option="{ itemProps, opt, selected, toggleOption }">
-      <q-item v-bind="itemProps">
-        <q-item-section>
-          <q-item-label>{{ opt.label }}</q-item-label>
-        </q-item-section>
-        <q-item-section side>
-          <q-toggle
-            :model-value="selected"
-            @update:model-value="toggleOption(opt)"
-          />
-        </q-item-section>
-      </q-item>
-    </template>
-  </q-select>
+  />
 </template>
 
 <script setup lang="ts">

@@ -6,6 +6,6 @@ SET MENU_ID = ${ menuId },
   ICON = ${ icon },
   SEPARATOR_YN = ${ separatorYn },
   AUTH = ${ auth },
-  SORT_NO = ${ soertNo },
+  SORT_NO = ${ sortNo },
   USE_YN = ${ useYn }
 WHERE ID = ${ id }

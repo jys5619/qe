@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import QeTable from 'src/components/QeTable.vue';
+import { QeTable } from 'src/components';
 import { menuListColumn } from './menu';
 import { IMenu } from 'src/biz/menu';
 import { menuEndpoint } from 'src/biz/menu';

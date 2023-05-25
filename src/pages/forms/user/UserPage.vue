@@ -122,8 +122,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { QeInput } from 'src/components/input';
-import { QeMultiSelect } from 'src/components/select';
+import { QeInput, QeMultiSelect } from 'src/components';
 import { IUser } from 'src/biz/user/user.entity';
 import { userEndpoint, userService } from 'src/biz/user';
 

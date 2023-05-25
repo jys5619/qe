@@ -6,7 +6,7 @@
           label="Search"
           hint="Menu ID"
           :options="menuList"
-          @search="handleSearch"
+          @change="handleChange"
         />
       </div>
       <div class="q-pa-sm">
@@ -62,39 +62,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { QeSearchSelect } from 'src/components/select';
+import { onMounted, ref } from 'vue';
+import { QeSearchSelect } from 'src/components';
 import { MenuPage, MenuListPage } from '../forms/menu';
-import { IMenu } from 'src/biz/menu';
+import { IMenu, menuEndpoint, menuService } from 'src/biz/menu';
 import { SplitterPage } from '../forms/page';
-
-
-const menuListData = [
-  {
-    value: 'myDesk',
-    label: 'My Desk',
-  },
-  {
-    value: 'project',
-    label: 'Project',
-  },
-  {
-    value: 'program',
-    label: 'Program',
-  },
-  {
-    value: 'data',
-    label: 'Data',
-  },
-  {
-    value: 'admin',
-    label: 'Admin',
-  },
-  {
-    value: 'sample',
-    label: 'Sample',
-  },
-];
 
 const menu = ref<IMenu | undefined>(undefined);
 const tab = ref('menu');
@@ -102,22 +74,29 @@ const searchKeyword = ref<string | undefined>(undefined);
 const readonly = ref<boolean>(true);
 const splitPageRef = ref();
 const listPageRef = ref();
-const menuList = ref(menuListData);
+const menuList = ref([{value: 'MAIN',label: 'Main',}]);
 
-const handleSearch = (text: string) => {
+const handleChange = (text: string) => {
+  const isPreMain = searchKeyword.value === 'MAIN';
+  const isCurMain = text === 'MAIN';
+  if ( isPreMain !== isCurMain ) {
+    splitPageRef.value.hideSplitter();
+  }
   searchKeyword.value = text;
   listPageRef.value.searchMenuList(searchKeyword.value);
 };
 
 const handleNewMenuAdd = () => {
   readonly.value = false;
-  menu.value = {} as IMenu;
-  splitPageRef.value.showSplitter(true);
+  menu.value = menuService.getIMenuInitValue();
+  menu.value.pmenuId = searchKeyword.value || '';
+  splitPageRef.value.showSplitter();
 };
 
 const handleRowDblClick = (event: Event, row: any, index: number) => {
-  menu.value = row;
-  splitPageRef.value.showSplitter(true);
+  debugger;
+  menu.value = row as IMenu;
+  splitPageRef.value.showSplitter();
 };
 
 const handleClose = (event: Event) => {
@@ -131,4 +110,24 @@ const handleSubmit = (event: Event) => {
 const handleReadonly = (isReadonly: boolean) => {
   readonly.value = isReadonly;
 };
+
+onMounted(() => {
+  debugger;
+  (async () => {
+    const searchMenuList = await menuEndpoint.getMenuList('MAIN', false);
+    const menuListData = [
+      {
+        value: 'MAIN',
+        label: 'Main',
+      }
+    ];
+
+    searchMenuList.forEach(menu => {
+      menuListData.push({value:menu.menuId, label:menu.menuName});
+    });
+    console.log(menuListData);
+    menuList.value = menuListData;
+  })();
+
+});
 </script>

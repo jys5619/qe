@@ -8,7 +8,7 @@ const isIMenu = (obj: any): obj is IMenu => {
     'id' in obj &&
     'menuId' in obj &&
     'pmenuId' in obj &&
-    'names' in obj &&
+    'menuName' in obj &&
     'auth' in obj
   );
 };

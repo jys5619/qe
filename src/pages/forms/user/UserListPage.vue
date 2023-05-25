@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import QeTable from 'src/components/QeTable.vue';
+import { QeTable } from 'src/components';
 import { userListColumn } from './user';
 import { IUser } from 'src/biz/user';
 import { userEndpoint } from 'src/biz/user';

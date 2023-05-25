@@ -9,15 +9,15 @@
       v-model="editMenu.menuId"
       label="Menu ID"
       :required="true"
-      :readonly="readonly || editMenu.id !== -1"
-      :disable="!readonly && editMenu.id !== -1"
+      :readonly="readonly"
     />
-    <qe-input
+    <qe-select
       v-model="editMenu.pmenuId"
       label="Parent Menu ID"
       :required="true"
-      :readonly="readonly || editMenu.id !== -1"
-      :disable="!readonly && editMenu.id !== -1"
+      :readonly="readonly || editMenu.pmenuId === 'MAIN'"
+      :disable="!readonly && editMenu.pmenuId === 'MAIN'"
+      :options="mainMenuList"
     />
     <qe-input
       v-model="editMenu.menuName"
@@ -57,7 +57,6 @@
       :options="auth"
     />
     <qe-input
-      v-if="editMenu.pmenuId !== 'MAIN'"
       v-model="editMenu.sortNo"
       label="Sort No"
       :readonly="readonly"
@@ -134,9 +133,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { QeInput } from 'src/components/input';
-import { QeMultiSelect } from 'src/components/select';
+import { onMounted, ref, watch } from 'vue';
+import { QeInput, QeSelect, QeMultiSelect } from 'src/components';
 import { IMenu, menuEndpoint, menuService } from 'src/biz/menu';
 
 interface IMenuEditProps {
@@ -161,6 +159,7 @@ const originalMenu = ref<Partial<IMenu>>({});
 const editMenu = ref<Partial<IMenu>>({});
 const qeMenuForm = ref();
 const confirm = ref(false);
+const mainMenuList = ref([{label:'', value:''}]);
 const emit = defineEmits([
   'close',
   'edit',
@@ -204,17 +203,17 @@ const resetMenu = () => {
 watch(
   () => props.menu,
   (newMenu, oldMenu) => {
+    debugger;
     if (newMenu !== oldMenu) {
       if (menuService.isIMenu(newMenu)) {
         originalMenu.value = { ...(props.menu as IMenu) };
         onReset();
       } else if (typeof newMenu === 'number' && newMenu > -1) {
-        // TODO : 사번으로 user정보를 조회한다.
+        // TODO : ID으로 menu정보를 조회한다.
         originalMenu.value = {} as IMenu;
         onReset();
       } else {
         // 신규
-        console.log('신규');
         originalMenu.value = menuService.getIMenuInitValue();
         originalMenu.value.useYn = 'Y';
         resetMenu();
@@ -226,4 +225,19 @@ watch(
     }
   }
 );
+
+onMounted(() => {
+  debugger;
+  (async () => {
+    const searchMenuList = await menuEndpoint.getMenuList('MAIN', false);
+    const menuListData = Array<{label:string, value:string}>();
+
+    searchMenuList.forEach(menu => {
+      menuListData.push({value:menu.menuId, label:menu.menuName});
+    });
+
+    mainMenuList.value = menuListData;
+  })();
+
+});
 </script>

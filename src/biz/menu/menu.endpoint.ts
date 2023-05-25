@@ -8,9 +8,9 @@ import { menuService } from './menu.service';
  * @param pmenuId
  * @returns
  */
-async function getMenuList(pmenuId: string | undefined): Promise<IMenu[]> {
+async function getMenuList(pmenuId: string | undefined, showNotify = true): Promise<IMenu[]> {
   return endpointUtil
-    .getList<IMenuDto>(window.api.selectMenuList(pmenuId || ''))
+    .getList<IMenuDto>(window.api.selectMenuList(pmenuId || ''), showNotify)
     .then((datalist: IMenuDto[]) => {
       return datalist.map((data: IMenuDto) => {
         return menuService.convertIMenu(data);
