@@ -28,8 +28,8 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/admin/AdminSettingPage.vue'),
       },
       {
-        path: 'setting',
-        component: () => import('pages/admin/AdminSettingPage.vue'),
+        path: 'code',
+        component: () => import('pages/admin/AdminCodePage.vue'),
       },
       {
         path: 'user',
@@ -38,6 +38,10 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'menu',
         component: () => import('pages/admin/AdminMenuPage.vue'),
+      },
+      {
+        path: 'setting',
+        component: () => import('pages/admin/AdminSettingPage.vue'),
       },
     ],
   },

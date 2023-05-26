@@ -179,11 +179,11 @@ export const menuDb = [
     label: 'Setting',
   },
   {
-    menuId: 'adminSetting',
-    pmenuId: 'admin',
-    icon: 'settings',
-    label: 'Setting',
-    path: '/admin/setting',
+    menuId: 'adminCode',
+    pmenuId: 'code',
+    icon: 'c',
+    label: 'Code',
+    path: '/admin/code',
   },
   {
     menuId: 'adminUser',
@@ -198,6 +198,13 @@ export const menuDb = [
     icon: 'menu',
     label: 'Menu',
     path: '/admin/menu',
+  },
+  {
+    menuId: 'adminSetting',
+    pmenuId: 'admin',
+    icon: 'settings',
+    label: 'Setting',
+    path: '/admin/setting',
   },
   {
     menuId: 'sampleIcon',
