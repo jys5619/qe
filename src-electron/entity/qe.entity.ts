@@ -1,5 +1,21 @@
+export interface ErrorResult {
+  success?: boolean;
+  target?: string;
+  msg?: string;
+}
+
 export interface IObject {
   id: number;
+}
+
+export interface IAuth {
+  user?: IUser;
+  errorResult?: ErrorResult;
+}
+
+export interface ILoginData {
+  userId: string;
+  pwd: string;
 }
 
 export interface IUser extends IObject {
@@ -8,7 +24,7 @@ export interface IUser extends IObject {
   email: string;
   names: string;
   enames: string;
-  emno: string;
+  emno?: string;
   auth: string;
 }
 

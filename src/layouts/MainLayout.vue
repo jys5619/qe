@@ -10,8 +10,8 @@
         <q-tab
           v-for="(menuItem, index) in mainMenuList"
           :key="index"
-          :label="menuItem.label"
-          @click="setLeftMenu(menuItem.leftMenuKey)"
+          :label="menuItem.menuName"
+          @click="setLeftMenu(menuItem.menuId)"
         />
       </q-tabs>
     </q-header>
@@ -28,18 +28,18 @@
           <template v-for="(menuItem, index) in leftMenuList" :key="index">
             <q-item
               clickable
-              :active="menuItem.label === 'Outbox'"
+              :active="menuItem.menuName === 'Outbox'"
               v-ripple
-              @click="goPage(menuItem?.path || 'home')"
+              @click="goPage(menuItem.menuPath)"
             >
               <q-item-section avatar>
                 <q-icon :name="menuItem.icon" />
               </q-item-section>
               <q-item-section>
-                {{ menuItem.label }}
+                {{ menuItem.menuName }}
               </q-item-section>
             </q-item>
-            <q-separator :key="'sep' + index" v-if="menuItem.separator" />
+            <q-separator :key="'sep' + index" v-if="menuItem.separatorYn" />
           </template>
         </q-list>
       </q-scroll-area>
@@ -60,12 +60,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import LeftMenu, { ILeftMenuItem, menuList } from './menu.data';
+import { useStoreMenu } from 'src/stores';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const mainMenuList = ref(menuList);
-const leftMenuList = ref<ILeftMenuItem[]>(LeftMenu.getMenuList('myDesk'));
+const storeMenu = useStoreMenu();
+
+const mainMenuList = reactive(storeMenu.getMainList());
+const leftMenuList = reactive(storeMenu.getMenuList());
 const leftDrawerOpen = ref(true);
 const router = useRouter();
 
@@ -73,12 +75,13 @@ const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
 
-const setLeftMenu = (menu: string) => {
-  leftMenuList.value = LeftMenu.getMenuList(menu);
+const setLeftMenu = (pmenuId: string) => {
+  leftMenuList.length = 0;
+  leftMenuList.push(...storeMenu.getMenuList(pmenuId));
   leftDrawerOpen.value = true;
-};
+}
 
-const goPage = (path: string) => {
-  router.push(path);
+const goPage = (path?: string) => {
+  router.push(path || storeMenu.getRootPath());
 };
 </script>

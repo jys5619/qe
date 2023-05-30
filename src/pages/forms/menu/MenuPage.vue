@@ -212,7 +212,6 @@ const resetForm = () => {
 watch(
   () => props.menu,
   (newMenu, oldMenu) => {
-    debugger;
     if (newMenu !== oldMenu) {
       if (typeof newMenu === 'number' && newMenu > -1) {
         // TODO : ID으로 menu정보를 조회한다.
@@ -231,7 +230,6 @@ watch(
 );
 
 onMounted(() => {
-  debugger;
   (async () => {
     const searchMenuList = await menuEndpoint.getMenuList('MAIN', false);
     const menuListData = Array<{label:string, value:string}>();

@@ -8,8 +8,3 @@ export interface IUser {
   auth: string[];
   useYn: string;
 }
-
-export interface IUserPwd {
-  id: number;
-  pwd: string;
-}

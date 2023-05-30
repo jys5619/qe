@@ -1,7 +1,14 @@
-export class ValidateResult {
+export interface ErrorResult {
+  success?: boolean;
+  target?: string;
+  msg?: string;
+}
+
+export class ValidateResult{
   private success: boolean;
   private target: string[];
   private msg: string[];
+
   constructor() {
     this.success = true;
     this.target = [] as string[];
@@ -26,3 +33,4 @@ export class ValidateResult {
     return this.msg;
   }
 }
+

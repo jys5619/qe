@@ -29,7 +29,7 @@
  */
 
 import { contextBridge, ipcRenderer as ir } from 'electron';
-import { IMenu, IUser } from './entity/qe.entity';
+import { ILoginData, IMenu, IUser } from './entity/qe.entity';
 
 contextBridge.exposeInMainWorld('api', {
   saveTextFile(text: string) {
@@ -38,6 +38,11 @@ contextBridge.exposeInMainWorld('api', {
 
   loadTextFile() {
     return ir.invoke('loadTextFile');
+  },
+
+  // Auth
+  login(loginData: ILoginData) {
+    return ir.invoke('login', loginData);
   },
 
   // User

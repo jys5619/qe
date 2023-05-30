@@ -95,7 +95,6 @@ const handleNewMenuAdd = () => {
 };
 
 const handleRowDblClick = (event: Event, row: any, index: number) => {
-  debugger;
   menu.value = row as IMenu;
   splitPageRef.value.showSplitter();
 };
@@ -113,7 +112,6 @@ const handleReadonly = (isReadonly: boolean) => {
 };
 
 onMounted(() => {
-  debugger;
   (async () => {
     const searchMenuList = await menuEndpoint.getMenuList('MAIN', false);
     const menuListData = [

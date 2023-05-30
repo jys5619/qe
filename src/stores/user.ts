@@ -13,7 +13,7 @@ export const useStoreUser = defineStore('user', {
   },
 
   actions: {
-    set(user: IUser) {
+    async set(user: IUser) {
       this.user = { ...user };
     },
   },

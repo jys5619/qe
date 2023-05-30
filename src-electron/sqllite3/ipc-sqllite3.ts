@@ -1,6 +1,9 @@
 import { ipcMain as im } from 'electron';
-import userDao from './dao/user.dao';
-import menuDao from './dao/menu.dao';
+import { authDao, menuDao, userDao } from './dao';
+
+
+// Auth
+im.handle('login', authDao.login);
 
 // User
 im.handle('selectUserList', userDao.selectUserList);

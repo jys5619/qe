@@ -27,12 +27,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useStoreUser } from './stores';
+import { authService } from './biz/auth/auth.service';
+import { ILoginData } from 'app/src-electron/entity/qe.entity';
 
 const prompt = ref(false);
 const address = ref('');
 const userStore = useStoreUser();
 
 if (!userStore.isLogin) {
-  // prompt.value = true;
+    const loginData = {userId: 'user01', pwd: '1111'} as ILoginData;
+    authService.login(loginData);
 }
 </script>

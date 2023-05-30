@@ -1,3 +1,5 @@
+import { ILoginData } from './biz/auth/auth.entity';
+import { IAuthDto } from './biz/auth/dto/auth.dto';
 import { IMenuDto } from './biz/menu';
 import { IUserDto } from './biz/user';
 
@@ -8,6 +10,8 @@ declare global {
     api: {
       saveTextFile(text: string): Promise<string>;
       loadTextFile(): Promise<string>;
+      // Auth
+      login(loginData: ILoginData): Promise<IAuthDto>;
       // User
       selectUserList(searchKeyword: string): Promise<IUserDto[]>;
       saveUser(userDto: IUserDto): Promise<number>;

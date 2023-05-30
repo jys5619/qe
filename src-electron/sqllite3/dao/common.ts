@@ -57,10 +57,10 @@ const selectListBySql = async <T, V>(sql: string, params?: V): Promise<T[]> => {
         if (!!err) {
           fail(err);
         } else {
-          const userList = rows.map((row) => {
+          const dataList = rows.map((row) => {
             return objectKeysSnakeToCamel(row) as T;
           });
-          succ(userList);
+          succ(dataList);
         }
       });
     } catch (error) {
@@ -79,6 +79,37 @@ const selectListBySql = async <T, V>(sql: string, params?: V): Promise<T[]> => {
 const selectList = async <T, V>(file: string, params?: V): Promise<T[]> => {
   const value = await getSql(file);
   return await selectListBySql<T, V>(value, params);
+};
+
+const selectBySql = async <T, V>(sql: string, params?: V): Promise<T> => {
+  const p = new Promise<T>((succ, fail) => {
+    const db = getDb();
+    console.log(sql, params);
+    try {
+      db.get(sql, params, (err, row) => {
+        if (!!err) {
+          fail(err);
+        } else {
+          const data = objectKeysSnakeToCamel(row) as T;
+          succ(data);
+        }
+      });
+    } catch (error) {
+      fail(error);
+    } finally {
+      db.close();
+    }
+  });
+
+  p.catch((reason) => {
+    console.log('all exception :', reason);
+  });
+  return p;
+};
+
+const select = async <T, V>(file: string, params?: V): Promise<T> => {
+  const value = await getSql(file);
+  return await selectBySql<T, V>(value, params);
 };
 
 const allBySql = async <T>(sql: string): Promise<T[]> => {
@@ -159,6 +190,8 @@ const sqlliteDb = {
   allBySql,
   selectList,
   selectListBySql,
+  select,
+  selectBySql,
   exec,
   execBySql,
 };
