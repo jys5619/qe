@@ -1,5 +1,6 @@
 import { ILoginData } from './biz/auth/auth.entity';
 import { IAuthDto } from './biz/auth/dto/auth.dto';
+import { ICode, ICodeDto, ICodeGroup, ICodeGroupDto } from './biz/code';
 import { IMenuDto } from './biz/menu';
 import { IUserDto } from './biz/user';
 
@@ -19,6 +20,11 @@ declare global {
       selectMenuList(pmenuId: string): Promise<IMenuDto[]>;
       selectMyMenuList(userId: string): Promise<IMenuDto[]>;
       saveMenu(menuDto: IMenuDto): Promise<number>;
+      // Code
+      selectCodeGroupList(): Promise<ICodeGroup[]>;
+      selectCodeList(codeGroup: string): Promise<ICode[]>;
+      saveCodeGroup(codeGroup: ICodeGroupDto): Promise<number>;
+      saveCode(code: ICodeDto): Promise<number>;
     };
   }
 }

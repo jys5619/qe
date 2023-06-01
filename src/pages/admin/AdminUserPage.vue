@@ -1,6 +1,6 @@
 <template>
   <splitter-page ref="splitPageRef" title="User">
-    <template v-slot:left>
+    <template v-slot:before>
       <div class="q-pa-sm">
         <QeSearchInput
           label="Search"
@@ -26,7 +26,7 @@
       </div>
     </template>
 
-    <template v-slot:right>
+    <template v-slot:after>
       <q-card class="q-pa-sm" flat>
         <q-tabs
           v-model="tab"
@@ -77,7 +77,7 @@ const listPageRef = ref();
 
 const handleSearch = (text: string) => {
   searchKeyword.value = text;
-  listPageRef.value.searchUserList(searchKeyword.value);
+  listPageRef.value.searchList(searchKeyword.value);
 };
 
 const handleNewUserAdd = () => {
@@ -96,7 +96,7 @@ const handleClose = (event: Event) => {
 };
 
 const handleSubmit = (event: Event) => {
-  listPageRef.value.searchUserList(searchKeyword.value);
+  listPageRef.value.searchList(searchKeyword.value);
 };
 
 const handleReadonly = (isReadonly: boolean) => {

@@ -30,7 +30,7 @@ const handleRowDblClick = (event: Event, row: any, index: number) => {
   emit('row-dblclick', event, row, index);
 };
 
-async function searchUserList(searchKeyword: string) {
+async function searchList(searchKeyword: string) {
   loading.value = true;
   const user = await userEndpoint.getUserList(searchKeyword);
   rows.value = user;
@@ -38,6 +38,6 @@ async function searchUserList(searchKeyword: string) {
 }
 
 defineExpose({
-  searchUserList,
+  searchList,
 });
 </script>

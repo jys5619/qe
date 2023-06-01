@@ -16,13 +16,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { QeTable } from 'src/components';
-import { menuColumns } from './menu.columns';
-import { IMenu } from 'src/biz/menu';
-import { menuEndpoint } from 'src/biz/menu';
+import { codeColumns } from './code.columns';
+import { ICode } from 'src/biz/code';
+import { codeEndpoint } from 'src/biz/code';
 
 const loading = ref<boolean>(false);
-const columns = ref(menuColumns);
-const rows = ref([] as IMenu[]);
+const columns = ref(codeColumns);
+const rows = ref([] as ICode[]);
 
 const emit = defineEmits(['row-dblclick']);
 
@@ -30,10 +30,10 @@ const handleRowDblClick = (event: Event, row: any, index: number) => {
   emit('row-dblclick', event, row, index);
 };
 
-async function searchList(pmenuId: string) {
+async function searchList(codeGroup: string) {
   loading.value = true;
-  const menu = await menuEndpoint.getMenuList(pmenuId);
-  rows.value = menu;
+  const codeList = await codeEndpoint.getCodeList(codeGroup);
+  rows.value = codeList;
   loading.value = false;
 }
 

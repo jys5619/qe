@@ -1,6 +1,6 @@
 import { QTableColumn } from 'quasar';
 
-export const menuListColumn: QTableColumn[] = [
+export const menuColumns: QTableColumn[] = [
   {
     name: 'menuId',
     field: 'menuId',

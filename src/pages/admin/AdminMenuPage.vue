@@ -1,6 +1,6 @@
 <template>
   <splitter-page ref="splitPageRef" title="Menu">
-    <template v-slot:left>
+    <template v-slot:before>
       <div class="q-pa-sm">
         <QeSearchSelect
           label="Search"
@@ -27,7 +27,7 @@
       </div>
     </template>
 
-    <template v-slot:right>
+    <template v-slot:after>
       <q-card class="q-pa-sm" flat>
         <q-tabs
           v-model="tab"
@@ -83,7 +83,7 @@ const handleChange = (text: string) => {
     splitPageRef.value.hideSplitter();
   }
   searchKeyword.value = text;
-  listPageRef.value.searchMenuList(searchKeyword.value);
+  listPageRef.value.searchList(searchKeyword.value);
 };
 
 const handleNewMenuAdd = () => {
@@ -104,7 +104,7 @@ const handleClose = (event: Event) => {
 };
 
 const handleSubmit = (event: Event) => {
-  listPageRef.value.searchMenuList(searchKeyword.value);
+  listPageRef.value.searchList(searchKeyword.value);
 };
 
 const handleReadonly = (isReadonly: boolean) => {

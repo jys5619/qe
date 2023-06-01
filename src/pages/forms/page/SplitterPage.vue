@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md column">
-    <div v-if="title" class="column q-pa-sm" style="flex: 0">
+    <div v-if="!!title" class="column q-pa-sm" style="flex: 0">
       <div class="text-h5" style="border-bottom: 1px solid burlywood">
         {{ title }}
       </div>
@@ -8,17 +8,18 @@
     <div class="flex" style="flex: 1">
       <q-splitter
         v-model="splitterModel"
+        :horizontal="!!horizontal"
         style="flex: 1"
         :limits="limits"
         separator-class="bg-gray-8"
         :separator-style="separatorStyle"
       >
         <template v-slot:before>
-          <slot name="left"></slot>
+          <slot name="before"></slot>
         </template>
 
         <template v-slot:after>
-          <slot name="right"></slot>
+          <slot name="after"></slot>
         </template>
       </q-splitter>
     </div>
@@ -30,6 +31,7 @@ import { ref } from 'vue';
 
 interface ISplitterPageProps {
   title?: string;
+  horizontal?:boolean;
 }
 
 const props = defineProps<ISplitterPageProps>();
