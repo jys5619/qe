@@ -6,13 +6,9 @@
       </div>
     </div>
     <div class="flex" style="flex: 1">
-      <q-splitter
-        v-model="splitterModel"
+      <qe-splitter
+        ref="splitterRef"
         :horizontal="!!horizontal"
-        style="flex: 1"
-        :limits="limits"
-        separator-class="bg-gray-8"
-        :separator-style="separatorStyle"
       >
         <template v-slot:before>
           <slot name="before"></slot>
@@ -21,13 +17,16 @@
         <template v-slot:after>
           <slot name="after"></slot>
         </template>
-      </q-splitter>
+      </qe-splitter>
     </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import QeSplitter from 'src/components/splitter/QeSplitter.vue';
+
+
 
 interface ISplitterPageProps {
   title?: string;
@@ -35,20 +34,15 @@ interface ISplitterPageProps {
 }
 
 const props = defineProps<ISplitterPageProps>();
-const splitterModel = ref(100);
-const limits = ref([100, 100]);
-const separatorStyle = ref<string>('width: 0');
+
+const splitterRef = ref();
 
 const showSplitter = () => {
-  limits.value = [30, 70];
-  splitterModel.value = 50;
-  separatorStyle.value = 'width: 3px';
+  splitterRef.value.showSplitter();
 };
 
 const hideSplitter = () => {
-  limits.value = [100, 100];
-  splitterModel.value = 100;
-  separatorStyle.value = 'width: 0';
+  splitterRef.value.hideSplitter();
 };
 defineExpose({
   showSplitter,

@@ -28,7 +28,7 @@ export const useStoreMenu = defineStore('menu', {
       {'menuId':'dataSetting','pmenuId':'data','menuName':'Setting','menuPath':'','icon':'settings','separatorYn':'N'},
 
       {'menuId':'adminSetting','pmenuId':'admin','menuName':'Setting','menuPath':'/admin/setting','icon':'settings','separatorYn':'N'},
-      {'menuId':'adminCode','pmenuId':'admin','menuName':'Code','menuPath':'/admin/code','icon':'perm_identity','separatorYn':'N'},
+      {'menuId':'adminCode','pmenuId':'admin','menuName':'Code','menuPath':'/admin/code','icon':'code','separatorYn':'N'},
       {'menuId':'adminUser','pmenuId':'admin','menuName':'User','menuPath':'/admin/user','icon':'perm_identity','separatorYn':'N'},
       {'menuId':'adminMenu','pmenuId':'admin','menuName':'Menu','menuPath':'/admin/menu','icon':'menu','separatorYn':'N'},
 

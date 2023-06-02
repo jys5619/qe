@@ -26,5 +26,8 @@ const icons: string[] = [
   'drafts',
   'mail',
   'send',
+  'favorite',
+  'house',
+  'code',
 ];
 </script>

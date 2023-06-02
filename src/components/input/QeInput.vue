@@ -10,7 +10,7 @@
     :disable="disable"
     :readonly="readonly"
   />
-  <div v-if="!required" style="{{ height:100px; }}">&nbsp;</div>
+  <div v-if="!required || props.type === 'number'" style="{{ height:100px; }}">&nbsp;</div>
 </template>
 
 <script setup lang="ts">

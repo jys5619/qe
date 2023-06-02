@@ -189,11 +189,11 @@ const onReset = () => {
 };
 
 const onNew = () => {
-  emit('update:readonly', false);
   resetForm();
   if (qeMenuForm.value) {
     qeMenuForm.value.reset();
   }
+  emit('update:readonly', false);
 };
 
 const handleEdit = (event: Event) => {
