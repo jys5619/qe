@@ -1,13 +1,13 @@
 import { IpcMainInvokeEvent } from 'electron';
 import sqlliteDb from './common';
-import { IMenu} from 'app/src-electron/entity/qe.entity';
+import { IMenu } from 'app/src-electron/entity/qe.entity';
 
 const selectMenuList = (
   event: IpcMainInvokeEvent,
   pmenuId?: string
 ): Promise<IMenu[]> => {
   let menus: Promise<IMenu[]>;
-console.log('selectMenuList');
+
   if (!!pmenuId) {
     menus = sqlliteDb.selectList<IMenu, { $keyword: string }>(
       'menu/select-menu-list-pmenuid',

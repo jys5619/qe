@@ -1,7 +1,7 @@
 <template>
   <splitter-page ref="splitPageRef" title="Code">
     <template v-slot:before>
-      <splitter-page ref="splitListPageRef">
+      <splitter-page ref="splitListPageRef" :horizontal="true">
         <template v-slot:before>
           <div class="q-pa-sm">
             <CodeGroupListPage
@@ -90,7 +90,12 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { CodeGroupListPage, CodeGroupPage, CodeListPage, CodePage } from '../forms/code';
+import {
+  CodeGroupListPage,
+  CodeGroupPage,
+  CodeListPage,
+  CodePage,
+} from '../forms/code';
 import { ICodeGroup, ICode, codeEndpoint, codeService } from 'src/biz/code';
 import { SplitterPage } from '../forms/page';
 
@@ -102,7 +107,7 @@ const readonly = ref<boolean>(true);
 const listCodeGroupPageRef = ref();
 const listCodePageRef = ref();
 const splitPageRef = ref();
-// const splitListPageRef = ref();
+const splitListPageRef = ref();
 
 const handleNewCodeGroupAdd = () => {
   codeGroup.value = codeService.getICodeGroupInitValue();
@@ -147,5 +152,6 @@ const handleReadonly = (isReadonly: boolean) => {
 
 onMounted(() => {
   listCodeGroupPageRef.value.searchList();
+  splitListPageRef.value.showSplitter();
 });
 </script>

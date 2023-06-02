@@ -29,7 +29,13 @@
  */
 
 import { contextBridge, ipcRenderer as ir } from 'electron';
-import { ILoginData, IMenu, IUser } from './entity/qe.entity';
+import {
+  ICode,
+  ICodeGroup,
+  ILoginData,
+  IMenu,
+  IUser,
+} from './entity/qe.entity';
 
 contextBridge.exposeInMainWorld('api', {
   saveTextFile(text: string) {
@@ -65,5 +71,22 @@ contextBridge.exposeInMainWorld('api', {
 
   saveMenu(menu: IMenu) {
     return ir.invoke('saveMenu', menu);
-  }
+  },
+
+  // Code
+  selectCodeGroupList() {
+    return ir.invoke('selectCodeGroupList');
+  },
+
+  selectCodeList(codeGroup: string) {
+    return ir.invoke('selectCodeList', codeGroup);
+  },
+
+  saveCodeGroup(codeGroup: ICodeGroup) {
+    return ir.invoke('saveCodeGroup', codeGroup);
+  },
+
+  saveCode(code: ICode) {
+    return ir.invoke('saveCode', code);
+  },
 });

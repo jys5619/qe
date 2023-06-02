@@ -1,6 +1,6 @@
 import { ipcMain as im } from 'electron';
 import { authDao, menuDao, userDao } from './dao';
-
+import codeDao from './dao/code.dao';
 
 // Auth
 im.handle('login', authDao.login);
@@ -13,3 +13,9 @@ im.handle('saveUser', userDao.saveUser);
 im.handle('selectMenuList', menuDao.selectMenuList);
 im.handle('selectMyMenuList', menuDao.selectMyMenuList);
 im.handle('saveMenu', menuDao.saveMenu);
+
+// Code
+im.handle('selectCodeGroupList', codeDao.selectCodeGroupList);
+im.handle('selectCodeList', codeDao.selectCodeList);
+im.handle('saveCodeGroup', codeDao.saveCodeGroup);
+im.handle('saveCode', codeDao.saveCode);
