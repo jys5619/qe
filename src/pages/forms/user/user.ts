@@ -30,13 +30,6 @@ export const userListColumn: QTableColumn[] = [
     sortable: true,
   },
   {
-    name: 'emno',
-    field: 'emno',
-    label: 'EMNO',
-    align: 'center',
-    sortable: true,
-  },
-  {
     name: 'auth',
     field: 'auth',
     label: 'Auth',

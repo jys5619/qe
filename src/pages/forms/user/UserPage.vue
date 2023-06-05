@@ -13,14 +13,6 @@
       :disable="!readonly && editUser.id !== -1"
     />
 
-    <!-- <qe-input
-      v-model="editUser.pwd"
-      type="password"
-      label="Password"
-      :required="true"
-      :readonly="readonly"
-    /> -->
-
     <qe-input
       v-model="editUser.names"
       label="Name"
@@ -47,7 +39,6 @@
       :readonly="readonly"
       :options="userAuth"
     />
-    <qe-input v-model="editUser.emno" label="EMNO" :readonly="readonly" />
 
     <q-toggle
       :label="`Use`"

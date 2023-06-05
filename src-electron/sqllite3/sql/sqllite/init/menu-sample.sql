@@ -8,7 +8,6 @@ VALUES (
     NULL,
     NULL,
     NULL,
-    'USER',
     1,
     'Y'
   ),
@@ -20,7 +19,6 @@ VALUES (
     NULL,
     NULL,
     NULL,
-    'USER',
     2,
     'Y'
   ),
@@ -32,7 +30,6 @@ VALUES (
     NULL,
     NULL,
     NULL,
-    'USER',
     3,
     'Y'
   ),
@@ -44,7 +41,6 @@ VALUES (
     NULL,
     NULL,
     NULL,
-    'USER',
     4,
     'Y'
   ),
@@ -56,7 +52,6 @@ VALUES (
     NULL,
     NULL,
     NULL,
-    'USER',
     5,
     'Y'
   ),
@@ -68,80 +63,73 @@ VALUES (
     NULL,
     NULL,
     NULL,
-    'USER',
     6,
     'Y'
   ),
   (
     7,
-    'sample',
-    'MAIN',
-    'Sample',
-    NULL,
-    NULL,
-    NULL,
-    'USER',
-    7,
-    'Y'
-  ),
-  (
-    8,
     'mySetting',
     'myDesk',
     'Setting',
     NULL,
     'settings',
     'N',
-    'USER',
     1,
     'Y'
   ),
   (
-    9,
+    8,
     'projectSetting',
     'project',
     'Setting',
     NULL,
     'settings',
     'N',
-    'USER',
     1,
     'Y'
   ),
   (
-    10,
+    9,
     'programSetting',
     'program',
     'Setting',
     NULL,
     'settings',
     'N',
-    'USER',
     1,
     'Y'
   ),
   (
-    11,
+    10,
     'dataSetting',
     'data',
     'Setting',
     NULL,
     'settings',
     'N',
-    'USER',
     1,
     'Y'
   ),
   (
-    12,
+    11,
     'adminSetting',
     'admin',
     'Setting',
     '/admin/setting',
     'settings',
     'N',
-    'USER,ADMIN',
     1,
+    'Y'
+  ),
+  (
+    12,
+    'adminCode',
+    'admin',
+    'User',
+    '/admin/code',
+    'code',
+    'N',
+    2,
     'Y'
   ),
   (
@@ -152,8 +140,7 @@ VALUES (
     '/admin/user',
     'perm_identity',
     'N',
-    'USER,ADMIN',
-    2,
+    3,
     'Y'
   ),
   (
@@ -164,8 +151,7 @@ VALUES (
     '/admin/menu',
     'menu',
     'N',
-    'USER,ADMIN',
-    3,
+    4,
     'Y'
   ),
   (
@@ -176,7 +162,6 @@ VALUES (
     '/sample/icon',
     'delete',
     'N',
-    'USER,ADMIN',
     1,
     'Y'
   ),
@@ -188,7 +173,6 @@ VALUES (
     '/sample/single-search-form',
     'search',
     'N',
-    'USER,ADMIN',
     2,
     'Y'
   ),
@@ -200,7 +184,6 @@ VALUES (
     '/sample/single-search-form-side',
     'search',
     'N',
-    'USER,ADMIN',
     3,
     'Y'
   )

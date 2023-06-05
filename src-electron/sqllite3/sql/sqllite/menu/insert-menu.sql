@@ -5,7 +5,6 @@ INSERT INTO TB_MENU(
     MENU_PATH,
     ICON,
     SEPARATOR_YN,
-    AUTH,
     SORT_NO,
     USE_YN
   )
@@ -16,7 +15,6 @@ VALUES (
     ${ menuPath },
     ${ icon },
     ${ separatorYn },
-    ${ auth },
     ${ sortNo },
     ${ useYn }
   )

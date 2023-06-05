@@ -2,7 +2,7 @@ import { IpcMainInvokeEvent } from 'electron';
 import sqlliteDb from './common';
 import { IMenu } from 'app/src-electron/entity/qe.entity';
 
-const selectMenuList = (
+const selectMenuList = async (
   event: IpcMainInvokeEvent,
   pmenuId?: string
 ): Promise<IMenu[]> => {
@@ -40,6 +40,15 @@ const saveMenu = (event: IpcMainInvokeEvent, menu: IMenu): Promise<number> => {
   } else {
     menus = sqlliteDb.exec('menu/insert-menu', menu);
   }
+
+  const menuId = menu.menuId;
+  const auths = menu.auth.split(',')
+
+  sqlliteDb.exec('auth/delete-auth-menu', {menuId});
+
+  auths.forEach((value: string) => {
+    sqlliteDb.exec('auth/insert-auth-menu', {menuId, auth: value});
+  });
 
   return menus;
 };

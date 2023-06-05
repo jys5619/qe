@@ -29,6 +29,15 @@ const saveUser = (event: IpcMainInvokeEvent, user: IUser): Promise<number> => {
     users = sqlliteDb.exec('user/insert-user', user);
   }
 
+  const userId = user.userId;
+  const auths = user.auth.split(',')
+
+  sqlliteDb.exec('auth/delete-auth-user', {userId});
+
+  auths.forEach((value: string) => {
+    sqlliteDb.exec('auth/insert-auth-user', {userId, auth: value});
+  });
+
   return users;
 };
 

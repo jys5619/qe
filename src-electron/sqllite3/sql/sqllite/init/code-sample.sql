@@ -17,97 +17,7 @@ VALUES (
     'N',
     2,
     'Y'
-  ),
-  (
-    3,
-    'ICON3',
-    'Icon List',
-    'icon list',
-    'N',
-    3,
-    'Y'
-  ),
-  (
-    4,
-    'ICON4',
-    'Icon List',
-    'icon list',
-    'N',
-    4,
-    'Y'
-  ),
-  (
-    5,
-    'ICON5',
-    'Icon List',
-    'icon list',
-    'N',
-    5,
-    'Y'
-  ),
-  (
-    6,
-    'ICON6',
-    'Icon List',
-    'icon list',
-    'N',
-    6,
-    'Y'
-  ),
-  (
-    7,
-    'ICON7',
-    'Icon List',
-    'icon list',
-    'N',
-    7,
-    'Y'
   );
-(
-  8,
-  'ICON8',
-  'Icon List',
-  'icon list',
-  'N',
-  8,
-  'Y'
-),
-(
-  9,
-  'ICON9',
-  'Icon List',
-  'icon list',
-  'N',
-  9,
-  'Y'
-),
-(
-  10,
-  'ICON10',
-  'Icon List',
-  'icon list',
-  'N',
-  10,
-  'Y'
-),
-(
-  11,
-  'ICON11',
-  'Icon List',
-  'icon list',
-  'N',
-  11,
-  'Y'
-),
-(
-  12,
-  'ICON12',
-  'Icon List',
-  'icon list',
-  'N',
-  12,
-  'Y'
-);
 INSERT
   OR REPLACE INTO TB_CODE
 VALUES (
@@ -156,7 +66,7 @@ VALUES (
     'Y'
   ),
   (
-    66,
+    6,
     'ICON',
     'error',
     'error',

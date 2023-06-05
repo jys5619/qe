@@ -5,7 +5,6 @@ SET MENU_ID = ${ menuId },
   MENU_PATH = ${ menuPath },
   ICON = ${ icon },
   SEPARATOR_YN = ${ separatorYn },
-  AUTH = ${ auth },
   SORT_NO = ${ sortNo },
   USE_YN = ${ useYn }
 WHERE ID = ${ id }
