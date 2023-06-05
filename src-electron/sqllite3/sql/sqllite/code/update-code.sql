@@ -1,4 +1,4 @@
-UPDATE TB_CODE_GROUP
+UPDATE TB_CODE
 SET CODE_GROUP = ${ codeGroup },
   CODE = ${ code },
   CODE_NAME = ${ codeName },

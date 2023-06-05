@@ -140,14 +140,12 @@ const onSubmitCallback = async (event: Event) => {
   loading.value = true;
   if (!codeService.validateCodeGroup(editCodeGroup.value).isSuccess()) return;
   await codeEndpoint.saveCodeGroup(editCodeGroup.value);
-  debugger;
   emit('update:readonly', true);
   emit('submit', event);
   loading.value = false;
 };
 
 const onReset = () => {
-  debugger;
   emit('update:readonly', true);
   resetForm();
 };
@@ -182,7 +180,6 @@ watch(
         originalCodeGroup.value = {} as ICodeGroup;
         onReset();
       } else if (codeService.isICodeGroup(newCodeGroup)) {
-        debugger;
         originalCodeGroup.value = { ...(props.codeGroup as ICodeGroup) };
         if ( originalCodeGroup.value.id === -1 ) {
           onNew();
