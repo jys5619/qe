@@ -82,6 +82,7 @@ const setLeftMenu = (pmenuId: string) => {
 }
 
 const goPage = (path?: string) => {
+  console.log("SUB_MENU_CLICK", path || storeMenu.getRootPath());
   router.push(path || storeMenu.getRootPath());
 };
 </script>

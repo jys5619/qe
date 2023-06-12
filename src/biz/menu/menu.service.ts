@@ -1,3 +1,4 @@
+import { menuEndpoint } from '.';
 import { ValidateResult } from '../common/common';
 import { IMenuDto } from './dto/menu.dto';
 import { IMenu } from './menu.entity';
@@ -37,7 +38,7 @@ const convertIMenu = (menuDto: IMenuDto): IMenu => {
     menuPath: menuDto.menuPath,
     icon: menuDto.icon,
     separatorYn: menuDto.separatorYn,
-    auth: menuDto.auth.split(','),
+    auth: menuDto.auth?.split(',') || [],
     sortNo: menuDto.sortNo,
     useYn: menuDto.useYn,
   } as IMenu;

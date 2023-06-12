@@ -18,6 +18,22 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
+  // Data Menu
+  {
+    path: '/data',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/data/DataDbConnect.vue'),
+      },
+      {
+        path: 'dbConnect',
+        component: () => import('pages/data/DataDbConnect.vue'),
+      },
+    ],
+  },
+
   // Admin Menu
   {
     path: '/admin',

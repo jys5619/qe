@@ -19,7 +19,6 @@ const getIUserInitValue = (): IUser => {
     email: '',
     names: '',
     enames: '',
-    emno: '',
     auth: [],
     useYn: '',
   } as IUser;
@@ -34,8 +33,7 @@ const convertIUser = (userDto?: IUserDto): IUser => {
     user.email = userDto.email;
     user.names = userDto.names;
     user.enames = userDto.enames;
-    user.emno = userDto.emno;
-    user.auth = userDto.auth.split(',');
+    user.auth = userDto.auth?.split(',') || '';
     user.useYn = userDto.useYn;
   }
 
@@ -54,7 +52,6 @@ const convertIUserDto = (user: Partial<IUser>): IUserDto => {
     email: user.email || '',
     names: user.names || '',
     enames: user.enames || '',
-    emno: user.emno,
     auth: user.auth?.join(',') || '',
     useYn: user.useYn || '',
   };
