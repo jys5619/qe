@@ -1,7 +1,3 @@
 DELETE FROM TB_AUTH
 WHERE TARGET_TYPE = 'USER'
-  AND TARGET_ID IN (
-    SELECT ID
-    FROM TB_USER
-    WHERE USER_ID = ${ userId }
-  )
+  AND TARGET_ID = ${ userId }

@@ -14,7 +14,7 @@ WHERE (
     OR A.ENAMES LIKE '%' || $keyword || '%'
   )
   AND B.TARGET_TYPE = 'USER'
-  AND B.TARGET_ID = A.ID
+  AND B.TARGET_ID = A.USER_ID
 GROUP BY A.ID,
   A.USER_ID,
   A.PWD,

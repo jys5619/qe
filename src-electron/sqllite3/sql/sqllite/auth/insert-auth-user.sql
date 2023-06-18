@@ -1,6 +1,2 @@
 INSERT INTO TB_AUTH(TARGET_TYPE, TARGET_ID, AUTH)
-SELECT 'USER',
-  ID,
-  ${ auth }
-FROM TB_USER
-WHERE USER_ID = ${ userId }
+SELECT ('USER', ${ userId }, ${ auth })

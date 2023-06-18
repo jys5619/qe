@@ -1,7 +1,3 @@
 DELETE FROM TB_AUTH
 WHERE TARGET_TYPE = 'MENU'
-  AND TARGET_ID IN (
-    SELECT ID
-    FROM TB_MENU
-    WHERE MENU_ID = ${ menuId }
-  )
+  AND TARGET_ID = ${ menuId }

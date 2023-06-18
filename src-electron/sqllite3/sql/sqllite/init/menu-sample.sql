@@ -110,6 +110,7 @@ VALUES (
     1,
     'Y'
   ),
+  -- MENU
   (
     11,
     'adminSetting',

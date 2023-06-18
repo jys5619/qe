@@ -1,6 +1,2 @@
 INSERT INTO TB_AUTH(TARGET_TYPE, TARGET_ID, AUTH)
-SELECT 'MENU',
-  ID,
-  ${ auth }
-FROM TB_MENU
-WHERE MENU_ID = ${ menuId }
+VALUES('MENU', ${ menuId } ${ auth })

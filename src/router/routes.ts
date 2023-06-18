@@ -28,11 +28,32 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/data/DataDbConnect.vue'),
       },
       {
-        path: 'dbConnect',
+        path: 'db-connect',
         component: () => import('pages/data/DataDbConnect.vue'),
       },
     ],
   },
+
+  // Template
+  {
+    path: '/template',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/template/CreateTemplate.vue'),
+      },
+      {
+        path: 'cteate-template',
+        component: () => import('pages/template/CreateTemplate.vue'),
+      },
+      {
+        path: 'cteate-source',
+        component: () => import('pages/template/CreateSource.vue'),
+      },
+    ],
+  },
+
 
   // Admin Menu
   {
