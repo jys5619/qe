@@ -29,5 +29,17 @@ const icons: string[] = [
   'favorite',
   'house',
   'code',
+  'start',
+  'stop',
+  'bookmark',
+  'folder',
+  'man',
+  'woman',
+  'tag',
+  'mic',
+  'account_circle',
+  'restaurant_menu',
+  'room_service',
+  'photo'
 ];
 </script>
