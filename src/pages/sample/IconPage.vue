@@ -40,6 +40,8 @@ const icons: string[] = [
   'account_circle',
   'restaurant_menu',
   'room_service',
-  'photo'
+  'photo',
+  'TS',
+  'TSX',
 ];
 </script>

@@ -1,11 +1,11 @@
+import { TemplateType } from '../template.entity';
+
 export interface ITemplateDto {
   id: number;
-  name: string;
+  templateType: TemplateType,
+  fileName: string;
   extension: string;
   relativePath: string;
-  template: string;
-  source?: string;
+  contents: string;
   useYn: string;
 }
-
-

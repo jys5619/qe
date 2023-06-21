@@ -2,7 +2,7 @@
   <q-page class="q-pa-md" style="display: flex">
     <div class="q-pa-md example-row-equal-width">
     <div class="row">
-      <input id="sourceFolder" name="sourceFolder" type="file" webkitdirectory="true" ref="uploadRef" directory @change="onUploadFiles" :style="{display: 'none'}" />
+      <input id="sourceFolder" name="sourceFolder" type="file" webkitdirectory="true" directory @change="onUploadFiles" :style="{display: 'none'}" />
       <label for="sourceFolder">
         <q-chip square color="primary" text-color="white" icon="folder">
           Template을 만들 Source 폴더 선택
@@ -16,15 +16,17 @@
         </div>
       </div>
       <q-tree
-        :nodes="props"
+        :nodes="sourceTree"
         default-expand-all
         v-model:selected="selected"
         node-key="label"
+        ref="sourceTreeRef"
       />
     </div>
     </div>
     <div class="row">
-    <!-- <div  v-for="f in fileList" :key="f.relativePath">
+    <!-- <div  v-for="f in sourceList
+    " :key="f.relativePath">
       <div :style="{background: 'green', display:'block', margin: '10px'}">
         <div>name : {{ f.name }}</div>
         <div>extension : {{ f.extension }}</div>
@@ -41,17 +43,19 @@
           indicator-color="yellow-6"
           :align="`left`"
         >
-          <q-tab v-for="f in fileList" :key="f.relativePath" :name="f.relativePath" :label="f.relativePath" :style="{textTransform: 'initial'}"/>
+          <q-tab v-for="f in sourceList
+        " :key="f.relativePath" :name="f.relativePath" :label="f.relativePath" :style="{textTransform: 'initial'}"/>
         </q-tabs>
 
         <q-separator />
 
         <q-tab-panels v-model="tab" animated>
-          <q-tab-panel v-for="f in fileList" :key="f.relativePath"
+          <q-tab-panel v-for="f in sourceList"
+            :key="f.relativePath"
             :name="f.relativePath"
             :class="['bg-blue-1']"
           >
-          <div>name : {{ f.name }}</div>
+          <div>name : {{ f.fileName }}</div>
           <div>extension : {{ f.extension }}</div>
           <div>relativePath : {{ f.relativePath }}</div>
 
@@ -59,7 +63,7 @@
 
 
           <q-editor
-            v-model="f.source"
+            v-model="f.contents"
             toolbar-text-color="white"
             toolbar-toggle-color="yellow-8"
             toolbar-bg="primary"
@@ -77,46 +81,39 @@
 </template>
 
 <script setup lang="ts">
+import { QTreeNode } from 'quasar';
 import { ITemplate, templateService } from 'src/biz/template';
 import { reactive, ref } from 'vue';
+const sourceTreeRef = ref();
 const tab = ref('filelist');
 const selected = ref('');
-const fileList = reactive([] as ITemplate[]);
-const props = ref([{} as any]);
-
-
-function readFile(file: File, encoding = 'UTF-8'){
-  const template = templateService.getITemplateInitValue();
-
-  template.name = file.name;
-  template.extension = file.name.substring(file.name.lastIndexOf('.') + 1);
-  template.relativePath = file.webkitRelativePath.substring(file.webkitRelativePath.indexOf('/') + 1);
-
-  const fileReader = new FileReader();
-  fileReader.onload = () => {
-    template.source = fileReader.result as string;
-    fileList.push(template);
-  }
-  fileReader.readAsText(file, encoding);
-}
+const sourceList = reactive([] as ITemplate[]);
+const sourceTree = reactive([] as QTreeNode[]);
 
 const onUploadFiles = (event: any): void => {
-  const files: ReadonlyArray<File> = [...(event?.target?.files ? event.target.files : [])];
+  // File Load
+  const files = [...(event?.target?.files ? event.target.files : [])] as ReadonlyArray<File>;
 
+  // Template 만들기
+  sourceList.length = 0;
+  sourceList.push(...templateService.getSourceList(files));
+
+  // Tree Data 만들기
+  sourceTree.length = 0;
+  sourceTree.push(templateService.getTreeData(sourceList));
+
+
+  console.log(sourceTree);
+
+  // contents 채우기
   files.forEach((file) => {
-    readFile(file);
+    const source = sourceList.find((s) => s.fileName === file.name);
+    if ( !source ) return;
+    templateService.setFileContents(file, source);
   });
 
-  // var file_reader = new FileReader();
-  // file_reader.onload = (ev: ProgressEvent<FileReader>) => {
-  //   console.log(ev);
-  //   fileText.value = file_reader.result;
-  // };
-  // file_reader.readAsText(files[0], 'UTF-8');
+  sourceTreeRef.value.expandAll();
 };
-
-
-
 
 const selectGoodService = () => {
   if (selected.value !== 'Good service') {
@@ -128,52 +125,6 @@ const unselectNode = () => {
   selected.value = '';
 };
 
-const makeTreeData = (files: ITemplate[]): any[] => {
-  const treeData = [] as any[];
-
-
-  return treeData;
-};
-
-props.value = [
-        {
-          label: 'Satisfied customers',
-          avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
-          children: [
-            {
-              label: 'Good food',
-              icon: 'restaurant_menu',
-              children: [
-                { label: 'Quality ingredients' },
-                { label: 'Good recipe' }
-              ]
-            },
-            {
-              label: 'Good service',
-              icon: 'room_service',
-              children: [
-                { label: 'Prompt attention', icon: 'star' },
-                { label: 'Professional waiter', icon: 'star' }
-              ]
-            },
-            {
-              label: 'Pleasant surroundings',
-              icon: 'photo',
-              children: [
-                {
-                  label: 'Happy atmosphere'
-                },
-                {
-                  label: 'Good table presentation'
-                },
-                {
-                  label: 'Pleasing decor'
-                }
-              ]
-            }
-          ]
-        }
-      ]
 </script>
 
 <!--

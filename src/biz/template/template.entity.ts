@@ -1,9 +1,11 @@
+export type TemplateType = 'source' | 'template';
+
 export interface ITemplate {
   id: number;
-  name: string;
+  templateType: TemplateType,
+  fileName: string;
   extension: string;
   relativePath: string;
-  source: string;
-  template: string;
+  contents: string;
   useYn: string;
 }
