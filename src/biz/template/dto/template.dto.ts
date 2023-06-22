@@ -6,6 +6,8 @@ export interface ITemplateDto {
   fileName: string;
   extension: string;
   relativePath: string;
+  openPath: string;
+  openFolderName: string;
   contents: string;
   useYn: string;
 }

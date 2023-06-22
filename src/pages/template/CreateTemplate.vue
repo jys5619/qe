@@ -1,87 +1,47 @@
 <template>
   <q-page class="q-pa-md" style="display: flex">
-    <div class="q-pa-md example-row-equal-width">
     <div class="row">
-      <input id="sourceFolder" name="sourceFolder" type="file" webkitdirectory="true" directory @change="onUploadFiles" :style="{display: 'none'}" />
-      <label for="sourceFolder">
-        <q-chip square color="primary" text-color="white" icon="folder">
-          Template을 만들 Source 폴더 선택
-        </q-chip>
-      </label>
-      <div class="q-pa-md q-gutter-sm">
-      <div>
+      <div class="row">
         <div class="q-gutter-sm">
-          <q-btn size="sm" color="primary" @click="selectGoodService" label="Select 'Good service'" />
-          <q-btn v-if="selected" size="sm" color="red" @click="unselectNode" label="Unselect node" />
+          <input id="sourceFolder" name="sourceFolder" type="file" webkitdirectory="true" directory @change="onUploadFiles" :style="{display: 'none'}" />
+          <label for="sourceFolder">
+            <q-chip square color="primary" text-color="white" icon="folder">
+              Template을 만들 Folder Select...
+            </q-chip>
+          </label>
+          <q-tree
+            :nodes="sourceTree"
+            default-expand-all
+            v-model:selected="selected"
+            node-key="path"
+            ref="sourceTreeRef"
+          />
         </div>
+
       </div>
-      <q-tree
-        :nodes="sourceTree"
-        default-expand-all
-        v-model:selected="selected"
-        node-key="label"
-        ref="sourceTreeRef"
-      />
-    </div>
     </div>
     <div class="row">
-    <!-- <div  v-for="f in sourceList
-    " :key="f.relativePath">
-      <div :style="{background: 'green', display:'block', margin: '10px'}">
-        <div>name : {{ f.name }}</div>
-        <div>extension : {{ f.extension }}</div>
-        <div>relativePath : {{ f.relativePath }}</div>
-        <div>{{ f.source }}</div>
-      </div>
-    </div> flat infinite swipeable -->
-    <q-card class="q-pa-sm" flat>
-        <q-tabs
-          v-model="tab"
-          dense
-          class="bg-primary text-white"
-          active-color="yellow-6"
-          indicator-color="yellow-6"
-          :align="`left`"
-        >
-          <q-tab v-for="f in sourceList
-        " :key="f.relativePath" :name="f.relativePath" :label="f.relativePath" :style="{textTransform: 'initial'}"/>
-        </q-tabs>
-
-        <q-separator />
-
-        <q-tab-panels v-model="tab" animated>
-          <q-tab-panel v-for="f in sourceList"
-            :key="f.relativePath"
-            :name="f.relativePath"
-            :class="['bg-blue-1']"
-          >
-          <div>name : {{ f.fileName }}</div>
-          <div>extension : {{ f.extension }}</div>
-          <div>relativePath : {{ f.relativePath }}</div>
-
-
-
+      {{ selected}}
+          <!-- <div>name : {{ selected.fileName }}</div>
+          <div>extension : {{ selected?.extension }}</div>
+          <div>relativePath : {{ selected?.relativePath }}</div>
 
           <q-editor
-            v-model="f.contents"
+            v-model="selected.contents"
             toolbar-text-color="white"
             toolbar-toggle-color="yellow-8"
             toolbar-bg="primary"
             :toolbar="[]"
+          ></q-editor> -->
 
-          >
 
-    </q-editor>
-          </q-tab-panel>
-        </q-tab-panels>
-      </q-card>
     </div>
-    </div>
+    <!-- </div> -->
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { QTreeNode } from 'quasar';
+import { QTreeNode, useQuasar } from 'quasar';
 import { ITemplate, templateService } from 'src/biz/template';
 import { reactive, ref } from 'vue';
 const sourceTreeRef = ref();
@@ -90,29 +50,68 @@ const selected = ref('');
 const sourceList = reactive([] as ITemplate[]);
 const sourceTree = reactive([] as QTreeNode[]);
 
+const $q = useQuasar();
+
+(() => {
+  if ( sourceTree.length === 0 ) {
+    sourceTree.push(templateService.getFolderNode('소스폴더'));
+  }
+})();
+
 const onUploadFiles = (event: any): void => {
   // File Load
   const files = [...(event?.target?.files ? event.target.files : [])] as ReadonlyArray<File>;
 
+  if ( !files || files.length === 0 ) return;
+
+  const file = files[0];
+  const openFolderName = file.webkitRelativePath.substring(0, file.webkitRelativePath.indexOf('/'))
+  const sleashPath = file.path.replace(/\\/g, '/');
+  const openPath = sleashPath.substring(0, sleashPath.indexOf(file.webkitRelativePath) - 1);
+
+  // 기존에 열었던 폴더인 경우
+  if ( sourceList.some((t: ITemplate) => (`${t.openPath}/${t.openFolderName}/${t.relativePath}`).startsWith(`${openPath}/${openFolderName}`)) ) {
+    $q.dialog({
+      title: 'Alert',
+      message: `이미 등록된 폴더가 있습니다. 재등록을 원하시면 삭제 후 입력 하십시오.(${openPath}/${openFolderName})`
+    }).onOk(() => {
+      // console.log('OK')
+    }).onCancel(() => {
+      // console.log('Cancel')
+    }).onDismiss(() => {
+      // console.log('I am triggered on both OK and Cancel')
+    });
+    event.target.value = '';
+    return;
+  }
+
   // Template 만들기
-  sourceList.length = 0;
-  sourceList.push(...templateService.getSourceList(files));
-
-  // Tree Data 만들기
-  sourceTree.length = 0;
-  sourceTree.push(templateService.getTreeData(sourceList));
-
-
-  console.log(sourceTree);
+  const newSourceList = templateService.getSourceList(files, openFolderName, openPath);
+  sourceList.push(...newSourceList);
 
   // contents 채우기
   files.forEach((file) => {
-    const source = sourceList.find((s) => s.fileName === file.name);
+    const source = newSourceList.find((s) => s.fileName === file.name);
     if ( !source ) return;
     templateService.setFileContents(file, source);
   });
 
+  // Tree Data 만들기
+  const newSourceTree = templateService.getTreeData(newSourceList);
+
+  const rootNode = sourceTree[0].children || [];
+  if ( !rootNode.some((node: QTreeNode) => node.label === openPath) ) {
+    const pathNode = templateService.getFolderNode(openPath, {path: openPath});
+    pathNode?.children?.push(newSourceTree);
+    rootNode.push(pathNode);
+  } else {
+    const pathNode = rootNode.find((node: QTreeNode) => node.label === openPath);
+    pathNode?.children?.push(newSourceTree);
+  }
+
   sourceTreeRef.value.expandAll();
+
+  event.target.value = '';
 };
 
 const selectGoodService = () => {
@@ -126,13 +125,3 @@ const unselectNode = () => {
 };
 
 </script>
-
-<!--
-lastModified: 1685633548119
-lastModifiedDate: Fri Jun 02 2023 00:32:28 GMT+0900 (한국 표준시) {}
-name: "code.endpoint.ts"
-path: "D:\\dev\\workspace\\qe\\src\\biz\\code\\code.endpoint.ts"
-size: 1840
-type: "video/vnd.dlna.mpeg-tts"
-webkitRelativePath: "code/code.endpoint.ts"
--->

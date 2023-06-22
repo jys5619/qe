@@ -10,6 +10,8 @@ const isITemplate = (obj: any): obj is ITemplate => {
     'name' in obj &&
     'extension' in obj &&
     'relativePath' in obj &&
+    'openPath' in obj &&
+    'openFolderName' in obj &&
     'contents' in obj
   );
 };
@@ -21,6 +23,8 @@ const getITemplateInitValue = (templateType: TemplateType): ITemplate => {
     fileName: '',
     extension: '',
     relativePath: '',
+    openPath: '',
+    openFolderName: '',
     contents: '',
   } as ITemplate;
 };
@@ -34,6 +38,8 @@ const convertITemplate = (templateDto?: ITemplateDto): ITemplate => {
     template.fileName = templateDto.fileName;
     template.extension = templateDto.extension;
     template.relativePath = templateDto.relativePath;
+    template.openPath = templateDto.openPath;
+    template.openFolderName = templateDto.openFolderName;
     template.contents = templateDto.contents || '';
     template.useYn = templateDto.useYn;
   }
@@ -53,6 +59,8 @@ const convertITemplateDto = (template: Partial<ITemplate>): ITemplateDto => {
     fileName: template.fileName || '',
     extension: template.extension || '',
     relativePath: template.relativePath || '',
+    openPath: template.openPath || '',
+    openFolderName: template.openFolderName || '',
     contents: template.contents || '',
     useYn: template.useYn || '',
   };
@@ -86,36 +94,50 @@ const validate = (template: Partial<ITemplate>): ValidateResult => {
 };
 
 
-const getSourceList = (files: ReadonlyArray<File>): ITemplate[] => {
+const getSourceList = (files: ReadonlyArray<File>, openFolderName: string, openPath: string): ITemplate[] => {
   const sourceList = [] as ITemplate[];
   files.forEach((file) => {
     const source = templateService.getITemplateInitValue('source');
     source.fileName = file.name;
     source.extension = file.name.substring(file.name.lastIndexOf('.') + 1);
     source.relativePath = file.webkitRelativePath.substring(file.webkitRelativePath.indexOf('/') + 1);
+    source.openFolderName = openFolderName;
+    source.openPath = openPath;
     sourceList.push(source);
   });
 
   return sourceList;
 };
 
-const getRootNode = (): QTreeNode => {
+const getFolderNode = (label: string, params: {[index:string]: any} = {}): QTreeNode => {
   return {
-    label: 'Source Files',
+    label: label,
     icon: 'folder',
     iconColor: 'orange',
-    children: []
+    children: [],
+    ...params
+  } as QTreeNode;
+}
+
+const getFileNode = (label: string, params: {[index:string]: any} = {}): QTreeNode => {
+  return {
+    label: label,
+    icon: 'code',
+    iconColor: 'purple',
+    ...params
   } as QTreeNode;
 }
 
 const getTreeData = (templateList: ITemplate[]): QTreeNode => {
-  const rootNode = getRootNode();
+  if ( templateList.length === 0 ) return {};
+
+  const openFolderNode = getFolderNode(templateList[0].openFolderName, {path: `${templateList[0].openPath}/${templateList[0].openFolderName}`});
 
   for ( const template of templateList) {
-    appendTree(rootNode, template);
+    appendTree(openFolderNode, template);
   }
 
-  return rootNode;
+  return openFolderNode;
 };
 
 const appendTree = (rootNode: QTreeNode, template: ITemplate) => {
@@ -126,25 +148,15 @@ const appendTree = (rootNode: QTreeNode, template: ITemplate) => {
     if ( !!node.children ) {
       if ( path === template.fileName ) {
         // append new file
-        const newFile = {
-          label: template.fileName,
-          icon: 'code', //template.extension,
-          iconColor: 'purple'
-        } as QTreeNode;
-        node.children.push(newFile);
+        node.children.push(getFileNode(template.fileName, {path: `${node['path']}/${path}`}));
       } else {
         const findNodes = node.children.filter((n:QTreeNode) => n.label === path);
         if ( findNodes && findNodes.length > 0 ) {
           // exists folder
-          node = findNodes;
+          node = findNodes[0];
         } else {
           // append new folder
-          const newNode = {
-            label: path,
-            icon: 'folder',
-            iconColor: 'orange',
-            children: [],
-          } as QTreeNode;
+          const newNode = getFolderNode(path, {path: `${node['path']}/${path}`});
           node.children.push(newNode);
           node = newNode;
         }
@@ -167,7 +179,7 @@ const templateService = {
   convertITemplate,
   convertITemplateDto,
   validate,
-  getRootNode,
+  getFolderNode,
   getSourceList,
   getTreeData,
   setFileContents,

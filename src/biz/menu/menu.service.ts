@@ -1,4 +1,3 @@
-import { menuEndpoint } from '.';
 import { ValidateResult } from '../common/common';
 import { IMenuDto } from './dto/menu.dto';
 import { IMenu } from './menu.entity';
