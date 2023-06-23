@@ -41,7 +41,7 @@
             <!-- 3 : rieght -->
             <template v-slot:after>
               {{ selecteKey }}
-              <textarea v-if="selecteNode" v-model="selecteNode.contents" style="width: 100%; height: 500px;"></textarea>
+              <qe-codemirror />
             </template>
           </qe-splitter>
         </template>
@@ -56,7 +56,7 @@ import { QTreeNode, useQuasar } from 'quasar';
 import { ITemplate, templateService } from 'src/biz/template';
 import { NormalPage } from '../forms/page';
 import QeSplitter from 'src/components/splitter/QeSplitter.vue';
-
+import { QeCodemirror } from 'src/components';
 const pageRef = ref();
 const sourceTreeRef = ref();
 const selecteKey = ref('');

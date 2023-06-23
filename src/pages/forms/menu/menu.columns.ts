@@ -48,7 +48,7 @@ export const menuColumns: QTableColumn[] = [
     field: 'auth',
     label: 'Auth',
     align: 'center',
-    format(val) {
+    format(val:any) {
       return val.join(',');
     },
     sortable: true,
