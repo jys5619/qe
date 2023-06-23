@@ -12,7 +12,7 @@
     </template>
 
     <template v-slot:after>
-      <slot name="after"></slot>
+      <slot name="after" v-if="!!onlyShowAfter || !!showAfter"></slot>
     </template>
   </q-splitter>
 </template>
@@ -21,24 +21,39 @@
 import { ref } from 'vue';
 
 interface IQeSplitterProps {
+  onlyShowAfter?: boolean;
+  showAfter?: boolean;
   horizontal?:boolean;
+  limits?: any[];
+  splitterLeft?: number;
 }
 
 const props = defineProps<IQeSplitterProps>();
-const splitterModel = ref(100);
-const limits = ref([100, 100]);
-const separatorStyle = ref<string>('width: 0');
+const limits = ref(props.onlyShowAfter || props.showAfter ? props.limits || [30, 70] : [100, 100]);
+const preLimits = ref([30, 70]);
+const splitterModel = ref(props.onlyShowAfter || props.showAfter ? props.splitterLeft || 50 : 100);
+const preSplitterModel = ref(100);
+const separatorStyle = ref<string>(props.onlyShowAfter || props.showAfter ? !!props.horizontal ? 'height: 3px' : 'width: 3px' : 'display: none');
+const showAfter = ref(!!props.showAfter);
 
 const showSplitter = () => {
-  limits.value = [30, 70];
-  splitterModel.value = 50;
-  separatorStyle.value = props.horizontal ? 'height: 3px' : 'width: 3px';
+  if ( !showAfter.value && !props.onlyShowAfter ) {
+    limits.value = preLimits.value;
+    splitterModel.value = preSplitterModel.value;
+    separatorStyle.value = !!props.horizontal ? 'height: 3px' : 'width: 3px';
+    showAfter.value = true;
+  }
 };
 
 const hideSplitter = () => {
-  limits.value = [100, 100];
-  splitterModel.value = 100;
-  separatorStyle.value = props.horizontal ? 'height: 0' : 'width: 0';
+  if ( showAfter.value && !props.onlyShowAfter) {
+    preLimits.value = limits.value;
+    preSplitterModel.value = splitterModel.value;
+    limits.value = [100, 100];
+    splitterModel.value = 100;
+    separatorStyle.value = 'display: none';
+    showAfter.value = false;
+  }
 };
 defineExpose({
   showSplitter,

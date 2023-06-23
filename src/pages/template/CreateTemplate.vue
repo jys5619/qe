@@ -1,8 +1,14 @@
 <template>
-  <q-page class="q-pa-md" style="display: flex">
-    <div class="row">
-      <div class="row">
-        <div class="q-gutter-sm">
+  <normal-page title="Create Template">
+    <template v-slot:page>
+      <qe-splitter
+        ref="pageRef"
+        :onlyShowAfter="true"
+        :limits="[10, 50]"
+        :splitterLeft="15"
+      >
+        <!-- 1 : Left -->
+        <template v-slot:before>
           <input id="sourceFolder" name="sourceFolder" type="file" webkitdirectory="true" directory @change="onUploadFiles" :style="{display: 'none'}" />
           <label for="sourceFolder">
             <q-chip square color="primary" text-color="white" icon="folder">
@@ -10,51 +16,60 @@
             </q-chip>
           </label>
           <q-tree
+            dense
             :nodes="sourceTree"
             default-expand-all
-            v-model:selected="selected"
+            v-model:selected="selecteKey"
+            @update:selected="selectTreeNode"
             node-key="path"
             ref="sourceTreeRef"
           />
-        </div>
+        </template>
 
-      </div>
-    </div>
-    <div class="row">
-      {{ selected}}
-          <!-- <div>name : {{ selected.fileName }}</div>
-          <div>extension : {{ selected?.extension }}</div>
-          <div>relativePath : {{ selected?.relativePath }}</div>
+        <!-- 2 : Center -->
+        <template v-slot:after>
+          <qe-splitter
+            ref="pageRef"
+            :onlyShowAfter="true"
+            :limits="[30, 80]"
+            :splitterLeft="50"
+          >
+            <template v-slot:before>
+              Center
+            </template>
 
-          <q-editor
-            v-model="selected.contents"
-            toolbar-text-color="white"
-            toolbar-toggle-color="yellow-8"
-            toolbar-bg="primary"
-            :toolbar="[]"
-          ></q-editor> -->
-
-
-    </div>
-    <!-- </div> -->
-  </q-page>
+            <!-- 3 : rieght -->
+            <template v-slot:after>
+              {{ selecteKey }}
+              <textarea v-if="selecteNode" v-model="selecteNode.contents" style="width: 100%; height: 500px;"></textarea>
+            </template>
+          </qe-splitter>
+        </template>
+      </qe-splitter>
+    </template>
+  </normal-page>
 </template>
 
 <script setup lang="ts">
+import { reactive, ref } from 'vue';
 import { QTreeNode, useQuasar } from 'quasar';
 import { ITemplate, templateService } from 'src/biz/template';
-import { reactive, ref } from 'vue';
+import { NormalPage } from '../forms/page';
+import QeSplitter from 'src/components/splitter/QeSplitter.vue';
+
+const pageRef = ref();
 const sourceTreeRef = ref();
-const tab = ref('filelist');
-const selected = ref('');
+const selecteKey = ref('');
+const selecteNode = ref<ITemplate | undefined>(undefined);
 const sourceList = reactive([] as ITemplate[]);
 const sourceTree = reactive([] as QTreeNode[]);
+
 
 const $q = useQuasar();
 
 (() => {
   if ( sourceTree.length === 0 ) {
-    sourceTree.push(templateService.getFolderNode('소스폴더'));
+    sourceTree.push(templateService.getFolderNode('소스폴더', {icon: 'house', iconColor: 'blue'}));
   }
 })();
 
@@ -101,7 +116,7 @@ const onUploadFiles = (event: any): void => {
 
   const rootNode = sourceTree[0].children || [];
   if ( !rootNode.some((node: QTreeNode) => node.label === openPath) ) {
-    const pathNode = templateService.getFolderNode(openPath, {path: openPath});
+    const pathNode = templateService.getFolderNode(openPath, {path: openPath, icon: 'start', iconColor: 'blue'});
     pathNode?.children?.push(newSourceTree);
     rootNode.push(pathNode);
   } else {
@@ -114,14 +129,117 @@ const onUploadFiles = (event: any): void => {
   event.target.value = '';
 };
 
-const selectGoodService = () => {
-  if (selected.value !== 'Good service') {
-    selected.value = 'Good service';
+const selectTreeNode = (target: any) => {
+  if ( target ) {
+    selecteNode.value = sourceList.find((t: ITemplate) => `${t.openPath}/${t.openFolderName}/${t.relativePath}` === target);
+  } else {
+    selecteNode.value = undefined;
   }
-};
 
-const unselectNode = () => {
-  selected.value = '';
+  console.log('selecteNode ', selecteNode.value, target);
 };
 
 </script>
+
+
+<!--
+      <div class="row">
+        <div class="col">
+          <input id="sourceFolder" name="sourceFolder" type="file" webkitdirectory="true" directory @change="onUploadFiles" :style="{display: 'none'}" />
+          <label for="sourceFolder">
+            <q-chip square color="primary" text-color="white" icon="folder">
+              Template을 만들 Folder Select...
+            </q-chip>
+          </label>
+          <q-tree
+            dense
+            :nodes="sourceTree"
+            default-expand-all
+            v-model:selected="selecteKey"
+            @update:selected="selectTreeNode"
+            node-key="path"
+            ref="sourceTreeRef"
+          />
+        </div>
+        <div class="col">
+          {{ selecteKey }}
+          <textarea v-if="selecteNode" v-model="selecteNode.contents"></textarea>
+        </div>
+      </div> -->
+
+
+      <!--
+    <template v-slot:after>
+      <q-card class="q-pa-sm" flat>
+        <q-tabs
+          v-model="tab"
+          dense
+          class="bg-primary text-white"
+          active-color="yellow-6"
+          indicator-color="yellow-6"
+          :align="`left`"
+        >
+          <q-tab name="user" label="User" />
+        </q-tabs>
+
+        <q-separator />
+
+        <q-tab-panels v-model="tab" animated>
+          <q-tab-panel
+            name="user"
+            :class="[readonly ? 'bg-yellow-1' : 'bg-blue-1']"
+          >
+            <user-page
+              :user="user"
+              :readonly="readonly"
+              @close="handleClose"
+              @submit="handleSubmit"
+              @update:readonly="handleReadonly"
+            />
+          </q-tab-panel>
+        </q-tab-panels>
+      </q-card>
+    </template>
+    -->
+<!--
+<template>
+  <q-page class="q-pa-md" style="display: flex">
+    <div class="row">
+      <div class="row">
+        <div class="q-gutter-sm">
+          <input id="sourceFolder" name="sourceFolder" type="file" webkitdirectory="true" directory @change="onUploadFiles" :style="{display: 'none'}" />
+          <label for="sourceFolder">
+            <q-chip square color="primary" text-color="white" icon="folder">
+              Template을 만들 Folder Select...
+            </q-chip>
+          </label>
+          <q-tree
+            dense
+            :nodes="sourceTree"
+            default-expand-all
+            v-model:selected="selected"
+            node-key="path"
+            ref="sourceTreeRef"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      {{ selected}}
+          < !-- <div>name : {{ selected.fileName }}</div>
+          <div>extension : {{ selected?.extension }}</div>
+          <div>relativePath : {{ selected?.relativePath }}</div>
+
+          <q-editor
+            v-model="selected.contents"
+            toolbar-text-color="white"
+            toolbar-toggle-color="yellow-8"
+            toolbar-bg="primary"
+            :toolbar="[]"
+          ></q-editor> -- >
+
+
+    </div>
+    < !-- </div> -- >
+  </q-page>
+</template> -->

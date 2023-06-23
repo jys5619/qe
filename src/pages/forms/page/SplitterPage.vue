@@ -26,8 +26,6 @@
 import { ref } from 'vue';
 import QeSplitter from 'src/components/splitter/QeSplitter.vue';
 
-
-
 interface ISplitterPageProps {
   title?: string;
   horizontal?:boolean;
