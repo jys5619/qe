@@ -1,15 +1,19 @@
 <template>
+  <div flex>
   <Codemirror
+    ref="codemirrorRef"
     v-model:value="code"
     :options="cmOptions"
     :border="true"
     :placeholder="placeholder"
     :height="height"
+    wrap
   />
+</div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Codemirror from 'codemirror-editor-vue3';
 // placeholder
 import 'codemirror/addon/display/placeholder.js';
@@ -19,6 +23,7 @@ import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/display/placeholder.js';
 // theme
 import 'codemirror/theme/dracula.css';
+import { EditorConfiguration } from 'codemirror';
 
 export interface IQeCodeMirror {
   placeholder?: string;
@@ -26,11 +31,13 @@ export interface IQeCodeMirror {
 }
 
 const props = defineProps<IQeCodeMirror>();
+const codemirrorRef = ref();
 const code = ref('');
-const theme = ref('dracula');
-const cmOptions = ref({
+
+const cmOptions = ref<EditorConfiguration>({
   mode: 'text/javascript', // Language mode
-  theme: theme.value,
+  lineWrapping: true,
+  theme: 'dracula',
 });
 const placeholder = ref(props.placeholder || '');
 const height = ref(props.height || 500);
@@ -46,9 +53,13 @@ const getSource = () => {
 
 const setOption = (ext: string) => {
   if (ext === 'js') {
-    cmOptions.value = { mode: 'text/javascript', theme: theme.value };
+    cmOptions.value.mode = 'text/javascript';
   }
 };
+
+// onMounted(() => {
+//   codemirrorRef.value.resize(1000);
+// });
 
 defineExpose({
   setSource,

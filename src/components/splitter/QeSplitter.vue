@@ -37,7 +37,7 @@ const separatorStyle = ref<string>(props.onlyShowAfter || props.showAfter ? !!pr
 const showAfter = ref(!!props.showAfter);
 
 const showSplitter = () => {
-  if ( !showAfter.value && !props.onlyShowAfter ) {
+  if ( !showAfter.value || props.onlyShowAfter ) {
     limits.value = preLimits.value;
     splitterModel.value = preSplitterModel.value;
     separatorStyle.value = !!props.horizontal ? 'height: 3px' : 'width: 3px';
@@ -46,7 +46,7 @@ const showSplitter = () => {
 };
 
 const hideSplitter = () => {
-  if ( showAfter.value && !props.onlyShowAfter) {
+  if ( showAfter.value || props.onlyShowAfter) {
     preLimits.value = limits.value;
     preSplitterModel.value = splitterModel.value;
     limits.value = [100, 100];

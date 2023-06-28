@@ -1,5 +1,5 @@
 <template>
-  <QeTable
+  <qe-table
     :columns="columns"
     :rows="rows"
     @qe:row-dblclick="handleRowDblClick"

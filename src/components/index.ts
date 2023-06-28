@@ -5,6 +5,8 @@ import QeSearchSelect from './select/QeSearchSelect.vue';
 import QeSelect from './select/QeSelect.vue';
 import QeTable from './table/QeTable.vue';
 import QeCodeMirror from './QeCodeMirror.vue';
+import QeSplitter from './splitter/QeSplitter.vue'
+
 export {
   QeMultiSelect,
   QeSearchSelect,
@@ -13,4 +15,5 @@ export {
   QeSearchInput,
   QeTable,
   QeCodeMirror,
+  QeSplitter,
 };

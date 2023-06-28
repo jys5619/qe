@@ -58,7 +58,7 @@
       <qe-splitter ref="splitCodePageRef">
         <template v-slot:before>
           <div class="q-pa-sm">
-            <CodeListPage
+            <code-list-page
               ref="listCodePageRef"
               :search-keyword="searchKeyword"
               @row-dblclick="handleCodeRowDblClick"
@@ -150,30 +150,30 @@ const handleNewCodeAdd = () => {
   splitCodePageRef.value.showSplitter();
 };
 
-const handleCodeGroupRowDblClick = (event: Event, row: any, index: number) => {
+const handleCodeGroupRowDblClick = (event: Event, row: any) => {
   codeGroup.value = row as ICodeGroup;
   splitCodeGroupPageRef.value.showSplitter();
   listCodePageRef.value.searchList(codeGroup.value.codeGroup);
 };
 
-const handleCodeRowDblClick = (event: Event, row: any, index: number) => {
+const handleCodeRowDblClick = (event: Event, row: any) => {
   code.value = row as ICode;
   splitCodePageRef.value.showSplitter();
 };
 
-const handleSubmitCodeGroup = (event: Event) => {
+const handleSubmitCodeGroup = () => {
   listCodeGroupPageRef.value.searchList();
 };
 
-const handleSubmitCode = (event: Event) => {
+const handleSubmitCode = () => {
   listCodePageRef.value.searchList(codeGroup.value?.codeGroup);
 };
 
-const handleCloseCodeGroup = (event: Event) => {
+const handleCloseCodeGroup = () => {
   splitCodeGroupPageRef.value.hideSplitter();
 };
 
-const handleCloseCode = (event: Event) => {
+const handleCloseCode = () => {
   splitCodePageRef.value.hideSplitter();
 };
 

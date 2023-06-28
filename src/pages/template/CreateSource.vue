@@ -25,7 +25,7 @@
       </template>
 
       <template v-slot:after>
-        
+
       </template>
     </q-splitter>
   </q-page>
@@ -33,8 +33,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import {QeTable} from 'src/components';
-import QeSearchInput from 'src/components/input/QeSearchInput.vue';
+import { QeTable,  QeSearchInput } from 'src/components';
 import { DATA_COLUMNS, DATA_ROWS } from 'src/data';
 
 

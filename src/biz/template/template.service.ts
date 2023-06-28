@@ -130,6 +130,7 @@ const getFolderNode = (
     icon: 'folder',
     iconColor: 'orange',
     children: [],
+    type: 'folder',
     ...params,
   } as QTreeNode;
 };
@@ -142,6 +143,7 @@ const getFileNode = (
     label: label,
     icon: 'code',
     iconColor: 'purple',
+    type: 'file',
     ...params,
   } as QTreeNode;
 };
@@ -190,7 +192,33 @@ const appendTree = (rootNode: QTreeNode, template: ITemplate) => {
   }
 };
 
-function setFileContents(file: File, source: ITemplate, encoding = 'UTF-8') {
+const deleteTreeNode = (path: string, node: QTreeNode): boolean => {
+  if ( node.children?.some((c:QTreeNode) => c.path === path) ) {
+    const filterList = node.children?.filter((c:QTreeNode) => c.path !== path);
+    node.children = [...filterList];
+    return true;
+  }
+
+  if ( !node.children ) return false;
+
+  let result = false;
+
+  for ( const child of node.children ) {
+    if ( child.type === 'folder' ) {
+      result = deleteTreeNode(path, child);
+      if ( result ) {
+        return true;
+      }
+    }
+  }
+
+  return result;
+};
+
+/**
+ * file contents load
+ */
+const setFileContents = (file: File, source: ITemplate, encoding = 'UTF-8') => {
   const fileReader = new FileReader();
   fileReader.onload = () => {
     source.contents = fileReader.result as string;
@@ -208,6 +236,7 @@ const templateService = {
   getSourceList,
   getTreeData,
   setFileContents,
+  deleteTreeNode,
 };
 
 export { templateService };
