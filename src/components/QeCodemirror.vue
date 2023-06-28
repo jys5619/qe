@@ -3,31 +3,55 @@
     v-model:value="code"
     :options="cmOptions"
     :border="true"
-    placeholder="test placeholder"
-    :height="800"
+    :placeholder="placeholder"
+    :height="height"
   />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import Codemirror from "codemirror-editor-vue3";
+import Codemirror from 'codemirror-editor-vue3';
 // placeholder
-import "codemirror/addon/display/placeholder.js";
+import 'codemirror/addon/display/placeholder.js';
 // language
-import "codemirror/mode/javascript/javascript.js";
+import 'codemirror/mode/javascript/javascript.js';
 // placeholder
-import "codemirror/addon/display/placeholder.js";
+import 'codemirror/addon/display/placeholder.js';
 // theme
-import "codemirror/theme/dracula.css";
+import 'codemirror/theme/dracula.css';
 
-    const code = ref(`
-var i = 0;
-for (; i < 9; i++) {
-  console.log(i);
-  // more statements
-}`);
+export interface IQeCodeMirror {
+  placeholder?: string;
+  height?: number;
+}
+
+const props = defineProps<IQeCodeMirror>();
+const code = ref('');
+const theme = ref('dracula');
 const cmOptions = ref({
-  mode: "text/javascript", // Language mode
-  theme: "dracula", // Theme
+  mode: 'text/javascript', // Language mode
+  theme: theme.value,
+});
+const placeholder = ref(props.placeholder || '');
+const height = ref(props.height || 500);
+
+const setSource = (source: string, ext = 'js') => {
+  code.value = source;
+  setOption(ext);
+};
+
+const getSource = () => {
+  return code.value;
+};
+
+const setOption = (ext: string) => {
+  if (ext === 'js') {
+    cmOptions.value = { mode: 'text/javascript', theme: theme.value };
+  }
+};
+
+defineExpose({
+  setSource,
+  getSource,
 });
 </script>
