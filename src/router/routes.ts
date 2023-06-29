@@ -103,6 +103,10 @@ const routes: RouteRecordRaw[] = [
         path: 'single-search-form-side',
         component: () => import('pages/sample/SingleSearchFormSidePage.vue'),
       },
+      {
+        path: 'markdown',
+        component: () => import('pages/sample/SampleMarkdown.vue'),
+      },
     ],
   },
 
