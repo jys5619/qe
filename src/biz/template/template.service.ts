@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QTreeNode } from 'quasar';
 import { ValidateResult } from '../common/common';
-import { ITemplateDto } from './dto/template.dto';
-import { ITemplate, TemplateType } from './template.entity';
+import { ITemplate, TemplateType, ITemplateDto } from './template.entity';
 
 const isITemplate = (obj: any): obj is ITemplate => {
   return (

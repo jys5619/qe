@@ -15,12 +15,7 @@
           <QeTable :columns="columns" :rows="rows" />
         </div>
         <div class="q-pa-sm q-gutter-sm" style="text-align: right">
-          <q-btn
-            class="glossy"
-            color="primary"
-            label="NEW"
-            size="sm"
-          />
+          <q-btn class="glossy" color="primary" label="NEW" size="sm" />
         </div>
       </template>
 
@@ -60,10 +55,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import {QeTable} from 'src/components';
+import { QeTable } from 'src/components';
 import QeSearchInput from 'src/components/input/QeSearchInput.vue';
 import { DATA_COLUMNS, DATA_ROWS } from 'src/data';
-
 
 const columns = ref(DATA_COLUMNS);
 const rows = ref(DATA_ROWS);

@@ -97,8 +97,8 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 import { QTreeNode, useQuasar } from 'quasar';
-import { ITemplate, templateService } from 'src/biz/template';
-import { NormalPage } from '../forms/page';
+import { ITemplate, templateService } from 'src/biz';
+import NormalPage from 'src/components/page/NormalPage.vue';
 import { QeCodeMirror, QeInput, QeSplitter } from 'src/components';
 
 const pageRef = ref();

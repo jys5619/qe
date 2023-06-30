@@ -1,6 +1,5 @@
 import endpointUtil from '../common/endpoint.util';
-import { IUserDto } from './dto/user.dto';
-import { IUser } from './user.entity';
+import { IUser, IUserDto } from './user.entity';
 import { userService } from './user.service';
 
 /**

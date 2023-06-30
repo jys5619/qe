@@ -10,7 +10,7 @@
         />
       </div>
       <div class="q-pa-sm">
-        <MenuListPage
+        <menu-grid
           ref="listPageRef"
           :search-keyword="searchKeyword"
           @row-dblclick="handleRowDblClick"
@@ -47,7 +47,7 @@
             name="menu"
             :class="[readonly ? 'bg-yellow-1' : 'bg-blue-1']"
           >
-            <menu-page
+            <menu-form
               :menu="menu"
               :readonly="readonly"
               @close="handleClose"
@@ -64,9 +64,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { QeSearchSelect } from 'src/components';
-import { MenuPage, MenuListPage } from '../forms/menu';
-import { IMenu, menuEndpoint, menuService } from 'src/biz/menu';
-import { SplitterPage } from '../forms/page';
+import { IMenu, menuEndpoint, menuService } from 'src/biz';
+import SplitterPage from 'src/components/page/SplitterPage.vue';
+import MenuForm from './form/MenuForm.vue';
+import MenuGrid from './grid/MenuGrid.vue';
 
 const menu = ref<IMenu | undefined>(undefined);
 const tab = ref('menu');

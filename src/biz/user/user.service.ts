@@ -1,6 +1,5 @@
 import { ValidateResult } from '../common/common';
-import { IUserDto } from './dto/user.dto';
-import { IUser } from './user.entity';
+import { IUser, IUserDto } from './user.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isIUser = (obj: any): obj is IUser => {

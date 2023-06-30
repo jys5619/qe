@@ -2,62 +2,38 @@
   <q-form
     @submit="onSubmit"
     @reset="onReset"
-    ref="qeMenuForm"
+    ref="qeCodeGroupForm"
     class="q-gutter-sm"
   >
     <qe-input
-      v-model="editMenu.menuId"
-      label="Menu ID"
-      :required="true"
-      :readonly="readonly"
-    />
-    <qe-select
-      v-model="editMenu.pmenuId"
-      label="Parent Menu ID"
-      :required="true"
-      :readonly="readonly || editMenu.pmenuId === 'MAIN'"
-      :disable="!readonly && editMenu.pmenuId === 'MAIN'"
-      :options="mainMenuList"
-    />
-    <qe-input
-      v-model="editMenu.menuName"
-      label="Name"
+      v-model="editCodeGroup.codeGroup"
+      label="Code Group"
       :required="true"
       :readonly="readonly"
     />
     <qe-input
-      v-if="editMenu.pmenuId !== 'MAIN'"
-      v-model="editMenu.menuPath"
-      label="Path"
+      v-model="editCodeGroup.codeGroupName"
+      label="Code Group Name"
       :required="true"
       :readonly="readonly"
     />
     <qe-input
-      v-if="editMenu.pmenuId !== 'MAIN'"
-      v-model="editMenu.icon"
-      label="Icon"
+      v-model="editCodeGroup.description"
+      label="Description"
+      :required="true"
       :readonly="readonly"
     />
-
     <q-toggle
-      v-if="editMenu.pmenuId !== 'MAIN'"
-      :label="`Separator`"
+      :label="`Memory Load`"
       false-value="N"
       true-value="Y"
       dense
       :disable="readonly"
-      v-model="editMenu.separatorYn"
-    />
-    <qe-multi-select
-      v-model="editMenu.auth"
-      label="Auth"
-      :required="true"
-      :readonly="readonly"
-      :options="auth"
+      v-model="editCodeGroup.memoryYn"
     />
     <qe-input
       type="number"
-      v-model="editMenu.sortNo"
+      v-model="editCodeGroup.sortNo"
       label="Sort No"
       :required="true"
       :readonly="readonly"
@@ -68,7 +44,7 @@
       true-value="Y"
       dense
       :disable="readonly"
-      v-model="editMenu.useYn"
+      v-model="editCodeGroup.useYn"
     />
     <div class="q-mt-sm q-gutter-sm" style="text-align: right">
       <q-btn
@@ -96,7 +72,7 @@
         @click="handleEdit"
       />
       <q-btn
-        v-if="readonly || editMenu.id === -1"
+        v-if="readonly || editCodeGroup.id === -1"
         class="glossy"
         size="sm"
         color="blue-grey-7"
@@ -119,7 +95,7 @@
         <span class="q-ml-sm">저장하시겠습니까?</span>
       </q-card-section>
 
-      <q-card-actions align="right">
+      <q-card-actions :align="'right'">
         <q-btn flat label="Cancel" color="primary" v-close-popup />
         <q-btn
           flat
@@ -134,40 +110,21 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { QeInput, QeSelect, QeMultiSelect } from 'src/components';
-import { IMenu, menuEndpoint, menuService } from 'src/biz/menu';
+import { ref, watch } from 'vue';
+import { codeEndpoint, codeService, ICodeGroup } from 'src/biz';
 
-interface IMenuEditProps {
-  menu?: Partial<IMenu> | number;
+interface ICodeGroupEditProps {
+  codeGroup?: Partial<ICodeGroup | number>;
   readonly: boolean;
 }
 
-const authList = [
-  {
-    label: 'USER',
-    value: 'USER',
-  },
-  {
-    label: 'ADMIN',
-    value: 'ADMIN',
-  },
-];
-const auth = ref(authList);
-const props = defineProps<IMenuEditProps>();
+const props = defineProps<ICodeGroupEditProps>();
 const loading = ref<boolean>(false);
-const originalMenu = ref<Partial<IMenu>>({});
-const editMenu = ref<Partial<IMenu>>({});
-const qeMenuForm = ref();
+const originalCodeGroup = ref<Partial<ICodeGroup>>({});
+const editCodeGroup = ref<Partial<ICodeGroup>>({});
+const qeCodeGroupForm = ref();
 const confirm = ref(false);
-const mainMenuList = ref([{ label: '', value: '' }]);
-const emit = defineEmits([
-  'close',
-  'edit',
-  'submit',
-  'update:menu',
-  'update:readonly',
-]);
+const emit = defineEmits(['close', 'edit', 'submit', 'update:readonly']);
 
 const onSubmit = async () => {
   confirm.value = true;
@@ -175,9 +132,8 @@ const onSubmit = async () => {
 
 const onSubmitCallback = async (event: Event) => {
   loading.value = true;
-  if (!menuService.validate(editMenu.value).isSuccess()) return;
-  await menuEndpoint.saveMenu(editMenu.value);
-
+  if (!codeService.validateCodeGroup(editCodeGroup.value).isSuccess()) return;
+  await codeEndpoint.saveCodeGroup(editCodeGroup.value);
   emit('update:readonly', true);
   emit('submit', event);
   loading.value = false;
@@ -190,8 +146,8 @@ const onReset = () => {
 
 const onNew = () => {
   resetForm();
-  if (qeMenuForm.value) {
-    qeMenuForm.value.reset();
+  if (qeCodeGroupForm.value) {
+    qeCodeGroupForm.value.reset();
   }
   emit('update:readonly', false);
 };
@@ -206,20 +162,20 @@ const handleClose = (event: Event) => {
 };
 
 const resetForm = () => {
-  editMenu.value = { ...originalMenu.value };
+  editCodeGroup.value = { ...originalCodeGroup.value };
 };
 
 watch(
-  () => props.menu,
-  (newMenu, oldMenu) => {
-    if (newMenu !== oldMenu) {
-      if (typeof newMenu === 'number' && newMenu > -1) {
-        // TODO : ID으로 menu정보를 조회한다.
-        originalMenu.value = {} as IMenu;
+  () => props.codeGroup,
+  (newCodeGroup, oldCodeGroup) => {
+    if (newCodeGroup !== oldCodeGroup) {
+      if (typeof newCodeGroup === 'number' && newCodeGroup > -1) {
+        // TODO : ID으로 CodeGroup정보를 조회한다.
+        originalCodeGroup.value = {} as ICodeGroup;
         onReset();
-      } else if (menuService.isIMenu(newMenu)) {
-        originalMenu.value = { ...(props.menu as IMenu) };
-        if (originalMenu.value.id === -1) {
+      } else if (codeService.isICodeGroup(newCodeGroup)) {
+        originalCodeGroup.value = { ...(props.codeGroup as ICodeGroup) };
+        if (originalCodeGroup.value.id === -1) {
           onNew();
         } else {
           onReset();
@@ -228,17 +184,4 @@ watch(
     }
   }
 );
-
-onMounted(() => {
-  (async () => {
-    const searchMenuList = await menuEndpoint.getMenuList('MAIN', false);
-    const menuListData = Array<{ label: string; value: string }>();
-
-    searchMenuList.forEach((menu) => {
-      menuListData.push({ value: menu.menuId, label: menu.menuName });
-    });
-
-    mainMenuList.value = menuListData;
-  })();
-});
 </script>

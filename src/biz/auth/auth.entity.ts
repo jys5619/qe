@@ -1,10 +1,18 @@
-import { IUserDto } from '../user';
+import { IUserDto } from '../user/user.entity';
+import { ErrorResult } from 'src/biz/common/common';
 
-export interface ILoginData {
+interface ILoginData {
   userId: string;
   pwd: string;
 }
 
-export interface IAuth {
+interface IAuth {
   user: IUserDto;
 }
+
+interface IAuthDto {
+  user?: IUserDto;
+  errorResult?: ErrorResult;
+}
+
+export { ILoginData, IAuth, IAuthDto };

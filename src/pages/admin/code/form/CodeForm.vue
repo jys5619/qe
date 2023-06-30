@@ -2,51 +2,48 @@
   <q-form
     @submit="onSubmit"
     @reset="onReset"
-    ref="qeUserForm"
+    ref="qeCodeForm"
     class="q-gutter-sm"
   >
     <qe-input
-      v-model="editUser.userId"
-      label="User ID"
+      v-model="editCode.codeGroup"
+      label="Code Group"
       :required="true"
-      :readonly="readonly || editUser.id !== -1"
-      :disable="!readonly && editUser.id !== -1"
-    />
-
-    <qe-input
-      v-model="editUser.names"
-      label="Name"
-      :required="true"
-      :readonly="readonly"
+      :readonly="true"
+      :disable="!readonly"
     />
     <qe-input
-      v-model="editUser.enames"
-      label="English Name"
+      v-model="editCode.code"
+      label="Code Group"
       :required="true"
       :readonly="readonly"
     />
     <qe-input
-      v-model="editUser.email"
-      type="email"
-      label="Email"
+      v-model="editCode.codeName"
+      label="Code Group Name"
       :required="true"
       :readonly="readonly"
     />
-    <qe-multi-select
-      v-model="editUser.auth"
-      label="Auth"
+    <qe-input
+      v-model="editCode.description"
+      label="Description"
       :required="true"
       :readonly="readonly"
-      :options="userAuth"
     />
-
+    <qe-input
+      type="number"
+      v-model="editCode.sortNo"
+      label="Sort No"
+      :required="true"
+      :readonly="readonly"
+    />
     <q-toggle
       :label="`Use`"
       false-value="N"
       true-value="Y"
       dense
       :disable="readonly"
-      v-model="editUser.useYn"
+      v-model="editCode.useYn"
     />
     <div class="q-mt-sm q-gutter-sm" style="text-align: right">
       <q-btn
@@ -74,7 +71,7 @@
         @click="handleEdit"
       />
       <q-btn
-        v-if="readonly || editUser.id === -1"
+        v-if="readonly || editCode.id === -1"
         class="glossy"
         size="sm"
         color="blue-grey-7"
@@ -97,7 +94,7 @@
         <span class="q-ml-sm">저장하시겠습니까?</span>
       </q-card-section>
 
-      <q-card-actions align="right">
+      <q-card-actions :align="'right'">
         <q-btn flat label="Cancel" color="primary" v-close-popup />
         <q-btn
           flat
@@ -113,39 +110,22 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { QeInput, QeMultiSelect } from 'src/components';
-import { IUser } from 'src/biz/user/user.entity';
-import { userEndpoint, userService } from 'src/biz/user';
+import { codeEndpoint, codeService, ICode } from 'src/biz';
+// import { QeInput } from 'src/components';
+// import { ICode, codeEndpoint, codeService } from 'src/biz';
 
-interface IUserEditProps {
-  user?: Partial<IUser> | number;
+interface ICodeEditProps {
+  code?: Partial<ICode | number>;
   readonly: boolean;
 }
 
-const authList = [
-  {
-    label: 'USER',
-    value: 'USER',
-  },
-  {
-    label: 'ADMIN',
-    value: 'ADMIN',
-  },
-];
-const userAuth = ref(authList);
-const props = defineProps<IUserEditProps>();
+const props = defineProps<ICodeEditProps>();
 const loading = ref<boolean>(false);
-const originalUser = ref<Partial<IUser>>({});
-const editUser = ref<Partial<IUser>>({});
-const qeUserForm = ref();
+const originalCode = ref<Partial<ICode>>({});
+const editCode = ref<Partial<ICode>>({});
+const qeCodeForm = ref();
 const confirm = ref(false);
-const emit = defineEmits([
-  'close',
-  'edit',
-  'submit',
-  'update:user',
-  'update:readonly',
-]);
+const emit = defineEmits(['close', 'edit', 'submit', 'update:readonly']);
 
 const onSubmit = async () => {
   confirm.value = true;
@@ -153,8 +133,8 @@ const onSubmit = async () => {
 
 const onSubmitCallback = async (event: Event) => {
   loading.value = true;
-  if (!userService.validate(editUser.value).isSuccess()) return;
-  await userEndpoint.saveUser(editUser.value);
+  if (!codeService.validateCode(editCode.value).isSuccess()) return;
+  await codeEndpoint.saveCode(editCode.value);
 
   emit('update:readonly', true);
   emit('submit', event);
@@ -168,8 +148,8 @@ const onReset = () => {
 
 const onNew = () => {
   resetForm();
-  if (qeUserForm.value) {
-    qeUserForm.value.reset();
+  if (qeCodeForm.value) {
+    qeCodeForm.value.reset();
   }
   emit('update:readonly', false);
 };
@@ -184,20 +164,20 @@ const handleClose = (event: Event) => {
 };
 
 const resetForm = () => {
-  editUser.value = { ...originalUser.value };
+  editCode.value = { ...originalCode.value };
 };
 
 watch(
-  () => props.user,
-  (newUser, oldUser) => {
-    if (newUser !== oldUser) {
-      if (typeof newUser === 'number' && newUser > -1) {
-        // TODO : 사번으로 user정보를 조회한다.
-        originalUser.value = {} as IUser;
+  () => props.code,
+  (newCode, oldCode) => {
+    if (newCode !== oldCode) {
+      if (typeof newCode === 'number' && newCode > -1) {
+        // TODO : ID으로 Code정보를 조회한다.
+        originalCode.value = {} as ICode;
         onReset();
-      } else if (userService.isIUser(newUser)) {
-        originalUser.value = { ...(props.user as IUser) };
-        if (originalUser.value.id === -1) {
+      } else if (codeService.isICode(newCode)) {
+        originalCode.value = { ...(props.code as ICode) };
+        if (originalCode.value.id === -1) {
           onNew();
         } else {
           onReset();

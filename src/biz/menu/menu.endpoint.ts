@@ -1,6 +1,5 @@
 import endpointUtil from '../common/endpoint.util';
-import { IMenuDto } from './dto/menu.dto';
-import { IMenu } from './menu.entity';
+import { IMenu, IMenuDto } from './menu.entity';
 import { menuService } from './menu.service';
 
 /**
@@ -8,7 +7,10 @@ import { menuService } from './menu.service';
  * @param pmenuId
  * @returns
  */
-async function getMenuList(pmenuId: string | undefined, showNotify = true): Promise<IMenu[]> {
+async function getMenuList(
+  pmenuId: string | undefined,
+  showNotify = true
+): Promise<IMenu[]> {
   return endpointUtil
     .getList<IMenuDto>(window.api.selectMenuList(pmenuId || ''), showNotify)
     .then((datalist: IMenuDto[]) => {

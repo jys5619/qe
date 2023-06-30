@@ -9,7 +9,7 @@
         />
       </div>
       <div class="q-pa-sm">
-        <UserListPage
+        <user-grid
           ref="listPageRef"
           :search-keyword="searchKeyword"
           @row-dblclick="handleRowDblClick"
@@ -46,7 +46,7 @@
             name="user"
             :class="[readonly ? 'bg-yellow-1' : 'bg-blue-1']"
           >
-            <user-page
+            <user-form
               :user="user"
               :readonly="readonly"
               @close="handleClose"
@@ -63,9 +63,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { QeSearchInput } from 'src/components';
-import { UserPage, UserListPage } from '../forms/user';
-import { IUser, userService } from 'src/biz/user';
-import { SplitterPage } from '../forms/page';
+import { IUser, userService } from 'src/biz';
+import SplitterPage from 'src/components/page/SplitterPage.vue';
+import UserForm from './form/UserForm.vue';
+import UserGrid from './grid/UserGrid.vue';
 
 const user = ref<IUser | undefined>(undefined);
 const tab = ref('user');

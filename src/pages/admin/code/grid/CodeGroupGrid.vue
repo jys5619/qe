@@ -15,10 +15,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { codeEndpoint, ICodeGroup } from 'src/biz';
 import { QeTable } from 'src/components';
 import { codeGroupColumns } from './code.columns';
-import { ICodeGroup } from 'src/biz/code';
-import { codeEndpoint } from 'src/biz/code';
 
 const loading = ref<boolean>(false);
 const columns = ref(codeGroupColumns);

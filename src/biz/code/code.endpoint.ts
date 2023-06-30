@@ -1,6 +1,5 @@
 import endpointUtil from '../common/endpoint.util';
-import { ICodeGroupDto, ICodeDto } from './dto/code.dto';
-import { ICodeGroup, ICode } from './code.entity';
+import { ICodeGroup, ICode, ICodeGroupDto, ICodeDto } from './code.entity';
 import { codeService } from './code.service';
 
 /**
@@ -23,7 +22,10 @@ async function getCodeGroupList(showNotify = true): Promise<ICodeGroup[]> {
  * @param pmenuId
  * @returns
  */
-async function getCodeList(codeGroup: string, showNotify = true): Promise<ICode[]> {
+async function getCodeList(
+  codeGroup: string,
+  showNotify = true
+): Promise<ICode[]> {
   return endpointUtil
     .getList<ICodeDto>(window.api.selectCodeList(codeGroup), showNotify)
     .then((datalist: ICodeDto[]) => {

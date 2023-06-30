@@ -1,6 +1,5 @@
 import { ValidateResult } from '../common/common';
-import { ICodeGroupDto, ICodeDto } from './dto/code.dto';
-import { ICodeGroup, ICode } from './code.entity';
+import { ICodeGroup, ICode, ICodeGroupDto, ICodeDto } from './code.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isICodeGroup = (obj: any): obj is ICodeGroup => {

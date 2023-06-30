@@ -13,4 +13,17 @@ interface ITemplate {
   useYn: string;
 }
 
-export { TemplateType, ITemplate };
+interface ITemplateDto {
+  id: number;
+  templateType: TemplateType;
+  fileName: string;
+  extension: string;
+  relativePath: string;
+  openPath: string;
+  openFolderName: string;
+  path: string;
+  contents: string;
+  useYn: string;
+}
+
+export { TemplateType, ITemplate, ITemplateDto };

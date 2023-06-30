@@ -4,7 +4,7 @@
       <qe-splitter ref="splitCodeGroupPageRef">
         <template v-slot:before>
           <div class="q-pa-sm">
-            <CodeGroupListPage
+            <code-group-grid
               ref="listCodeGroupPageRef"
               :search-keyword="searchKeyword"
               @row-dblclick="handleCodeGroupRowDblClick"
@@ -40,7 +40,7 @@
                 name="codeGroup"
                 :class="[readonlyCodeGroup ? 'bg-yellow-1' : 'bg-blue-1']"
               >
-                <code-group-page
+                <code-group-form
                   :code-group="codeGroup"
                   :readonly="readonlyCodeGroup"
                   @close="handleCloseCodeGroup"
@@ -58,7 +58,7 @@
       <qe-splitter ref="splitCodePageRef">
         <template v-slot:before>
           <div class="q-pa-sm">
-            <code-list-page
+            <code-grid
               ref="listCodePageRef"
               :search-keyword="searchKeyword"
               @row-dblclick="handleCodeRowDblClick"
@@ -94,7 +94,7 @@
                 name="code"
                 :class="[readonlyCode ? 'bg-yellow-1' : 'bg-blue-1']"
               >
-                <code-page
+                <code-form
                   :code="code"
                   :readonly="readonlyCode"
                   @close="handleCloseCode"
@@ -112,15 +112,13 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import {
-  CodeGroupListPage,
-  CodeGroupPage,
-  CodeListPage,
-  CodePage,
-} from '../forms/code';
-import { ICodeGroup, ICode, codeService } from 'src/biz/code';
-import { SplitterPage } from '../forms/page';
-import QeSplitter from 'src/components/splitter/QeSplitter.vue';
+import { ICodeGroup, ICode, codeService } from 'src/biz';
+import { QeSplitter } from 'src/components';
+import SplitterPage from 'src/components/page/SplitterPage.vue';
+import CodeGroupForm from './form/CodeGroupForm.vue';
+import CodeForm from './form/CodeForm.vue';
+import CodeGroupGrid from './grid/CodeGroupGrid.vue';
+import CodeGrid from './grid/CodeGrid.vue';
 
 const codeGroup = ref<ICodeGroup | undefined>(undefined);
 const code = ref<ICode | undefined>(undefined);

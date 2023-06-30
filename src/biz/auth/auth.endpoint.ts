@@ -1,6 +1,5 @@
 import endpointUtil from '../common/endpoint.util';
-import { ILoginData } from './auth.entity';
-import { IAuthDto } from './dto/auth.dto';
+import { ILoginData, IAuthDto } from './auth.entity';
 
 /**
  * 로그인

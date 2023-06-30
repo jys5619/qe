@@ -54,7 +54,6 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
-
   // Admin Menu
   {
     path: '/admin',
@@ -62,23 +61,23 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        component: () => import('pages/admin/AdminSettingPage.vue'),
+        component: () => import('pages/admin/setting/AdminSettingPage.vue'),
       },
       {
         path: 'code',
-        component: () => import('pages/admin/AdminCodePage.vue'),
+        component: () => import('pages/admin/code/AdminCodePage.vue'),
       },
       {
         path: 'user',
-        component: () => import('pages/admin/AdminUserPage.vue'),
+        component: () => import('pages/admin/user/AdminUserPage.vue'),
       },
       {
         path: 'menu',
-        component: () => import('pages/admin/AdminMenuPage.vue'),
+        component: () => import('pages/admin/menu/AdminMenuPage.vue'),
       },
       {
         path: 'setting',
-        component: () => import('pages/admin/AdminSettingPage.vue'),
+        component: () => import('pages/admin/setting/AdminSettingPage.vue'),
       },
     ],
   },
