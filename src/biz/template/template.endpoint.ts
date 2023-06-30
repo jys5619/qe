@@ -1,5 +1,4 @@
 import endpointUtil from '../common/endpoint.util';
-import { ITemplateDto } from './dto/template.dto';
 import { ITemplate } from './template.entity';
 import { templateService } from './template.service';
 

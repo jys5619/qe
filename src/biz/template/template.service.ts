@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { QTreeNode } from 'quasar';
 import { ValidateResult } from '../common/common';
 import { ITemplateDto } from './dto/template.dto';
@@ -137,6 +138,7 @@ const getFolderNode = (
 
 const getFileNode = (
   label: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: { [index: string]: any } = {}
 ): QTreeNode => {
   return {
@@ -193,20 +195,20 @@ const appendTree = (rootNode: QTreeNode, template: ITemplate) => {
 };
 
 const deleteTreeNode = (path: string, node: QTreeNode): boolean => {
-  if ( node.children?.some((c:QTreeNode) => c.path === path) ) {
-    const filterList = node.children?.filter((c:QTreeNode) => c.path !== path);
+  if (node.children?.some((c: QTreeNode) => c.path === path)) {
+    const filterList = node.children?.filter((c: QTreeNode) => c.path !== path);
     node.children = [...filterList];
     return true;
   }
 
-  if ( !node.children ) return false;
+  if (!node.children) return false;
 
   let result = false;
 
-  for ( const child of node.children ) {
-    if ( child.type === 'folder' ) {
+  for (const child of node.children) {
+    if (child.type === 'folder') {
       result = deleteTreeNode(path, child);
-      if ( result ) {
+      if (result) {
         return true;
       }
     }
@@ -224,7 +226,7 @@ const setFileContents = (file: File, source: ITemplate, encoding = 'UTF-8') => {
     source.contents = fileReader.result as string;
   };
   fileReader.readAsText(file, encoding);
-}
+};
 
 const templateService = {
   isITemplate,

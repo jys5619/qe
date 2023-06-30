@@ -48,7 +48,8 @@ export const menuColumns: QTableColumn[] = [
     field: 'auth',
     label: 'Auth',
     align: 'center',
-    format(val:any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    format(val: any) {
       return val.join(',');
     },
     sortable: true,

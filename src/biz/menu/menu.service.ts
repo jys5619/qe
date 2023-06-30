@@ -2,7 +2,7 @@ import { ValidateResult } from '../common/common';
 import { IMenuDto } from './dto/menu.dto';
 import { IMenu } from './menu.entity';
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isIMenu = (obj: any): obj is IMenu => {
   return (
     'id' in obj &&

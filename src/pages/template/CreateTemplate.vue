@@ -9,76 +9,87 @@
       >
         <!-- 1 : Left -->
         <template v-slot:before>
-            <input
-              id="sourceFolder"
-              name="sourceFolder"
-              type="file"
-              webkitdirectory="true"
-              directory
-              @change="onUploadFiles"
-              :style="{ display: 'none' }"
-            />
-            <label for="sourceFolder">
-              <q-chip square class="glossy" color="primary" text-color="white" font-size="5px" size="sm" style="padding: 13.2px" icon="folder">
-                ADD FOLDER
-              </q-chip>
-            </label>
-            <q-btn
-              v-if="selectPath"
+          <input
+            id="sourceFolder"
+            name="sourceFolder"
+            type="file"
+            webkitdirectory="true"
+            directory
+            @change="onUploadFiles"
+            :style="{ display: 'none' }"
+          />
+          <label for="sourceFolder">
+            <q-chip
+              square
               class="glossy"
+              color="primary"
+              text-color="white"
+              font-size="5px"
               size="sm"
-              color="blue-grey-7"
-              label="Delete"
-              @click="handleDelete"
-            />
-            <q-tree
-              dense
-              :nodes="sourceTree"
-              default-expand-all
-              v-model:selected="selectKey"
-              @update:selected="selectTreeNode"
-              node-key="path"
-              ref="sourceTreeRef"
-            />
+              style="padding: 13.2px"
+              icon="folder"
+            >
+              ADD FOLDER
+            </q-chip>
+          </label>
+          <q-btn
+            v-if="selectPath"
+            class="glossy"
+            size="sm"
+            color="blue-grey-7"
+            label="Delete"
+            @click="handleDelete"
+          />
+          <q-tree
+            dense
+            :nodes="sourceTree"
+            default-expand-all
+            v-model:selected="selectKey"
+            @update:selected="selectTreeNode"
+            node-key="path"
+            ref="sourceTreeRef"
+          />
         </template>
 
         <!-- 2 : Center -->
         <template v-slot:after>
-            <qe-splitter
-              ref="pageRef"
-              :only-show-after="true"
-              :limits="[30, 80]"
-              :splitterLeft="50"
-            >
-              <template v-slot:before>
-                <div class="q-pa-sm" style="max-width: 100%; max-height: 400px; overflow-y: auto">
-                  <q-list bordered separator dense>
-                    <q-item
-                      clickable
-                      v-ripple
-                      v-for="source in sourceList"
-                      :key="source.path"
-                      style="overflow: hidden"
-                    >
-                      <q-item-section>{{ source.path }} </q-item-section>
-                    </q-item>
-                  </q-list>
-                </div>
-                <div class="q-pa-sm" style="max-width: 100%;">
-                  <qe-code-mirror ref="codeRef" placeholder="source" />
-                </div>
-              </template>
+          <qe-splitter
+            ref="pageRef"
+            :only-show-after="true"
+            :limits="[30, 80]"
+            :splitterLeft="50"
+          >
+            <template v-slot:before>
+              <div
+                class="q-pa-sm"
+                style="max-width: 100%; max-height: 400px; overflow-y: auto"
+              >
+                <q-list bordered separator dense>
+                  <q-item
+                    clickable
+                    v-ripple
+                    v-for="source in sourceList"
+                    :key="source.path"
+                    style="overflow: hidden"
+                  >
+                    <q-item-section>{{ source.path }} </q-item-section>
+                  </q-item>
+                </q-list>
+              </div>
+              <div class="q-pa-sm" style="max-width: 100%">
+                <qe-code-mirror ref="codeRef" placeholder="source" />
+              </div>
+            </template>
 
-              <!-- 3 : rieght -->
-              <template v-slot:after>
-                <qe-input label="ID" />
-                <qe-input label="Target String" />
-                <qe-input label="Result String" />
-              </template>
-            </qe-splitter>
+            <!-- 3 : rieght -->
+            <template v-slot:after>
+              <qe-input label="ID" />
+              <qe-input label="Target String" />
+              <qe-input label="Result String" />
+            </template>
+          </qe-splitter>
         </template>
       </qe-splitter>
-
     </template>
   </normal-page>
 </template>
@@ -122,6 +133,7 @@ onMounted(() => {
   );
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const onUploadFiles = (event: any): void => {
   // File Load
   const files = [
@@ -203,6 +215,7 @@ const onUploadFiles = (event: any): void => {
   event.target.value = '';
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const selectTreeNode = (target: any) => {
   if (target) {
     selectPath.value = target;
@@ -213,7 +226,7 @@ const selectTreeNode = (target: any) => {
     );
   }
 
-  if ( target === '' ) {
+  if (target === '') {
     selectPath.value = '';
     selecteNode.value = undefined;
   }
@@ -222,12 +235,13 @@ const selectTreeNode = (target: any) => {
 };
 
 const handleDelete = () => {
-
-  if ( selectPath.value ) {
-    const filterSourceList = sourceList.filter((t: ITemplate) => !t.path.startsWith(selectPath.value));
+  if (selectPath.value) {
+    const filterSourceList = sourceList.filter(
+      (t: ITemplate) => !t.path.startsWith(selectPath.value)
+    );
     sourceList.length = 0;
     sourceList.push(...filterSourceList);
     templateService.deleteTreeNode(selectPath.value, sourceTree[0]);
   }
-}
+};
 </script>

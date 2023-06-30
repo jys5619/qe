@@ -26,6 +26,7 @@ const rows = ref([] as ICode[]);
 
 const emit = defineEmits(['row-dblclick']);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleRowDblClick = (event: Event, row: any, index: number) => {
   emit('row-dblclick', event, row, index);
 };

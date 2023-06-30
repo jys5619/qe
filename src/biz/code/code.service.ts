@@ -2,6 +2,7 @@ import { ValidateResult } from '../common/common';
 import { ICodeGroupDto, ICodeDto } from './dto/code.dto';
 import { ICodeGroup, ICode } from './code.entity';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isICodeGroup = (obj: any): obj is ICodeGroup => {
   return (
     'id' in obj &&
@@ -11,13 +12,10 @@ const isICodeGroup = (obj: any): obj is ICodeGroup => {
   );
 };
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isICode = (obj: any): obj is ICode => {
   return (
-    'id' in obj &&
-    'codeGroup' in obj &&
-    'code' in obj &&
-    'codeName' in obj
+    'id' in obj && 'codeGroup' in obj && 'code' in obj && 'codeName' in obj
   );
 };
 
@@ -57,7 +55,9 @@ const convertICodeGroup = (codeGroupDto: ICodeGroupDto): ICodeGroup => {
   } as ICodeGroup;
 };
 
-const convertICodeGroupDto = (codeGroup: Partial<ICodeGroup>): ICodeGroupDto => {
+const convertICodeGroupDto = (
+  codeGroup: Partial<ICodeGroup>
+): ICodeGroupDto => {
   return {
     id: codeGroup.id || '',
     codeGroup: codeGroup.codeGroup || '',

@@ -125,14 +125,9 @@ const originalCodeGroup = ref<Partial<ICodeGroup>>({});
 const editCodeGroup = ref<Partial<ICodeGroup>>({});
 const qeCodeGroupForm = ref();
 const confirm = ref(false);
-const emit = defineEmits([
-  'close',
-  'edit',
-  'submit',
-  'update:readonly',
-]);
+const emit = defineEmits(['close', 'edit', 'submit', 'update:readonly']);
 
-const onSubmit = async (event: Event) => {
+const onSubmit = async () => {
   confirm.value = true;
 };
 
@@ -181,7 +176,7 @@ watch(
         onReset();
       } else if (codeService.isICodeGroup(newCodeGroup)) {
         originalCodeGroup.value = { ...(props.codeGroup as ICodeGroup) };
-        if ( originalCodeGroup.value.id === -1 ) {
+        if (originalCodeGroup.value.id === -1) {
           onNew();
         } else {
           onReset();
@@ -190,5 +185,4 @@ watch(
     }
   }
 );
-
 </script>

@@ -6,10 +6,7 @@
       </div>
     </div>
     <div class="flex" style="flex: 1">
-      <qe-splitter
-        ref="splitterRef"
-        :horizontal="!!horizontal"
-      >
+      <qe-splitter ref="splitterRef" :horizontal="!!horizontal">
         <template v-slot:before>
           <slot name="before"></slot>
         </template>
@@ -28,10 +25,10 @@ import QeSplitter from 'src/components/splitter/QeSplitter.vue';
 
 interface ISplitterPageProps {
   title?: string;
-  horizontal?:boolean;
+  horizontal?: boolean;
 }
 
-const props = defineProps<ISplitterPageProps>();
+defineProps<ISplitterPageProps>();
 
 const splitterRef = ref();
 

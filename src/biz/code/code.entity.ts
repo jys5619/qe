@@ -1,4 +1,4 @@
-export interface ICodeGroup {
+interface ICodeGroup {
   id: number;
   codeGroup: string;
   codeGroupName: string;
@@ -8,7 +8,7 @@ export interface ICodeGroup {
   useYn?: string;
 }
 
-export interface ICode {
+interface ICode {
   id: number;
   codeGroup: string;
   code: string;
@@ -17,3 +17,5 @@ export interface ICode {
   sortNo?: number;
   useYn?: string;
 }
+
+export { ICodeGroup, ICode };

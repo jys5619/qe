@@ -12,12 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import {} from 'vue';
 
 interface INormalPageProps {
   title?: string;
 }
 
-const props = defineProps<INormalPageProps>();
-
+defineProps<INormalPageProps>();
 </script>

@@ -1,19 +1,19 @@
 <template>
   <div flex>
-  <Codemirror
-    ref="codemirrorRef"
-    v-model:value="code"
-    :options="cmOptions"
-    :border="true"
-    :placeholder="placeholder"
-    :height="height"
-    wrap
-  />
-</div>
+    <Codemirror
+      ref="codemirrorRef"
+      v-model:value="code"
+      :options="cmOptions"
+      :border="true"
+      :placeholder="placeholder"
+      :height="height"
+      wrap
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import Codemirror from 'codemirror-editor-vue3';
 // placeholder
 import 'codemirror/addon/display/placeholder.js';
@@ -56,10 +56,6 @@ const setOption = (ext: string) => {
     cmOptions.value.mode = 'text/javascript';
   }
 };
-
-// onMounted(() => {
-//   codemirrorRef.value.resize(1000);
-// });
 
 defineExpose({
   setSource,

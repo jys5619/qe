@@ -74,12 +74,12 @@ const searchKeyword = ref<string | undefined>(undefined);
 const readonly = ref<boolean>(true);
 const splitPageRef = ref();
 const listPageRef = ref();
-const menuList = ref([{value: 'MAIN',label: 'Main',}]);
+const menuList = ref([{ value: 'MAIN', label: 'Main' }]);
 
 const handleChange = (text: string) => {
   const isPreMain = searchKeyword.value === 'MAIN';
   const isCurMain = text === 'MAIN';
-  if ( isPreMain !== isCurMain ) {
+  if (isPreMain !== isCurMain) {
     splitPageRef.value.hideSplitter();
   }
   searchKeyword.value = text;
@@ -90,20 +90,21 @@ const handleNewMenuAdd = () => {
   menu.value = menuService.getIMenuInitValue();
   menu.value.pmenuId = searchKeyword.value || '';
   menu.value.useYn = 'Y';
-  menu.value.separatorYn = searchKeyword.value  === 'MAIN' ? '' : 'N';
+  menu.value.separatorYn = searchKeyword.value === 'MAIN' ? '' : 'N';
   splitPageRef.value.showSplitter();
 };
 
-const handleRowDblClick = (event: Event, row: any, index: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handleRowDblClick = (event: Event, row: any) => {
   menu.value = row as IMenu;
   splitPageRef.value.showSplitter();
 };
 
-const handleClose = (event: Event) => {
+const handleClose = () => {
   splitPageRef.value.hideSplitter();
 };
 
-const handleSubmit = (event: Event) => {
+const handleSubmit = () => {
   listPageRef.value.searchList(searchKeyword.value);
 };
 
@@ -118,15 +119,14 @@ onMounted(() => {
       {
         value: 'MAIN',
         label: 'Main',
-      }
+      },
     ];
 
-    searchMenuList.forEach(menu => {
-      menuListData.push({value:menu.menuId, label:menu.menuName});
+    searchMenuList.forEach((menu) => {
+      menuListData.push({ value: menu.menuId, label: menu.menuName });
     });
     console.log(menuListData);
     menuList.value = menuListData;
   })();
-
 });
 </script>

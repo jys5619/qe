@@ -160,7 +160,7 @@ const originalMenu = ref<Partial<IMenu>>({});
 const editMenu = ref<Partial<IMenu>>({});
 const qeMenuForm = ref();
 const confirm = ref(false);
-const mainMenuList = ref([{label:'', value:''}]);
+const mainMenuList = ref([{ label: '', value: '' }]);
 const emit = defineEmits([
   'close',
   'edit',
@@ -169,7 +169,7 @@ const emit = defineEmits([
   'update:readonly',
 ]);
 
-const onSubmit = async (event: Event) => {
+const onSubmit = async () => {
   confirm.value = true;
 };
 
@@ -219,7 +219,7 @@ watch(
         onReset();
       } else if (menuService.isIMenu(newMenu)) {
         originalMenu.value = { ...(props.menu as IMenu) };
-        if ( originalMenu.value.id === -1 ) {
+        if (originalMenu.value.id === -1) {
           onNew();
         } else {
           onReset();
@@ -232,14 +232,13 @@ watch(
 onMounted(() => {
   (async () => {
     const searchMenuList = await menuEndpoint.getMenuList('MAIN', false);
-    const menuListData = Array<{label:string, value:string}>();
+    const menuListData = Array<{ label: string; value: string }>();
 
-    searchMenuList.forEach(menu => {
-      menuListData.push({value:menu.menuId, label:menu.menuName});
+    searchMenuList.forEach((menu) => {
+      menuListData.push({ value: menu.menuId, label: menu.menuName });
     });
 
     mainMenuList.value = menuListData;
   })();
-
 });
 </script>

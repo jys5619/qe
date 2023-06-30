@@ -23,6 +23,7 @@ import { ref, watch } from 'vue';
 
 export interface IQeTableProps {
   columns: QTableColumn[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rows: any[];
 }
 
@@ -32,6 +33,7 @@ const rows = ref(props.rows);
 
 const emit = defineEmits(['qe:row-dblclick']);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleRowDblClick = (event: Event, row: any, index: number) => {
   emit('qe:row-dblclick', event, row, index);
 };

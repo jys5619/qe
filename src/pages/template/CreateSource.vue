@@ -15,32 +15,24 @@
           <QeTable :columns="columns" :rows="rows" />
         </div>
         <div class="q-pa-sm q-gutter-sm" style="text-align: right">
-          <q-btn
-            class="glossy"
-            color="primary"
-            label="NEW"
-            size="sm"
-          />
+          <q-btn class="glossy" color="primary" label="NEW" size="sm" />
         </div>
       </template>
 
-      <template v-slot:after>
-
-      </template>
+      <template v-slot:after> </template>
     </q-splitter>
   </q-page>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { QeTable,  QeSearchInput } from 'src/components';
+import { QeTable, QeSearchInput } from 'src/components';
 import { DATA_COLUMNS, DATA_ROWS } from 'src/data';
-
 
 const columns = ref(DATA_COLUMNS);
 const rows = ref(DATA_ROWS);
 const splitterModel = ref(50);
-const tab = ref('mails');
+//const tab = ref('mails');
 
 // const loading = ref(false);
 

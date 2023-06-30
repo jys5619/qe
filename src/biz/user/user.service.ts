@@ -2,6 +2,7 @@ import { ValidateResult } from '../common/common';
 import { IUserDto } from './dto/user.dto';
 import { IUser } from './user.entity';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isIUser = (obj: any): obj is IUser => {
   return (
     'id' in obj &&
@@ -27,7 +28,7 @@ const getIUserInitValue = (): IUser => {
 const convertIUser = (userDto?: IUserDto): IUser => {
   const user = getIUserInitValue();
 
-  if ( userDto ) {
+  if (userDto) {
     user.id = userDto.id;
     user.userId = userDto.userId;
     user.email = userDto.email;

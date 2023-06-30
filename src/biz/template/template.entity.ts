@@ -1,6 +1,6 @@
-export type TemplateType = 'source' | 'template';
+type TemplateType = 'source' | 'template';
 
-export interface ITemplate {
+interface ITemplate {
   id: number;
   templateType: TemplateType;
   fileName: string;
@@ -12,3 +12,5 @@ export interface ITemplate {
   contents: string;
   useYn: string;
 }
+
+export { TemplateType, ITemplate };

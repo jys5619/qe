@@ -147,7 +147,7 @@ const emit = defineEmits([
   'update:readonly',
 ]);
 
-const onSubmit = async (event: Event) => {
+const onSubmit = async () => {
   confirm.value = true;
 };
 
@@ -197,7 +197,7 @@ watch(
         onReset();
       } else if (userService.isIUser(newUser)) {
         originalUser.value = { ...(props.user as IUser) };
-        if ( originalUser.value.id === -1 ) {
+        if (originalUser.value.id === -1) {
           onNew();
         } else {
           onReset();

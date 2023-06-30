@@ -74,7 +74,6 @@ const readonly = ref<boolean>(true);
 const splitPageRef = ref();
 const listPageRef = ref();
 
-
 const handleSearch = (text: string) => {
   searchKeyword.value = text;
   listPageRef.value.searchList(searchKeyword.value);
@@ -86,16 +85,17 @@ const handleNewUserAdd = () => {
   splitPageRef.value.showSplitter();
 };
 
-const handleRowDblClick = (event: Event, row: any, index: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handleRowDblClick = (event: Event, row: any) => {
   user.value = row;
   splitPageRef.value.showSplitter();
 };
 
-const handleClose = (event: Event) => {
+const handleClose = () => {
   splitPageRef.value.hideSplitter();
 };
 
-const handleSubmit = (event: Event) => {
+const handleSubmit = () => {
   listPageRef.value.searchList(searchKeyword.value);
 };
 

@@ -107,8 +107,6 @@
         </template>
       </qe-splitter>
     </template>
-
-
   </splitter-page>
 </template>
 
@@ -150,12 +148,14 @@ const handleNewCodeAdd = () => {
   splitCodePageRef.value.showSplitter();
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleCodeGroupRowDblClick = (event: Event, row: any) => {
   codeGroup.value = row as ICodeGroup;
   splitCodeGroupPageRef.value.showSplitter();
   listCodePageRef.value.searchList(codeGroup.value.codeGroup);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleCodeRowDblClick = (event: Event, row: any) => {
   code.value = row as ICode;
   splitCodePageRef.value.showSplitter();

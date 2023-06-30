@@ -124,14 +124,9 @@ const originalCode = ref<Partial<ICode>>({});
 const editCode = ref<Partial<ICode>>({});
 const qeCodeForm = ref();
 const confirm = ref(false);
-const emit = defineEmits([
-  'close',
-  'edit',
-  'submit',
-  'update:readonly',
-]);
+const emit = defineEmits(['close', 'edit', 'submit', 'update:readonly']);
 
-const onSubmit = async (event: Event) => {
+const onSubmit = async () => {
   confirm.value = true;
 };
 
@@ -181,7 +176,7 @@ watch(
         onReset();
       } else if (codeService.isICode(newCode)) {
         originalCode.value = { ...(props.code as ICode) };
-        if ( originalCode.value.id === -1 ) {
+        if (originalCode.value.id === -1) {
           onNew();
         } else {
           onReset();
@@ -190,5 +185,4 @@ watch(
     }
   }
 );
-
 </script>

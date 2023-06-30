@@ -79,10 +79,10 @@ const setLeftMenu = (pmenuId: string) => {
   leftMenuList.length = 0;
   leftMenuList.push(...storeMenu.getMenuList(pmenuId));
   leftDrawerOpen.value = true;
-}
+};
 
 const goPage = (path?: string) => {
-  console.log("SUB_MENU_CLICK", path || storeMenu.getRootPath());
+  console.log('SUB_MENU_CLICK', path || storeMenu.getRootPath());
   router.push(path || storeMenu.getRootPath());
 };
 </script>

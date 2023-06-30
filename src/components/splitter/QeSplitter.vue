@@ -23,21 +23,32 @@ import { ref } from 'vue';
 interface IQeSplitterProps {
   onlyShowAfter?: boolean;
   showAfter?: boolean;
-  horizontal?:boolean;
+  horizontal?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   limits?: any[];
   splitterLeft?: number;
 }
 
 const props = defineProps<IQeSplitterProps>();
-const limits = ref(props.onlyShowAfter || props.showAfter ? props.limits || [30, 70] : [100, 100]);
+const limits = ref(
+  props.onlyShowAfter || props.showAfter ? props.limits || [30, 70] : [100, 100]
+);
 const preLimits = ref([30, 70]);
-const splitterModel = ref(props.onlyShowAfter || props.showAfter ? props.splitterLeft || 50 : 100);
+const splitterModel = ref(
+  props.onlyShowAfter || props.showAfter ? props.splitterLeft || 50 : 100
+);
 const preSplitterModel = ref(100);
-const separatorStyle = ref<string>(props.onlyShowAfter || props.showAfter ? !!props.horizontal ? 'height: 3px' : 'width: 3px' : 'display: none');
+const separatorStyle = ref<string>(
+  props.onlyShowAfter || props.showAfter
+    ? !!props.horizontal
+      ? 'height: 3px'
+      : 'width: 3px'
+    : 'display: none'
+);
 const showAfter = ref(!!props.showAfter);
 
 const showSplitter = () => {
-  if ( !showAfter.value || props.onlyShowAfter ) {
+  if (!showAfter.value || props.onlyShowAfter) {
     limits.value = preLimits.value;
     splitterModel.value = preSplitterModel.value;
     separatorStyle.value = !!props.horizontal ? 'height: 3px' : 'width: 3px';
@@ -46,7 +57,7 @@ const showSplitter = () => {
 };
 
 const hideSplitter = () => {
-  if ( showAfter.value || props.onlyShowAfter) {
+  if (showAfter.value || props.onlyShowAfter) {
     preLimits.value = limits.value;
     preSplitterModel.value = splitterModel.value;
     limits.value = [100, 100];
