@@ -41,15 +41,18 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        component: () => import('pages/template/CreateTemplate.vue'),
+        component: () =>
+          import('pages/template/create-template/CreateTemplate.vue'),
       },
       {
         path: 'cteate-template',
-        component: () => import('pages/template/CreateTemplate.vue'),
+        component: () =>
+          import('pages/template/create-template/CreateTemplate.vue'),
       },
       {
         path: 'cteate-source',
-        component: () => import('pages/template/CreateSource.vue'),
+        component: () =>
+          import('pages/template/create-source/CreateSource.vue'),
       },
     ],
   },
