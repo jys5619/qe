@@ -7,6 +7,7 @@
       :border="true"
       :placeholder="placeholder"
       :height="height"
+      :style="style"
       wrap
     />
   </div>
@@ -28,6 +29,7 @@ import { EditorConfiguration } from 'codemirror';
 export interface IQeCodeMirror {
   placeholder?: string;
   height?: number;
+  style?:  unknown;
 }
 
 const props = defineProps<IQeCodeMirror>();

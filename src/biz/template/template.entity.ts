@@ -26,4 +26,14 @@ interface ITemplateDto {
   useYn: string;
 }
 
-export { TemplateType, ITemplate, ITemplateDto };
+interface ITemplateVar {
+  id: number;
+  varId: string;
+}
+
+interface ITemplateVardto {
+  id: number;
+  varId: string;
+}
+
+export { TemplateType, ITemplate, ITemplateDto, ITemplateVar, ITemplateVardto };

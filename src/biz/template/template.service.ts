@@ -117,7 +117,7 @@ const getSourceList = (
       source.openPath + '/' + source.openFolderName + '/' + source.relativePath;
     sourceList.push(source);
   });
-
+  console.log('sourceList :', sourceList);
   return sourceList;
 };
 
