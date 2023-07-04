@@ -1,10 +1,41 @@
-import { ITemplate, ITemplateVar } from './template.entity';
+import { strUtil } from '../utils/str.util';
+import { ConvertVariableArray, ITemplate, ITemplateVariable } from './template.entity';
 
-const convertTemplate = (source: ITemplate, sourceVarList : ITemplateVar[]) => {
-  // openFolderName  :   "components"
-  // openPath  :   "D:/dev/workspace/qe/src"
-  // path  :   "D:/dev/workspace/qe/src/components/table/QeTable.vue"
-  // relativePath  :   "table/QeTable.vue"
+const makeTemplateList = (sourceList: ITemplate[], variableList : ITemplateVariable[]): ITemplate[] => {
+  if ( !variableList || variableList.length === 0) return sourceList;
+
+  // 1. variableId convert value setting
+  variableList.forEach((v:ITemplateVariable) => {
+
+    const normalName = v.normalName || '';
+    const snakeNames = strUtil.convert.normalToSnake(normalName);;
+
+    v.variableId = strUtil.convert.snakeToCamel(snakeNames);
+
+    if ( v.type === 'text' ) {
+      v.textVariable.normal = normalName;
+      v.textVariable.snake = snakeNames;
+      v.textVariable.camel = strUtil.convert.snakeToCamel(snakeNames);
+      v.textVariable.pascal = strUtil.convert.snakeToPascal(snakeNames);
+      v.textVariable.kebab = strUtil.convert.snakeToKebab(snakeNames);
+      v.textVariable.SNAKE = strUtil.convert.snakeToUpper(snakeNames);
+    }
+  });
+
+  const pathVariableList = variableList.filter((v:ITemplateVariable) => v.target === 'path' || v.target === 'all');
+  const sourceVariableList = variableList.filter((v:ITemplateVariable) => v.target === 'source' || v.target === 'all');
+
+  const templateList: ITemplate[] = [];
+  sourceList.forEach((source: ITemplate) => {
+    const template: ITemplate = makeTemplate(source, pathVariableList, sourceVariableList);
+    templateList.push(template);
+  });
+
+  return templateList;
+};
+
+const makeTemplate = (source: ITemplate, pathVariableList : ITemplateVariable[], sourceVariableList : ITemplateVariable[]): ITemplate => {
+
   const template: ITemplate = {
     id: -1,
     templateType: 'template',
@@ -18,52 +49,66 @@ const convertTemplate = (source: ITemplate, sourceVarList : ITemplateVar[]) => {
     useYn: '',
   };
 
+  // 2. path convert
+
+  // 2.1 openFolderName convert
+  template.openFolderName = convertVariableStr(source.openFolderName, pathVariableList);
+
+  // 2.2 relativePath convert
+  template.relativePath = convertVariableStr(source.relativePath, pathVariableList);
+
+  // 2.3 path convert
+
+  // 3. source convert
+
+
+  // 3.1 source escape
+  // 3.2 sourceVarList 적용
+
+  // openFolderName  :   "components"
+  // openPath  :   "D:/dev/workspace/qe/src"
+  // path  :   "D:/dev/workspace/qe/src/components/table/QeTable.vue"
+  // relativePath  :   "table/QeTable.vue"
+
   return template;
 };
 
-// 변환 전 : My Visitor Count
-// Camel Case(카멜 케이스) - 변환 후 : myVisitorCount
-// Pascal Case(파스킬 케이스) - 변환 후 : MyVisitorCount
-// Kebab Case(케밥 케이스) - 변환 후 : my-visitor-count
-// Snake Case(스네이크 케이스) - 변환 후 : my_visitor_count
-// Upper Snake Case(스네이크 케이스) - 변환 후 : MY_VISITOR_COUNT
+const convertVariableStr = (names: string, variableList : ITemplateVariable[]): string => {
+  if ( !names ) return '';
 
-// 기본 snake에서 변환 시킨다.
+  let resultStr = names;
+  let varKeys: {[key: string]: string};
 
-// 띄워쓰기로 단어구분
-const sentenceToSnake = (string = '') => {
-  return (string || '').toLowerCase().replace(/([A-Z])/g, (match, group) => ` ${group.toLowerCase()}`).replace(/ +_*/g, '_').replace(/(^_*|_*$)/g, '');
-}
+  // type === 'text'
+  const textVariableList = variableList.filter((v:ITemplateVariable) => v.type === 'text');
 
-// camel -> snake
-const camelToSnake = (string = '') => {
-  return (string || '').replace(/([A-Z])/g, (match, group) => `_${group.toLowerCase()}`).replace(/^_/, '');
-}
+  let findText = '';
+  let variableId = '';
+  let keyName = '';
 
-// snake -> camel
-const snakeToCamel = (string = '') => {
-   return (string || '').replace(/(_\w)/g, (match, group) => group.toUpperCase());
-}
+  textVariableList.forEach((v: ITemplateVariable) => {
+    varKeys = {};
+    for ( const variableType of ConvertVariableArray ) {
+      findText = v.textVariable[variableType];
+      variableId = v.variableId;
 
-// snake -> Pascal
-const snakeToPascal = (string = '') => {
-  return ((string && `_${string}`) || '').replace(/(_\w)/g, (match, group) => group.toUpperCase());
-}
+      if ( resultStr.indexOf(findText) > -1 ) {
+        keyName = `{$${Object.keys(varKeys).length}}`
+        varKeys[keyName] = `<qe:text:${variableId}:${variableType}>`;
+        resultStr = resultStr.replaceAll(findText, keyName);
+      }
+    }
+  });
 
-// snake -> Kebab
-const snakeToKebab = (string = '') => {
-  return (string || '').replace(/(_)/g, '-');
-}
+  for ( const key of Object.keys(varKeys) ) {
+    resultStr = resultStr.replaceAll(key, varKeys[key]);
+  }
 
-
-// snake -> Kebab
-const snakeToUpper = (string = '') => {
-  return (string || '').toUpperCase();
-}
-
+  return resultStr;
+};
 
 const templateUtil = {
-  convertTemplate,
+  makeTemplateList,
 };
 
 export { templateUtil };

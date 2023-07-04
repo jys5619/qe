@@ -26,9 +26,25 @@ interface ITemplateDto {
   useYn: string;
 }
 
-interface ITemplateVar {
+const ConvertVariableArray: Array<string> = ['normal', 'snake', 'camel', 'pascal', 'kebab', 'SNAKE'];
+
+interface IConvertVariable {
+  normal: string;
+  snake: string;
+  camel: string;
+  pascal: string;
+  kebab: string;
+  SNAKE: string;
+};
+
+interface ITemplateVariable {
   id: number;
-  varId: string;
+  variableId?: string;
+  normalName?: string;
+  selectList?: Array<string>;
+  target: 'path' | 'source' | 'all';
+  type: 'text' | 'date' | 'select' | 'check' | 'function';
+  textVariable?: IConvertVariable;
 }
 
 interface ITemplateVardto {
@@ -36,4 +52,5 @@ interface ITemplateVardto {
   varId: string;
 }
 
-export { TemplateType, ITemplate, ITemplateDto, ITemplateVar, ITemplateVardto };
+export type { TemplateType, ITemplate, ITemplateDto, ITemplateVariable, ITemplateVardto };
+export { ConvertVariableArray };
