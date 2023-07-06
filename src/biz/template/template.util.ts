@@ -1,41 +1,29 @@
 import { strUtil } from '../utils/str.util';
-import { ConvertVariableArray, ITemplate, ITemplateVariable } from './template.entity';
+import { ConvertTextType, IConvertText, ITemplate, ISourceVariable, TemplateDataType, convertTextKeys, ITemplateVariable } from './template.entity';
 
-const makeTemplateList = (sourceList: ITemplate[], variableList : ITemplateVariable[]): ITemplate[] => {
+const makeTemplateList = (sourceList: ITemplate[], variableList : ISourceVariable[]): ITemplate[] => {
   if ( !variableList || variableList.length === 0) return sourceList;
 
-  // 1. variableId convert value setting
-  variableList.forEach((v:ITemplateVariable) => {
-
-    const normalName = v.normalName || '';
-    const snakeNames = strUtil.convert.normalToSnake(normalName);;
-
-    v.variableId = strUtil.convert.snakeToCamel(snakeNames);
-
-    if ( v.type === 'text' ) {
-      v.textVariable.normal = normalName;
-      v.textVariable.snake = snakeNames;
-      v.textVariable.camel = strUtil.convert.snakeToCamel(snakeNames);
-      v.textVariable.pascal = strUtil.convert.snakeToPascal(snakeNames);
-      v.textVariable.kebab = strUtil.convert.snakeToKebab(snakeNames);
-      v.textVariable.SNAKE = strUtil.convert.snakeToUpper(snakeNames);
+  // 1. convert-text convert value setting
+  variableList.forEach((variable:ISourceVariable) => {
+    if ( variable.dataType === 'convert-text') {
+      variable.convertText = getConvertText(variable.targetString)
     }
   });
 
-  const pathVariableList = variableList.filter((v:ITemplateVariable) => v.target === 'path' || v.target === 'all');
-  const sourceVariableList = variableList.filter((v:ITemplateVariable) => v.target === 'source' || v.target === 'all');
+  const pathSourceVariableList = variableList.filter((v:ISourceVariable) => v.target === 'path' || v.target === 'all');
+  const sourceVariableList = variableList.filter((v:ISourceVariable) => v.target === 'source' || v.target === 'all');
 
   const templateList: ITemplate[] = [];
   sourceList.forEach((source: ITemplate) => {
-    const template: ITemplate = makeTemplate(source, pathVariableList, sourceVariableList);
+    const template: ITemplate = makeTemplate(source, pathSourceVariableList, sourceVariableList);
     templateList.push(template);
   });
 
   return templateList;
 };
 
-const makeTemplate = (source: ITemplate, pathVariableList : ITemplateVariable[], sourceVariableList : ITemplateVariable[]): ITemplate => {
-
+const makeTemplate = (source: ITemplate, pathSourceVariableList : ISourceVariable[], sourceVariableList : ISourceVariable[]): ITemplate => {
   const template: ITemplate = {
     id: -1,
     templateType: 'template',
@@ -50,17 +38,24 @@ const makeTemplate = (source: ITemplate, pathVariableList : ITemplateVariable[],
   };
 
   // 2. path convert
+  const pathTemplateVariable: ITemplateVariable[] = [];
 
   // 2.1 openFolderName convert
-  template.openFolderName = convertVariableStr(source.openFolderName, pathVariableList);
+  template.openFolderName = convertVariableStr(source.openFolderName, pathSourceVariableList, pathTemplateVariable);
+  console.log("1-1 :", source.openFolderName);
+  console.log("1-2 :", template.openFolderName);
 
   // 2.2 relativePath convert
-  template.relativePath = convertVariableStr(source.relativePath, pathVariableList);
+  template.relativePath = convertVariableStr(source.relativePath, pathSourceVariableList, pathTemplateVariable);
+  console.log("2-1 :", source.relativePath);
+  console.log("2-2 :", template.relativePath);
 
   // 2.3 path convert
+  template.path = source.openPath + '/' + template.openFolderName + '/' + template.relativePath;
+  console.log("3-1 :", source.path);
+  console.log("3-3 :", template.path);
 
   // 3. source convert
-
 
   // 3.1 source escape
   // 3.2 sourceVarList 적용
@@ -69,42 +64,81 @@ const makeTemplate = (source: ITemplate, pathVariableList : ITemplateVariable[],
   // openPath  :   "D:/dev/workspace/qe/src"
   // path  :   "D:/dev/workspace/qe/src/components/table/QeTable.vue"
   // relativePath  :   "table/QeTable.vue"
-
+  console.log(template);
+  console.log(pathTemplateVariable);
   return template;
 };
 
-const convertVariableStr = (names: string, variableList : ITemplateVariable[]): string => {
-  if ( !names ) return '';
+/**
+ *
+ * @param normalText 자연언어 예) 'Sample Data Input'
+ * normal : Sample Data Input
+ * snake  : sample_data_input
+ * camel  : sampleDataInput
+ * pascal : SampleDataInput
+ * kebab  : sample-data-input
+ * SNAKE  : SAMPLE_DATA_INPUT
+ */
+const getConvertText = (normalText: string) => {
+  debugger;
+  const snakeNames = strUtil.convert.normalToSnake(normalText);
 
-  let resultStr = names;
-  let varKeys: {[key: string]: string};
+  const textVariable: IConvertText = {
+    normal: normalText,
+    snake: snakeNames,
+    camel: strUtil.convert.snakeToCamel(snakeNames),
+    pascal: strUtil.convert.snakeToPascal(snakeNames),
+    kebab: strUtil.convert.snakeToKebab(snakeNames),
+    SNAKE: strUtil.convert.snakeToUpper(snakeNames),
+  };
 
-  // type === 'text'
-  const textVariableList = variableList.filter((v:ITemplateVariable) => v.type === 'text');
+  console.log("VAL :", normalText, JSON.stringify(textVariable));
 
-  let findText = '';
-  let variableId = '';
-  let keyName = '';
+  return textVariable;
+}
 
-  textVariableList.forEach((v: ITemplateVariable) => {
-    varKeys = {};
-    for ( const variableType of ConvertVariableArray ) {
-      findText = v.textVariable[variableType];
-      variableId = v.variableId;
+const convertVariableStr = (context: string, sourceVariableList : ISourceVariable[], templateVariable: ITemplateVariable[]): string => {
+  let templateString = context;
+  let spaceString = context;
 
-      if ( resultStr.indexOf(findText) > -1 ) {
-        keyName = `{$${Object.keys(varKeys).length}}`
-        varKeys[keyName] = `<qe:text:${variableId}:${variableType}>`;
-        resultStr = resultStr.replaceAll(findText, keyName);
+  sourceVariableList.forEach((variable: ISourceVariable) => {
+    if ( variable.dataType === 'convert-text' ) {
+      convertTextKeys.forEach((convertTextKey: ConvertTextType) => {
+        let startIndex = -1;
+        const searchText = variable.convertText?.[convertTextKey] || '';
+        const templateKey = `<qe:${variable.id}.${convertTextKey}>`;
+
+        while ( (startIndex = spaceString.indexOf(searchText)) > -1 ) {
+          spaceString = spaceString.substring(0, startIndex) + ''.padEnd(templateKey.length, ' ') + spaceString.substring(startIndex + searchText.length);
+          templateString = templateString.substring(0, startIndex) + templateKey + templateString.substring(startIndex + searchText.length);
+          if ( !templateVariable.some((t:ITemplateVariable) => t.id === variable.id) ) {
+            templateVariable.push({
+              id: variable.id,
+              dataType: variable.dataType,
+            });
+          }
+        }
+      });
+    } else {
+      let startIndex = -1;
+      const searchText = variable.targetString;
+      const templateKey = `<qe:${variable.id}>`;
+
+      while ( (startIndex = spaceString.indexOf(searchText)) > -1 ) {
+        spaceString = spaceString.substring(0, startIndex) + ''.padEnd(templateKey.length, ' ') + spaceString.substring(startIndex + searchText.length);
+        templateString = templateString.substring(0, startIndex) + templateKey + templateString.substring(startIndex + searchText.length);
+        if ( !templateVariable.some((t:ITemplateVariable) => t.id === variable.id) ) {
+          templateVariable.push({
+            id: variable.id,
+            dataType: variable.dataType,
+            value: variable.selectList || variable.selectList,
+          });
+        }
       }
     }
   });
 
-  for ( const key of Object.keys(varKeys) ) {
-    resultStr = resultStr.replaceAll(key, varKeys[key]);
-  }
-
-  return resultStr;
+  return templateString;
 };
 
 const templateUtil = {

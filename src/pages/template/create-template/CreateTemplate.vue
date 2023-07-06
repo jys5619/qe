@@ -53,6 +53,14 @@
             <!-- 3 : rieght -->
             <template v-slot:after>
               <template-var-form />
+              <q-btn
+                type="button"
+                class="glossy"
+                size="sm"
+                color="blue-grey-7"
+                label="Make Template"
+                @click="handleMakeTemplate"
+              />
             </template>
           </qe-splitter>
         </template>
@@ -69,6 +77,8 @@ import NormalPage from 'src/components/page/NormalPage.vue';
 import { QeCodeMirror, QeSplitter } from 'src/components';
 import TemplateTree from './tree/TemplateTree.vue';
 import TemplateVarForm from './form/TemplateVarForm.vue';
+import { templateUtil } from 'src/biz/template/template.util';
+import { ConvertTextObject, ISourceVariable } from 'src/biz/template/template.entity';
 
 const sourcePageRef = ref();
 const codeMirrorRef = ref();
@@ -83,6 +93,44 @@ const changeCurrentNode = (currentNode: ITemplate) => {
     selectNode.value?.contents,
     selectNode.value?.extension
   );
+};
+
+const handleMakeTemplate = () => {
+  const variableList : ISourceVariable[] = [];
+  variableList.push({
+    id: 'id01',
+    title: 'Component',
+    description: 'Component',
+    targetString: 'Table',
+    target: 'path',
+    dataType: 'convert-text',
+    convertText: {...ConvertTextObject},
+    selectList: '',
+    dateFormat: '',
+  });
+  variableList.push({
+    id: 'id02',
+    title: 'Component',
+    description: 'Component',
+    targetString: 'Search Input',
+    target: 'path',
+    dataType: 'convert-text',
+    convertText: {...ConvertTextObject},
+    selectList: '',
+    dateFormat: '',
+  });
+  variableList.push({
+    id: 'id03',
+    title: 'Component',
+    description: 'Component',
+    targetString: 'component',
+    target: 'path',
+    dataType: 'text',
+    convertText: {...ConvertTextObject},
+    selectList: '',
+    dateFormat: '',
+  });
+  templateUtil.makeTemplateList(sourceList, variableList);
 };
 
 </script>

@@ -220,11 +220,11 @@ const deleteTreeNode = (path: string, node: QTreeNode): boolean => {
  * file contents load
  */
 const setFileContents = (file: File, source: ITemplate, encoding = 'UTF-8') => {
-  const fileReader = new FileReader();
-  fileReader.onload = () => {
-    source.contents = fileReader.result as string;
+  const fr = new FileReader();
+  fr.onload = () => {
+    source.contents = fr.result as string;
   };
-  fileReader.readAsText(file, encoding);
+  fr.readAsText(file, encoding);
 };
 
 const templateService = {

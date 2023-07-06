@@ -1,3 +1,7 @@
+const replaceAll = (str: string, search: string, replacement: string) => {
+  return str.split(search).join(replacement);
+};
+
 /**
  * [&, Tag, ", ']가 포함된 문자열을 escape문자열로 변환한다.
  * @param html [&, Tag, ", ']가 포함된 문자열
@@ -45,19 +49,19 @@ const camelToSnake = (string = '') => {
  * sample_data_input -> sampleDataInput
  **/
 const snakeToCamel = (string = '') => {
-   return (string || '').replace(/(_\w)/g, (match, group) => group.toUpperCase());
+   return (string || '').replace(/(_\w)/g, (match, group) => group[1].toUpperCase());
 };
 
 /**
- * snake -> Pascal
+ * snake -> pascal
  * sample_data_input -> SampleDataInput
  **/
 const snakeToPascal = (string = '') => {
-  return ((string && `_${string}`) || '').replace(/(_\w)/g, (match, group) => group.toUpperCase());
+  return ((string && `_${string}`) || '').replace(/(_\w)/g, (match, group) => group[1].toUpperCase());
 }
 
 /**
- * snake -> Kebab
+ * snake -> kebab
  * sample_data_input -> sample-data-input
  **/
 const snakeToKebab = (string = '') => {
@@ -73,6 +77,7 @@ const snakeToUpper = (string = '') => {
 }
 
 const strUtil = {
+  replaceAll,
   escapeHtml,
   unescapeHtml,
   convert: {

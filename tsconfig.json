@@ -3,8 +3,8 @@
   "compilerOptions": {
     "target": "es2017",
     "baseUrl": ".",
-    "lib": [
-      "ES2021.String"
-    ]
+    // "lib": [
+    //   "ES2021.String"
+    // ]
   }
 }
