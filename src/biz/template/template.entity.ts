@@ -56,6 +56,7 @@ interface ISourceVariable {
 interface ITemplateVariable {
   id: string;
   dataType: TemplateDataType;
+  target: 'path' | 'source' | 'all';
   value?: string;
 }
 

@@ -24,8 +24,14 @@ const escapeHtml = (html: string) => {
  * @returns  &amp; -> &, &lt; -> <, &gt; -> >, &quot; -> ", &#039 -> ';
  */
 const unescapeHtml = ( unhtml: string ) => {
-  const doc = new DOMParser().parseFromString(unhtml, 'text/html');
-  return doc.documentElement.textContent;
+  // const doc = new DOMParser().parseFromString(unhtml, 'text/html');
+  // return doc.documentElement.textContent;
+  let temp = replaceAll(unhtml, '&#039;', "'");
+  temp = replaceAll(temp, '&quot;', '"');
+  temp = replaceAll(temp, '&gt;', '>');
+  temp = replaceAll(temp, '&lt;', '<');
+  temp = replaceAll(temp, '&amp;', '&');
+  return temp;
 };
 
 /**

@@ -29,9 +29,10 @@
                 <q-item
                   clickable
                   v-ripple
-                  v-for="source in sourceList"
+                  v-for="source in (selectType === 'source' ? sourceList : templateList)"
                   :key="source.path"
                   style="overflow: hidden"
+                  @click="handleClickPath(source)"
                 >
                   <q-item-section>{{ source.path }}</q-item-section>
                 </q-item>
@@ -79,20 +80,40 @@ import TemplateTree from './tree/TemplateTree.vue';
 import TemplateVarForm from './form/TemplateVarForm.vue';
 import { templateUtil } from 'src/biz/template/template.util';
 import { ConvertTextObject, ISourceVariable } from 'src/biz/template/template.entity';
+import { strUtil } from 'src/biz/utils/str.util';
 
 const sourcePageRef = ref();
 const codeMirrorRef = ref();
 const selectNode = ref<ITemplate | undefined>(undefined);
 const sourceList = reactive([] as ITemplate[]);
 const sourceTree = reactive([] as QTreeNode[]);
+const templateList = reactive([] as ITemplate[]);
+const selectType = ref<'source'|'template'>('source');
 
 const changeCurrentNode = (currentNode: ITemplate) => {
   selectNode.value = currentNode;
 
-  codeMirrorRef.value.setSource(
-    selectNode.value?.contents,
-    selectNode.value?.extension
-  );
+  if ( selectType.value === 'source' ) {
+    codeMirrorRef.value.setSource(
+      selectNode.value?.contents,
+      selectNode.value?.extension
+    );
+  } else {
+    const template = templateList.find((template: ITemplate) => selectNode.value?.id === template.id);
+    if ( template ) {
+
+      codeMirrorRef.value.setSource(
+        strUtil.unescapeHtml(template.contents),
+        template.extension
+      );
+    }
+  }
+};
+
+const handleClickPath = (source: ITemplate) => {
+  console.log(source.contents);
+  console.log(strUtil.unescapeHtml(source.contents));
+  codeMirrorRef.value.setSource(strUtil.unescapeHtml(source.contents), source.extension);
 };
 
 const handleMakeTemplate = () => {
@@ -113,7 +134,7 @@ const handleMakeTemplate = () => {
     title: 'Component',
     description: 'Component',
     targetString: 'Search Input',
-    target: 'path',
+    target: 'all',
     dataType: 'convert-text',
     convertText: {...ConvertTextObject},
     selectList: '',
@@ -121,16 +142,20 @@ const handleMakeTemplate = () => {
   });
   variableList.push({
     id: 'id03',
-    title: 'Component',
-    description: 'Component',
-    targetString: 'component',
+    title: 'Components',
+    description: 'Components',
+    targetString: 'components',
     target: 'path',
     dataType: 'text',
     convertText: {...ConvertTextObject},
     selectList: '',
     dateFormat: '',
   });
-  templateUtil.makeTemplateList(sourceList, variableList);
+
+  templateList.length = 0;
+  templateList.push(...templateUtil.makeTemplateList(sourceList, variableList));
+
+  selectType.value = 'template';
 };
 
 </script>
