@@ -1,5 +1,5 @@
 import { strUtil } from '../utils/str.util';
-import { ConvertTextType, IConvertText, ITemplate, ISourceVariable, TemplateDataType, convertTextKeys, ITemplateVariable } from './template.entity';
+import { ConvertTextType, IConvertText, ITemplate, ISourceVariable, convertTextKeys, ITemplateVariable } from './template.entity';
 
 const makeTemplateList = (sourceList: ITemplate[], sourceVariableList : ISourceVariable[]): ITemplate[] => {
   if ( !sourceVariableList || sourceVariableList.length === 0) return sourceList;
@@ -31,9 +31,10 @@ const makeVariableList = (sourceVariableList: ISourceVariable[]): ITemplateVaria
     if ( variable.dataType === 'convert-text') {
       const templateVariable: ITemplateVariable = {
         id: variable.id,
+        variableId: variable.variableId,
         dataType: variable.dataType,
         target: variable.target,
-        value: variable.selectList || variable.dateFormat || '',
+        value: variable.selectList || variable.changeString || '',
       }
       templateVariableList.push(templateVariable);
     }
@@ -53,7 +54,7 @@ const makeTemplate = (source: ITemplate, pathVariableList : ISourceVariable[], s
   template.relativePath = convertVariableStr(source.relativePath, pathVariableList);
 
   // 2.3 path convert
-  template.path = source.openPath + '/' + template.openFolderName + '/' + template.relativePath;
+  //template.path = source.openPath + '/' + template.openFolderName + '/' + template.relativePath;
 
   // 3. source convert
   // 3.1 source escape
@@ -96,7 +97,7 @@ const convertVariableStr = (context: string, variableList : ISourceVariable[]): 
       convertTextKeys.forEach((convertTextKey: ConvertTextType) => {
         let startIndex = -1;
         const searchText = variable.convertText?.[convertTextKey] || '';
-        const templateKey = `<qe:${variable.id}.${convertTextKey}>`;
+        const templateKey = `<qe:${variable.variableId}.${convertTextKey}>`;
 
         while ( (startIndex = spaceString.indexOf(searchText)) > -1 ) {
           spaceString = spaceString.substring(0, startIndex) + ''.padEnd(templateKey.length, ' ') + spaceString.substring(startIndex + searchText.length);
@@ -106,7 +107,7 @@ const convertVariableStr = (context: string, variableList : ISourceVariable[]): 
     } else {
       let startIndex = -1;
       const searchText = variable.targetString;
-      const templateKey = `<qe:${variable.id}>`;
+      const templateKey = `<qe:${variable.variableId}>`;
 
       while ( (startIndex = spaceString.indexOf(searchText)) > -1 ) {
         spaceString = spaceString.substring(0, startIndex) + ''.padEnd(templateKey.length, ' ') + spaceString.substring(startIndex + searchText.length);

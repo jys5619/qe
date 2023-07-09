@@ -41,20 +41,22 @@ const convertTextKeys = Object.keys(ConvertTextObject) as ConvertTextType[];
 type TemplateDataType = 'convert-text' | 'text' | 'date' | 'select' | 'check' | 'function';
 
 interface ISourceVariable {
-  id: string;
+  id: number;
+  dataType: TemplateDataType;
+  target: 'path' | 'source' | 'all';
+  variableId: string;
+  targetString: string;
   title: string;
   description: string;
-  targetString: string;
-  target: 'path' | 'source' | 'all';
-  dataType: TemplateDataType;
   convertText?: IConvertText;
   selectList?: string; // select 일때 입력
-  dateFormat?: string; // data 일때 입력
+  changeString?: string; // data 일때 입력
 }
 
 
 interface ITemplateVariable {
-  id: string;
+  id: number;
+  variableId: string;
   dataType: TemplateDataType;
   target: 'path' | 'source' | 'all';
   value?: string;

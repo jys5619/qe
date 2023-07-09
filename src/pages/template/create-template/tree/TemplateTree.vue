@@ -121,6 +121,7 @@ const onUploadFiles = (event: any): void => {
     openFolderName,
     openPath
   );
+
   // eslint-disable-next-line vue/no-mutating-props
   props.sourceList.push(...newSourceList);
 

@@ -34,7 +34,7 @@
                   style="overflow: hidden"
                   @click="handleClickPath(source)"
                 >
-                  <q-item-section>{{ source.path }}</q-item-section>
+                  <q-item-section>{{ source.openPath + '/' + source.openFolderName + '/' + source.relativePath }}</q-item-section>
                 </q-item>
                 <q-item v-if="sourceList.length === 0">
                   <q-item-section>File Not Exists</q-item-section>
@@ -53,7 +53,9 @@
 
             <!-- 3 : rieght -->
             <template v-slot:after>
-              <template-var-form />
+              <div style="padding: 10px;">
+                <template-var-form />
+              </div>
               <q-btn
                 type="button"
                 class="glossy"
@@ -99,7 +101,7 @@ const changeCurrentNode = (currentNode: ITemplate) => {
       selectNode.value?.extension
     );
   } else {
-    const template = templateList.find((template: ITemplate) => selectNode.value?.id === template.id);
+    const template = templateList.find((template: ITemplate) => selectNode.value?.path === template.path);
     if ( template ) {
 
       codeMirrorRef.value.setSource(
@@ -111,15 +113,14 @@ const changeCurrentNode = (currentNode: ITemplate) => {
 };
 
 const handleClickPath = (source: ITemplate) => {
-  console.log(source.contents);
-  console.log(strUtil.unescapeHtml(source.contents));
   codeMirrorRef.value.setSource(strUtil.unescapeHtml(source.contents), source.extension);
 };
 
 const handleMakeTemplate = () => {
   const variableList : ISourceVariable[] = [];
   variableList.push({
-    id: 'id01',
+    id: -1,
+    variableId: 'id01',
     title: 'Component',
     description: 'Component',
     targetString: 'Table',
@@ -130,7 +131,8 @@ const handleMakeTemplate = () => {
     dateFormat: '',
   });
   variableList.push({
-    id: 'id02',
+    id: -1,
+    variableId: 'id02',
     title: 'Component',
     description: 'Component',
     targetString: 'Search Input',
@@ -141,7 +143,8 @@ const handleMakeTemplate = () => {
     dateFormat: '',
   });
   variableList.push({
-    id: 'id03',
+    id: -1,
+    variableId: 'id03',
     title: 'Components',
     description: 'Components',
     targetString: 'components',

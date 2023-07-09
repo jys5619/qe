@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QTreeNode } from 'quasar';
 import { ValidateResult } from '../common/common';
-import { ITemplate, TemplateType, ITemplateDto } from './template.entity';
+import { ITemplate, TemplateType, ITemplateDto, ISourceVariable } from './template.entity';
 
 const isITemplate = (obj: any): obj is ITemplate => {
   return (
     'id' in obj &&
     'templateType' in obj &&
-    'name' in obj &&
+    'fileName' in obj &&
     'extension' in obj &&
     'relativePath' in obj &&
     'openPath' in obj &&
@@ -31,6 +31,18 @@ const getITemplateInitValue = (templateType: TemplateType): ITemplate => {
     useYn: '',
   } as ITemplate;
 };
+
+const getISourceVariable = (): ISourceVariable => {
+  return {
+    id: -1,
+    variableId: '',
+    title: '',
+    description: '',
+    targetString: '',
+    target: 'all',
+    dataType: 'convert-text',
+  }
+}
 
 const convertITemplate = (templateDto?: ITemplateDto): ITemplate => {
   const template = getITemplateInitValue('template');
@@ -230,6 +242,7 @@ const setFileContents = (file: File, source: ITemplate, encoding = 'UTF-8') => {
 const templateService = {
   isITemplate,
   getITemplateInitValue,
+  getISourceVariable,
   convertITemplate,
   convertITemplateDto,
   validate,
