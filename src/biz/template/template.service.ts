@@ -41,6 +41,16 @@ const getISourceVariable = (): ISourceVariable => {
     targetString: '',
     target: 'all',
     dataType: 'convert-text',
+    convertText: {
+      normal: '',
+      snake: '',
+      camel: '',
+      pascal: '',
+      kebab: '',
+      SNAKE: '',
+    },
+    selectList: '',
+    dateFormat: '',
   }
 }
 

@@ -34,7 +34,7 @@ const makeVariableList = (sourceVariableList: ISourceVariable[]): ITemplateVaria
         variableId: variable.variableId,
         dataType: variable.dataType,
         target: variable.target,
-        value: variable.selectList || variable.changeString || '',
+        value: variable.selectList || variable.dateFormat || '',
       }
       templateVariableList.push(templateVariable);
     }
@@ -65,7 +65,7 @@ const makeTemplate = (source: ITemplate, pathVariableList : ISourceVariable[], s
 
 /**
  *
- * @param normalText 자연언어 예) 'Sample Data Input'
+ * @param 사용자 입력값
  * normal : Sample Data Input
  * snake  : sample_data_input
  * camel  : sampleDataInput
@@ -73,11 +73,11 @@ const makeTemplate = (source: ITemplate, pathVariableList : ISourceVariable[], s
  * kebab  : sample-data-input
  * SNAKE  : SAMPLE_DATA_INPUT
  */
-const getConvertText = (normalText: string) => {
-  const snakeNames = strUtil.convert.normalToSnake(normalText);
+const getConvertText = (inputText: string) => {
+  const snakeNames = strUtil.convert.allToSnake(inputText);
 
   const textVariable: IConvertText = {
-    normal: normalText,
+    normal: strUtil.convert.snakeToNormal(snakeNames),
     snake: snakeNames,
     camel: strUtil.convert.snakeToCamel(snakeNames),
     pascal: strUtil.convert.snakeToPascal(snakeNames),

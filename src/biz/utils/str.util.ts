@@ -35,11 +35,41 @@ const unescapeHtml = ( unhtml: string ) => {
 };
 
 /**
+ * All -> camel
+ * 모든문자열 -> sample_data_input
+ **/
+const allToSnake = (string = '') => {
+  let snakeText = '';
+
+  if ( string.indexOf(' ') > -1 ) {
+    snakeText = normalToSnake(string);
+  } else if ( string.indexOf('_') > -1 ) {
+    snakeText = string.toLowerCase();
+  } else if ( string.indexOf('-') > -1 ) {
+    snakeText = replaceAll(string, '-', '_').toLowerCase();
+  } else if ( string.indexOf('-') > -1 ) {
+    snakeText = replaceAll(string, '-', '_').toLowerCase();
+  } else {
+    snakeText = camelToSnake(string.substring(0, 1).toLowerCase() + string.substring(1));
+  }
+
+  return snakeText;
+};
+
+/**
  * 띄워쓰기 문장 -> camel
- * 'Sample Data Input -> sample_data_input
+ * Sample Data Input -> sample_data_input
  **/
 const normalToSnake = (string = '') => {
   return (string || '').toLowerCase().replace(/([A-Z])/g, (match, group) => ` ${group.toLowerCase()}`).replace(/ +_*/g, '_').replace(/(^_*|_*$)/g, '');
+};
+
+/**
+ * snake -> 띄워쓰기 문장
+ * sample_data_input -> Sample Data Input
+ **/
+const snakeToNormal = (string = '') => {
+  return ('_' + string || '').replace(/(_\w)/g, (match, group) => ` ${group[1].toUpperCase()}`);
 };
 
 /**
@@ -87,8 +117,10 @@ const strUtil = {
   escapeHtml,
   unescapeHtml,
   convert: {
+    allToSnake,
     normalToSnake,
     camelToSnake,
+    snakeToNormal,
     snakeToCamel,
     snakeToPascal,
     snakeToKebab,

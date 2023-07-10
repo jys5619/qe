@@ -50,7 +50,7 @@ interface ISourceVariable {
   description: string;
   convertText?: IConvertText;
   selectList?: string; // select 일때 입력
-  changeString?: string; // data 일때 입력
+  dateFormat?: string; // data 일때 입력
 }
 
 
