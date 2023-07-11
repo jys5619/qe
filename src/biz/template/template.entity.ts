@@ -51,6 +51,7 @@ interface ISourceVariable {
   convertText?: IConvertText;
   selectList?: string; // select 일때 입력
   dateFormat?: string; // data 일때 입력
+  delYn?: true | false | undefined | null
 }
 
 

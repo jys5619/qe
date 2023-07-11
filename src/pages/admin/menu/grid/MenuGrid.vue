@@ -15,9 +15,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { QeTable } from '../../../../components';
+import { QeTable } from 'src/components';
 import { menuColumns } from './menu.columns';
-import { IMenu, menuEndpoint } from '../../../../biz';
+import { IMenu, menuEndpoint } from 'src/biz';
 
 const loading = ref<boolean>(false);
 const columns = ref(menuColumns);

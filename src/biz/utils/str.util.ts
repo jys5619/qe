@@ -112,6 +112,16 @@ const snakeToUpper = (string = '') => {
   return (string || '').toUpperCase();
 }
 
+/**
+ * 맨앞 1자를 구분자로하여 배열을 반환한다.
+ * @param str
+ */
+const split = (str: string): string[] => {
+  if ( !str || str.length < 2 ) return [];
+  const spliter = str.substring(0, 1);
+  return str.substring(1).split(spliter);
+}
+
 const strUtil = {
   replaceAll,
   escapeHtml,
@@ -125,7 +135,8 @@ const strUtil = {
     snakeToPascal,
     snakeToKebab,
     snakeToUpper,
-  }
+  },
+  split,
 };
 
 export { strUtil };
