@@ -54,16 +54,18 @@
             <!-- 3 : rieght -->
             <template v-slot:after>
               <div style="padding: 10px;">
-                <template-var-form />
+                <template-var-form
+                  @update:make-template="handleMakeTemplate"
+                />
               </div>
-              <q-btn
+              <!-- <q-btn
                 type="button"
                 class="glossy"
                 size="sm"
                 color="blue-grey-7"
                 label="Make Template"
                 @click="handleMakeTemplate"
-              />
+              /> -->
             </template>
           </qe-splitter>
         </template>
@@ -116,45 +118,48 @@ const handleClickPath = (source: ITemplate) => {
   codeMirrorRef.value.setSource(strUtil.unescapeHtml(source.contents), source.extension);
 };
 
-const handleMakeTemplate = () => {
-  const variableList : ISourceVariable[] = [];
-  variableList.push({
-    id: -1,
-    variableId: 'id01',
-    title: 'Component',
-    description: 'Component',
-    targetString: 'Table',
-    target: 'path',
-    dataType: 'convert-text',
-    convertText: {...ConvertTextObject},
-    selectList: '',
-    dateFormat: '',
-  });
-  variableList.push({
-    id: -1,
-    variableId: 'id02',
-    title: 'Component',
-    description: 'Component',
-    targetString: 'Search Input',
-    target: 'all',
-    dataType: 'convert-text',
-    convertText: {...ConvertTextObject},
-    selectList: '',
-    dateFormat: '',
-  });
-  variableList.push({
-    id: -1,
-    variableId: 'id03',
-    title: 'Components',
-    description: 'Components',
-    targetString: 'components',
-    target: 'path',
-    dataType: 'text',
-    convertText: {...ConvertTextObject},
-    selectList: '',
-    dateFormat: '',
-  });
-
+const handleMakeTemplate = (variableList : ISourceVariable[]) => {
+  // const variableList : ISourceVariable[] = [];
+  // variableList.push({
+  //   id: -1,
+  //   variableId: 'id01',
+  //   title: 'Component',
+  //   description: 'Component',
+  //   targetString: 'Table',
+  //   target: 'path',
+  //   dataType: 'convert-text',
+  //   convertText: {...ConvertTextObject},
+  //   selectList: '',
+  //   dateFormat: '',
+  //   viewData: false,
+  // });
+  // variableList.push({
+  //   id: -1,
+  //   variableId: 'id02',
+  //   title: 'Component',
+  //   description: 'Component',
+  //   targetString: 'Search Input',
+  //   target: 'all',
+  //   dataType: 'convert-text',
+  //   convertText: {...ConvertTextObject},
+  //   selectList: '',
+  //   dateFormat: '',
+  //   viewData: false,
+  // });
+  // variableList.push({
+  //   id: -1,
+  //   variableId: 'id03',
+  //   title: 'Components',
+  //   description: 'Components',
+  //   targetString: 'components',
+  //   target: 'path',
+  //   dataType: 'text',
+  //   convertText: {...ConvertTextObject},
+  //   selectList: '',
+  //   dateFormat: '',
+  //   viewData: false,
+  // });
+console.log('variableList', variableList);
   templateList.length = 0;
   templateList.push(...templateUtil.makeTemplateList(sourceList, variableList));
 

@@ -1,7 +1,6 @@
 <template>
   <q-form
     @submit="onSubmit"
-    @reset="onReset"
     ref="templateVarForm"
     class="q-gutter-sm"
   >
@@ -152,27 +151,37 @@
           </div>
         </q-card-section>
         <q-card-section v-if="variable.id === 0">
-          <div class="text-h6">{{ variable.title }}</div>
-          <div style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
-            <div class="col-3 text-subtitle2">Description</div><div class="col-9"> : {{ variable.description }}</div>
+          <div  style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
+            <div class="col-9 text-subtitle1">{{ variable.title || "Title"}}</div>
+            <div class="col-3" :align="'right'"><q-toggle v-model="variable.viewData" dense label="View Data" /></div>
           </div>
-          <div style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
-            <div class="col-3 text-subtitle2">Target</div><div class="col-9"> : {{ targetList.find((d) => d.value === variable.target)?.label || variable.target }}</div>
+          <div v-if="variable.viewData" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
+            <div class="col-3 text-subtitle2">Description</div>
+            <div class="col-9"> : {{ variable.description }}</div>
           </div>
-          <div style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
-            <div class="col-3 text-subtitle2">ID</div><div class="col-9"> : {{ variable.variableId }}</div>
+          <div v-if="variable.viewData" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
+            <div class="col-3 text-subtitle2">Target</div>
+            <div class="col-9"> : {{ targetList.find((d) => d.value === variable.target)?.label || variable.target }}</div>
           </div>
-          <div style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
-            <div class="col-3 text-subtitle2">Data Type</div><div class="col-9"> : {{ dataTypeList.find((d) => d.value === variable.dataType)?.label || variable.dataType }}</div>
+          <div v-if="variable.viewData" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
+            <div class="col-3 text-subtitle2">ID</div>
+            <div class="col-9"> : {{ variable.variableId }}</div>
           </div>
-          <div style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
-            <div class="col-3 text-subtitle2">Target String</div><div class="col-9"> : {{ variable.targetString }}</div>
+          <div v-if="variable.viewData" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
+            <div class="col-3 text-subtitle2">Data Type</div>
+            <div class="col-9"> : {{ dataTypeList.find((d) => d.value === variable.dataType)?.label || variable.dataType }}</div>
           </div>
-          <div style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
-            <div class="col-3 text-subtitle2">Date Format</div><div class="col-9"> : {{dateUtil.dateFormater(variable.dateFormat || '') }}</div>
+          <div v-if="variable.viewData" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
+            <div class="col-3 text-subtitle2">Target String</div>
+            <div class="col-9"> : {{ variable.targetString }}</div>
           </div>
-          <div style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
-            <div class="col-3 text-subtitle2">Select List</div><div class="col-9"> : {{ strUtil.split(variable.selectList || '') }}</div>
+          <div v-if="variable.viewData" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
+            <div class="col-3 text-subtitle2">Date Format</div>
+            <div class="col-9"> : {{dateUtil.dateFormater(variable.dateFormat || '') }}</div>
+          </div>
+          <div v-if="variable.viewData" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
+            <div class="col-3 text-subtitle2">Select List</div>
+            <div class="col-9"> : {{ strUtil.split(variable.selectList || '') }}</div>
           </div>
         </q-card-section>
         <q-separator />
@@ -198,14 +207,7 @@
         class="glossy"
         size="sm"
         color="primary"
-        label="Submit"
-      />
-      <q-btn
-        type="reset"
-        class="glossy"
-        size="sm"
-        color="blue-grey-7"
-        label="Reset"
+        label="Source > Template"
       />
     </div>
   </q-form>
@@ -220,6 +222,8 @@ import { strUtil } from 'src/biz/utils/str.util';
 import { dateUtil } from 'src/biz/utils/date.util';
 import { ISourceVariable } from 'src/biz/template/template.entity';
 
+const emit = defineEmits(['update:make-template']);
+
 const templateVarForm = ref();
 const variableList = ref<Array<ISourceVariable>>([]);
 const dataTypeList = ref([
@@ -227,6 +231,8 @@ const dataTypeList = ref([
   {label:'Text', value: 'text'},
   {label:'Date', value: 'date'},
   {label:'Select', value: 'select'},
+  {label:'Template', value: 'template'},
+  {label:'Function', value: 'function'},
 ]);
 const targetList = ref([
   {label:'All(Path + Source)', value: 'all'},
@@ -235,27 +241,9 @@ const targetList = ref([
 ]);
 
 const onSubmit = () => {
-  console.log(templateVarForm.value);
+  console.log(variableList.value);
+  emit('update:make-template', variableList.value);
 };
-
-const onReset = () => {
-  console.log(templateVarForm.value);
-};
-
-// const handleTargetStringChange = () => {
-//   if (variable.value.dataType === 'convert-text') {
-//     const snakeNames = strUtil.convert.allToSnake(variable.value.targetString);
-
-//     variable.value.convertText = {
-//       normal: strUtil.convert.snakeToNormal(snakeNames),
-//       snake: snakeNames,
-//       camel: strUtil.convert.snakeToCamel(snakeNames),
-//       pascal: strUtil.convert.snakeToPascal(snakeNames),
-//       kebab: strUtil.convert.snakeToKebab(snakeNames),
-//       SNAKE: strUtil.convert.snakeToUpper(snakeNames),
-//     };
-//   }
-// }
 
 </script>
 <style lang="sass">

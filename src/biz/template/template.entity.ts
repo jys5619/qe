@@ -38,7 +38,7 @@ type IConvertText = typeof ConvertTextObject;
 type ConvertTextType = keyof IConvertText;
 const convertTextKeys = Object.keys(ConvertTextObject) as ConvertTextType[];
 
-type TemplateDataType = 'convert-text' | 'text' | 'date' | 'select' | 'check' | 'function';
+type TemplateDataType = 'convert-text' | 'text' | 'date' | 'select' | 'function';
 
 interface ISourceVariable {
   id: number;
@@ -51,7 +51,8 @@ interface ISourceVariable {
   convertText?: IConvertText;
   selectList?: string; // select 일때 입력
   dateFormat?: string; // data 일때 입력
-  delYn?: true | false | undefined | null
+  delYn?: true | false | undefined | null;
+  viewData: boolean;
 }
 
 

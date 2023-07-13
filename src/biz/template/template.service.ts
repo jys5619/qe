@@ -51,6 +51,7 @@ const getISourceVariable = (): ISourceVariable => {
     },
     selectList: '',
     dateFormat: '',
+    viewData: false,
   }
 }
 
