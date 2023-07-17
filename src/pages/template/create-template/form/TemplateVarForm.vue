@@ -4,8 +4,21 @@
     ref="templateVarForm"
     class="q-gutter-sm"
   >
+    <div>
+      <qe-input
+        v-model="templateInfo.templateTitle"
+        label="Template Name"
+        :required="true"
+      />
+      <qe-select
+        v-model="templateInfo.templateType"
+        label="Template Type"
+        :required="true"
+        :options="templateTypeList"
+      />
+    </div>
     <div v-for="variable in variableList.filter(v => !v.delYn)" :key="variable.id">
-      <q-card class="my-card bg-blue-3 text-black" :class="variable.id ? 'bg-blue-3' : 'bg-yellow-2'">
+      <q-card class="my-card bg-blue-3 text-black" :class="variable.id === -1 ? 'bg-blue-3' : 'bg-yellow-2'">
         <q-card-section v-if="variable.id === -1">
           <qe-input
             v-model="variable.title"
@@ -150,7 +163,7 @@
             </div>
           </div>
         </q-card-section>
-        <q-card-section v-if="variable.id === 0">
+        <q-card-section v-if="variable.id === -2">
           <div  style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
             <div class="col-9 text-subtitle1">{{ variable.title || "Title"}}</div>
             <div class="col-3" :align="'right'"><q-toggle v-model="variable.viewData" dense label="View Data" /></div>
@@ -175,19 +188,19 @@
             <div class="col-3 text-subtitle2">Target String</div>
             <div class="col-9"> : {{ variable.targetString }}</div>
           </div>
-          <div v-if="variable.viewData" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
+          <div v-if="variable.viewData && variable.dataType === 'date'" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
             <div class="col-3 text-subtitle2">Date Format</div>
             <div class="col-9"> : {{dateUtil.dateFormater(variable.dateFormat || '') }}</div>
           </div>
-          <div v-if="variable.viewData" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
+          <div v-if="variable.viewData && variable.dataType === 'select'" style="overflow-x: hidden; white-space: nowrap;text-overflow: ellipsis;" class="row">
             <div class="col-3 text-subtitle2">Select List</div>
             <div class="col-9"> : {{ strUtil.split(variable.selectList || '') }}</div>
           </div>
         </q-card-section>
         <q-separator />
         <q-card-actions :align="'right'">
-          <q-btn v-if="variable.id === -1" class="glossy" color="primary" size="sm" @click="variable.id = 0">DONE</q-btn>
-          <q-btn v-if="variable.id === 0" class="glossy" color="primary" size="sm" @click="variable.id = -1">EDIT</q-btn>
+          <q-btn v-if="variable.id === -1" class="glossy" color="primary" size="sm" @click="variable.id = -2">DONE</q-btn>
+          <q-btn v-if="variable.id === -2" class="glossy" color="primary" size="sm" @click="variable.id = -1">EDIT</q-btn>
           <q-btn class="glossy" color="red" size="sm" @click="variable.delYn = true">DEL</q-btn>
           <q-btn class="glossy" color="green" size="sm" @click="variableList.push({...variable, id:-1})">COPY</q-btn>
         </q-card-actions>
@@ -200,14 +213,23 @@
         size="sm"
         color="primary"
         label="Add"
-        @click="variableList.push(templateService.getISourceVariable())"
+        @click="handleAdd"
       />
       <q-btn
+        id="btnMakeTemplate"
         type="submit"
         class="glossy"
         size="sm"
         color="primary"
         label="Source > Template"
+      />
+      <q-btn
+        id="btnSave"
+        type="submit"
+        class="glossy"
+        size="sm"
+        color="primary"
+        label="Save"
       />
     </div>
   </q-form>
@@ -220,12 +242,21 @@ import {QeInput, QeSelect} from 'src/components'
 import { templateService } from 'src/biz';
 import { strUtil } from 'src/biz/utils/str.util';
 import { dateUtil } from 'src/biz/utils/date.util';
-import { ISourceVariable } from 'src/biz/template/template.entity';
+import { ISourceVariable, ITemplateInfo } from 'src/biz/template/template.entity';
 
-const emit = defineEmits(['update:make-template']);
+const emit = defineEmits(['update:make-template', 'update:save-template']);
 
 const templateVarForm = ref();
+const templateInfo = ref<ITemplateInfo>({
+  id: -1,
+  templateTitle: '',
+  templateType: '',
+})
 const variableList = ref<Array<ISourceVariable>>([]);
+const templateTypeList = ref([
+  {label:'Form', value: 'form'},
+  {label:'Batch', value: 'batch'},
+]);
 const dataTypeList = ref([
   {label:'Convert Text', value: 'convert-text'},
   {label:'Text', value: 'text'},
@@ -240,9 +271,17 @@ const targetList = ref([
   {label:'Source', value: 'source'},
 ]);
 
-const onSubmit = () => {
-  console.log(variableList.value);
-  emit('update:make-template', variableList.value);
+const handleAdd = () => {
+  variableList.value.push(templateService.getISourceVariable());
+}
+
+const onSubmit = (evt: any) => {
+
+  if ( evt.submitter?.id && evt.submitter.id === 'btnSave' ) {
+    emit('update:save-template', templateInfo.value, variableList.value);
+  } else {
+    emit('update:make-template', variableList.value);
+  }
 };
 
 </script>

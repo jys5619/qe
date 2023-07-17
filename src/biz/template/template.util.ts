@@ -28,16 +28,15 @@ const makeVariableList = (sourceVariableList: ISourceVariable[]): ITemplateVaria
   const templateVariableList: ITemplateVariable[] = [];
 
   sourceVariableList.forEach((variable:ISourceVariable) => {
-    if ( variable.dataType === 'convert-text') {
-      const templateVariable: ITemplateVariable = {
-        id: variable.id,
-        variableId: variable.variableId,
-        dataType: variable.dataType,
-        target: variable.target,
-        value: variable.selectList || variable.dateFormat || '',
-      }
-      templateVariableList.push(templateVariable);
+
+    const templateVariable: ITemplateVariable = {
+      id: variable.id,
+      variableId: variable.variableId,
+      dataType: variable.dataType,
+      target: variable.target,
+      value: variable.selectList || variable.dateFormat || '',
     }
+    templateVariableList.push(templateVariable);
   });
 
   return templateVariableList;

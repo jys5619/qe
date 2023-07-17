@@ -3,6 +3,8 @@ import { QTreeNode } from 'quasar';
 import { ValidateResult } from '../common/common';
 import { ITemplate, TemplateType, ITemplateDto, ISourceVariable } from './template.entity';
 
+
+
 const isITemplate = (obj: any): obj is ITemplate => {
   return (
     'id' in obj &&

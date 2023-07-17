@@ -1,5 +1,11 @@
 type TemplateType = 'source' | 'template';
 
+interface ITemplateInfo {
+  id: number;
+  templateTitle: string;
+  templateType: string;
+}
+
 interface ITemplate {
   id: number;
   templateType: TemplateType;
@@ -64,5 +70,5 @@ interface ITemplateVariable {
   value?: string;
 }
 
-export type { TemplateType, ITemplate, ITemplateDto, ISourceVariable, ITemplateVariable, TemplateDataType, IConvertText, ConvertTextType };
+export type { ITemplateInfo, TemplateType, ITemplate, ITemplateDto, ISourceVariable, ITemplateVariable, TemplateDataType, IConvertText, ConvertTextType };
 export { convertTextKeys, ConvertTextObject };
