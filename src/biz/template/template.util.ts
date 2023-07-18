@@ -57,7 +57,7 @@ const makeTemplate = (source: ITemplate, pathVariableList : ISourceVariable[], s
 
   // 3. source convert
   // 3.1 source escape
-  template.contents = convertVariableStr(strUtil.escapeHtml(source.contents), sourceVariableList);
+  template.contents = convertVariableStr(source.contents, sourceVariableList);
 
   return template;
 };

@@ -275,6 +275,7 @@ const handleAdd = () => {
   variableList.value.push(templateService.getISourceVariable());
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const onSubmit = (evt: any) => {
 
   if ( evt.submitter?.id && evt.submitter.id === 'btnSave' ) {

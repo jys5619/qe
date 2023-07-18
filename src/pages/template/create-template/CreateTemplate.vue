@@ -100,7 +100,7 @@ const changeCurrentNode = (currentNode: ITemplate) => {
     if ( template ) {
 
       codeMirrorRef.value.setSource(
-        strUtil.unescapeHtml(template.contents),
+        template.contents,
         template.extension
       );
     }
@@ -108,7 +108,7 @@ const changeCurrentNode = (currentNode: ITemplate) => {
 };
 
 const handleClickPath = (source: ITemplate) => {
-  codeMirrorRef.value.setSource(strUtil.unescapeHtml(source.contents), source.extension);
+  codeMirrorRef.value.setSource(source.contents, source.extension);
 };
 
 const handleMakeTemplate = (sourceVariableList : ISourceVariable[]) => {
@@ -126,6 +126,126 @@ const handleSaveTemplate = (templateInfo: ITemplateInfo, sourceVariableList : IS
   templateList.push(...makeTemplateList);
   codeMirrorRef.value.setSource('');
   selectType.value = 'template';
+
+/*
+{
+    "id": -1,
+    "templateTitle": "CodeGroupForm",
+    "templateType": "form"
+}
+*/
+
+/*
+[
+    {
+        "id": -1,
+        "templateType": "template",
+        "fileName": "AdminUserPage.vue",
+        "extension": "vue",
+        "relativePath": "user/AdminUserPage.vue",
+        "openPath": "D:/dev/workspace/qe/src/pages",
+        "openFolderName": "admin",
+        "path": "D:/dev/workspace/qe/src/pages/admin/user/AdminUserPage.vue",
+        "contents": "content",
+        "useYn": ""
+    },
+    {
+        "id": -1,
+        "templateType": "template",
+        "fileName": "user.ts",
+        "extension": "ts",
+        "relativePath": "user/grid/user.ts",
+        "openPath": "D:/dev/workspace/qe/src/pages",
+        "openFolderName": "admin",
+        "path": "D:/dev/workspace/qe/src/pages/admin/user/grid/user.ts",
+        "contents": "content",
+        "useYn": ""
+    },
+    {
+        "id": -1,
+        "templateType": "template",
+        "fileName": "UserGrid.vue",
+        "extension": "vue",
+        "relativePath": "user/grid/UserGrid.vue",
+        "openPath": "D:/dev/workspace/qe/src/pages",
+        "openFolderName": "admin",
+        "path": "D:/dev/workspace/qe/src/pages/admin/user/grid/UserGrid.vue",
+        "contents": "content",
+        "useYn": ""
+    },
+    {
+        "id": -1,
+        "templateType": "template",
+        "fileName": "UserForm.vue",
+        "extension": "vue",
+        "relativePath": "user/form/UserForm.vue",
+        "openPath": "D:/dev/workspace/qe/src/pages",
+        "openFolderName": "admin",
+        "path": "D:/dev/workspace/qe/src/pages/admin/user/form/UserForm.vue",
+        "contents": "content",
+        "useYn": ""
+    },
+    {
+        "id": -1,
+        "templateType": "template",
+        "fileName": "AdminSettingPage.vue",
+        "extension": "vue",
+        "relativePath": "setting/AdminSettingPage.vue",
+        "openPath": "D:/dev/workspace/qe/src/pages",
+        "openFolderName": "admin",
+        "path": "D:/dev/workspace/qe/src/pages/admin/setting/AdminSettingPage.vue",
+        "contents": "content",
+        "useYn": ""
+    }
+];
+*/
+
+/*
+[
+    {
+        "id": -2,
+        "variableId": "CodeGroupForm",
+        "dataType": "convert-text",
+        "target": "all",
+        "value": ""
+    },
+    {
+        "id": -2,
+        "variableId": "card-section",
+        "dataType": "text",
+        "target": "all",
+        "value": ""
+    },
+    {
+        "id": -2,
+        "variableId": "CodeForm",
+        "dataType": "select",
+        "target": "all",
+        "value": "!가!나!다"
+    },
+    {
+        "id": -2,
+        "variableId": "editCode",
+        "dataType": "template",
+        "target": "all",
+        "value": ""
+    },
+    {
+        "id": -2,
+        "variableId": "codeService",
+        "dataType": "function",
+        "target": "all",
+        "value": ""
+    },
+    {
+        "id": -2,
+        "variableId": "date",
+        "dataType": "date",
+        "target": "all",
+        "value": "yyyy.MM.DD"
+    }
+];
+*/
 
   console.log(templateInfo, makeTemplateList, makeTemplateVariableList);
 };
