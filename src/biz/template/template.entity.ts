@@ -6,6 +6,12 @@ interface ITemplateInfo {
   templateType: string;
 }
 
+interface ITemplateInfoDto {
+  id: number;
+  templateTitle: string;
+  templateType: string;
+}
+
 interface ITemplate {
   id: number;
   templateType: TemplateType;
@@ -70,5 +76,26 @@ interface ITemplateVariable {
   value?: string;
 }
 
-export type { ITemplateInfo, TemplateType, ITemplate, ITemplateDto, ISourceVariable, ITemplateVariable, TemplateDataType, IConvertText, ConvertTextType };
+
+interface ITemplateVariableDto {
+  id: number;
+  variableId: string;
+  dataType: TemplateDataType;
+  target: 'path' | 'source' | 'all';
+  value?: string;
+}
+
+export type {
+  ITemplateInfo,
+  ITemplateInfoDto,
+  TemplateType,
+  ITemplate,
+  ITemplateDto,
+  ISourceVariable,
+  ITemplateVariable,
+  ITemplateVariableDto,
+  TemplateDataType,
+  IConvertText,
+  ConvertTextType
+};
 export { convertTextKeys, ConvertTextObject };

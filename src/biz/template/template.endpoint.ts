@@ -1,5 +1,5 @@
 import endpointUtil from '../common/endpoint.util';
-import { ITemplate } from './template.entity';
+import { ITemplate, ITemplateDto, ITemplateInfo, ITemplateVariable, ITemplateVariableDto } from './template.entity';
 import { templateService } from './template.service';
 
 /**
@@ -23,9 +23,11 @@ import { templateService } from './template.service';
  * @param templateDto
  * @returns
  */
-async function saveTemplate(template: Partial<ITemplate>): Promise<number> {
-  const templateDto = templateService.convertITemplateDto(template);
-  return await endpointUtil.post(window.api.saveITemplate(templateDto));
+async function saveTemplate(templateInfo: ITemplateInfo, templateVariableList: ITemplateVariable[], templateList: ITemplate[], ): Promise<number> {
+  const templateInfoDto = templateService.convertITemplateInfoDto(templateInfo);
+  const templateVariableDtoList: ITemplateVariableDto[] = templateVariableList.map(templateVariable => templateService.convertITemplateVariableDto(templateVariable));
+  const templateDtoList: ITemplateDto[] = templateList.map(template => templateService.convertITemplateDto(template));
+  return await endpointUtil.post(window.api.saveITemplate(templateInfoDto, templateVariableDtoList, templateDtoList));
 }
 
 const templateEndpoint = {

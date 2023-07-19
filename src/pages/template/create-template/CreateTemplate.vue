@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { QTreeNode } from 'quasar';
-import { ITemplate } from 'src/biz';
+import { ITemplate, templateEndpoint } from 'src/biz';
 import NormalPage from 'src/components/page/NormalPage.vue';
 import { QeCodeMirror, QeSplitter } from 'src/components';
 import TemplateTree from './tree/TemplateTree.vue';
@@ -248,6 +248,8 @@ const handleSaveTemplate = (templateInfo: ITemplateInfo, sourceVariableList : IS
 */
 
   console.log(templateInfo, makeTemplateList, makeTemplateVariableList);
+
+  templateEndpoint.saveTemplate(templateInfo, makeTemplateVariableList, makeTemplateList)
 };
 
 </script>

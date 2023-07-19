@@ -1,9 +1,6 @@
 import { ILoginData } from './biz/auth/auth.entity';
-import { IAuthDto } from './biz/auth/dto/auth.dto';
-import { ICode, ICodeDto, ICodeGroup, ICodeGroupDto } from './biz/code';
-import { IMenuDto } from './biz/menu';
-import { ITemplateDto } from './biz/template';
-import { IUserDto } from './biz/user';
+import { IAuthDto, ICode, ICodeDto, ICodeGroup, ICodeGroupDto, IMenuDto, ITemplateDto, IUserDto  } from './biz/';
+import { ITemplateInfoDto, ITemplateVariableDto } from './biz/template/template.entity';
 
 export {};
 
@@ -13,7 +10,7 @@ declare global {
       saveTextFile(text: string): Promise<string>;
       loadTextFile(): Promise<string>;
       // Template - Create Template
-      saveITemplate(templateDto: ITemplateDto): Promise<number>;
+      saveITemplate(templateInfoDto: ITemplateInfoDto, templateVariableDtoList: ITemplateVariableDto[], templateDtoList: ITemplateDto[]): Promise<number>;
       // Admin - Auth
       login(loginData: ILoginData): Promise<IAuthDto>;
       // Admin - User

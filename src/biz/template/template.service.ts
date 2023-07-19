@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { QTreeNode } from 'quasar';
 import { ValidateResult } from '../common/common';
-import { ITemplate, TemplateType, ITemplateDto, ISourceVariable } from './template.entity';
+import { ITemplate, TemplateType, ITemplateDto, ISourceVariable, ITemplateVariableDto, ITemplateVariable, ITemplateInfo, ITemplateInfoDto } from './template.entity';
 
 
 
@@ -57,6 +57,26 @@ const getISourceVariable = (): ISourceVariable => {
   }
 }
 
+const convertITemplateInfo = (templateVariableDto: ITemplateInfoDto): ITemplateInfo => {
+  const templateInfo: ITemplateInfo = {
+    id: templateVariableDto.id,
+    templateTitle: templateVariableDto.templateTitle,
+    templateType: templateVariableDto.templateType,
+  }
+
+  return templateInfo;
+};
+
+const convertITemplateInfoDto= (templateVariable: ITemplateInfo): ITemplateInfoDto => {
+  const templateInfoDto: ITemplateInfoDto = {
+    id: templateVariable.id || -1,
+    templateTitle: templateVariable.templateTitle,
+    templateType: templateVariable.templateType,
+  };
+
+  return templateInfoDto;
+};
+
 const convertITemplate = (templateDto?: ITemplateDto): ITemplate => {
   const template = getITemplateInitValue('template');
 
@@ -96,6 +116,30 @@ const convertITemplateDto = (template: Partial<ITemplate>): ITemplateDto => {
   };
 
   return templateDto;
+};
+
+const convertITemplateVariable = (templateVariableDto: ITemplateVariableDto): ITemplateVariable => {
+  const templateVariable: ITemplateVariable = {
+    id: templateVariableDto.id,
+    variableId: templateVariableDto.variableId,
+    dataType: templateVariableDto.dataType,
+    target: templateVariableDto.target,
+    value: templateVariableDto.value,
+  }
+
+  return templateVariable;
+};
+
+const convertITemplateVariableDto = (templateVariable: ITemplateVariable): ITemplateVariableDto => {
+  const templateVariableDto: ITemplateVariableDto = {
+    id: templateVariable.id || -1,
+    variableId: templateVariable.variableId,
+    dataType: templateVariable.dataType,
+    target: templateVariable.target,
+    value: templateVariable.value || '',
+  };
+
+  return templateVariableDto;
 };
 
 /**
@@ -256,8 +300,12 @@ const templateService = {
   isITemplate,
   getITemplateInitValue,
   getISourceVariable,
+  convertITemplateInfo,
+  convertITemplateInfoDto,
   convertITemplate,
   convertITemplateDto,
+  convertITemplateVariable,
+  convertITemplateVariableDto,
   validate,
   getFolderNode,
   getSourceList,
